@@ -134,6 +134,15 @@
   --radius-lg: 0px;
   --radius-xl: 0px;
 
+  /* Dashboard custom theme colors */
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-border-color: var(--border-color);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-bg: var(--bg);
+
   /* Stage colors as Tailwind utilities */
   --color-stage-01: var(--stage-01);
   --color-stage-03: var(--stage-03);
