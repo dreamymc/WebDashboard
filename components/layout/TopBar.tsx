@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Menu, LogOut, RefreshCcw } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Sidebar } from "./Sidebar";
+import { ShareLinkModal } from "./ShareLinkModal";
 import Link from "next/link";
 
 interface TopBarProps {
@@ -84,6 +85,12 @@ export function TopBar({ isAdmin, fetchedAt }: TopBarProps) {
             Refresh
           </button>
         </div>
+
+        {isAdmin && (
+          <div className="flex items-center border-l border-border-color pl-4 ml-2">
+            <ShareLinkModal />
+          </div>
+        )}
 
         <Link
           href="/api/auth/logout"

@@ -4,6 +4,7 @@ import { TopBar } from "@/components/layout/TopBar";
 import { FilterBar } from "@/components/layout/FilterBar";
 import { DataProvider } from "@/components/DataProvider";
 import { fetchSheetRows } from "@/lib/google-sheets";
+import { verifySession } from "@/lib/auth";
 
 export default async function DashboardLayout({
   children,
@@ -11,8 +12,9 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const cookieStore = await cookies();
-  const role = cookieStore.get("role")?.value;
-  const isAdmin = role === "admin";
+  const sessionCookie = cookieStore.get("session")?.value;
+  const session = sessionCookie ? await verifySession(sessionCookie) : null;
+  const isAdmin = session?.role === "admin";
 
   const rows = await fetchSheetRows();
   const fetchedAt = new Date().toISOString();
