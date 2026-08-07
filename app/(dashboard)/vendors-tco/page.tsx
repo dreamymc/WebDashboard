@@ -1,8 +1,106 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
+import { useData } from "@/components/DataProvider";
+import { StageBarChart } from "@/components/charts/StageBarChart";
+import { DataTable, ColumnDef } from "@/components/tables/DataTable";
+import { StageCode } from "@/components/tables/StageBadge";
+
 export default function VendorsTcoPage() {
+  const { transforms } = useData();
+  const {
+    rfiRallyByVendor,
+    tcoPerformance,
+    tcoAwardStatus,
+    vendorCompletion,
+    rfiRallyDetailed,
+  } = transforms;
+
+  const tcoAwardColumns: ColumnDef<any>[] = [
+    { key: "tcoVendor", header: "TCO Vendor", cell: (r) => <span className="font-semibold">{r.tcoVendor}</span> },
+    { key: "01", header: "[01]", cell: (r) => r["[01] AWARDED / SITE HUNTING"] || "-", align: "right" },
+    { key: "03", header: "[03]", cell: (r) => r["[03] TSSR APPROVED"] || "-", align: "right" },
+    { key: "04", header: "[04]", cell: (r) => r["[04] RTB"] || "-", align: "right" },
+    { key: "05", header: "[05]", cell: (r) => r["[05] CW DOING"] || "-", align: "right" },
+  ];
+
+  const vendorCompletionColumns: ColumnDef<any>[] = [
+    { key: "vendor", header: "Vendor", cell: (r) => <span className="font-semibold">{r.vendor}</span> },
+    { key: "rtb", header: "RTB+", cell: (r) => r.rtbAndAbove, align: "right" },
+    { key: "total", header: "Total", cell: (r) => r.total, align: "right" },
+    { key: "pct", header: "% Completion", cell: (r) => `${r.pctCompletion}%`, align: "right" },
+  ];
+
+  const rfiDetailedColumns: ColumnDef<any>[] = [
+    { key: "id", header: "Serial Number", cell: (r) => <span className="font-mono text-[11px]">{r.serialNumber}</span> },
+    { key: "net", header: "Network", cell: (r) => r.vendor },
+    { key: "tco", header: "TCO", cell: (r) => r.tcoVendor },
+    { key: "prov", header: "Province", cell: (r) => r.province },
+    { key: "town", header: "Town", cell: (r) => r.cityTown },
+    { key: "prog", header: "Program", cell: (r) => r.program },
+    { key: "stage", header: "Stage", cell: (r) => <StageCode stage={r.stage} /> },
+  ];
+
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold tracking-tight">Vendors & TCO</h1>
-      <p className="text-text-secondary">Vendors & TCO content (Phase 8)</p>
+      {/* Top Row: RFI Rally (6) | TCO Performance (6) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="lg:col-span-6 panel flex flex-col">
+          <div className="panel-header">RFI Rally by Vendor</div>
+          <div className="panel-body flex-1">
+            <StageBarChart
+              data={rfiRallyByVendor}
+              xKey="stage"
+              bars={[
+                { key: "ericsson", name: "Ericsson", stackId: "a", color: "var(--brand)" },
+                { key: "nokia", name: "Nokia", stackId: "a", color: "var(--warning)" },
+                { key: "ht", name: "HT", stackId: "a", color: "var(--success)" },
+              ]}
+              height={300}
+            />
+          </div>
+        </div>
+
+        <div className="lg:col-span-6 panel flex flex-col">
+          <div className="panel-header">TCO Performance (RTB & Above)</div>
+          <div className="panel-body flex-1">
+            <StageBarChart
+              data={tcoPerformance}
+              xKey="vendor"
+              bars={[
+                { key: "rtbAndAbove", name: "RTB+", color: "var(--brand)" },
+                { key: "total", name: "Total", color: "var(--text-muted)" },
+              ]}
+              height={300}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Middle Row: TCO Award (5) | Vendor Completion (7) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="lg:col-span-5 panel flex flex-col">
+          <div className="panel-header">TCO Award Status</div>
+          <div className="panel-body p-0 flex-1">
+            <DataTable data={tcoAwardStatus} columns={tcoAwardColumns} />
+          </div>
+        </div>
+
+        <div className="lg:col-span-7 panel flex flex-col">
+          <div className="panel-header">Vendor Completion</div>
+          <div className="panel-body p-0 flex-1">
+            <DataTable data={vendorCompletion} columns={vendorCompletionColumns} />
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Row: RFI Rally Detailed (full) */}
+      <div className="panel">
+        <div className="panel-header">RFI Rally Detailed</div>
+        <div className="panel-body p-0">
+          <DataTable data={rfiRallyDetailed} columns={rfiDetailedColumns} />
+        </div>
+      </div>
     </div>
   );
 }
