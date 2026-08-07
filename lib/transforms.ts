@@ -13,7 +13,6 @@ import {
   Q3_MONTHS,
   Q4_MONTHS,
   ALL_MONTHS,
-  STAGE_COLORS,
   stageIndex,
 } from './normalizers';
 import type {
