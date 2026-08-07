@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat /etc/os-release 2>/dev/null; echo \"---\"; uname -a)",
+      "Read(//home/visionmc/.agents/skills/**)",
+      "Read(//home/visionmc/.claude/**)",
+      "Bash(ln -s ~/.agents/skills ~/.claude/skills)"
+    ]
+  }
+}
