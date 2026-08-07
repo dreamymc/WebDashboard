@@ -39,7 +39,7 @@ async function kvGet<T>(key: string): Promise<T | null> {
 async function kvSet(key: string, value: unknown): Promise<void> {
   await kvFetch(`/set/${encodeURIComponent(key)}`, {
     method: 'POST',
-    body: JSON.stringify(JSON.stringify(value)),
+    body: JSON.stringify(value),
   });
 }
 
