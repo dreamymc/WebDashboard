@@ -6,7 +6,6 @@ import { Menu, LogOut, RefreshCcw } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Sidebar } from "./Sidebar";
 import { ShareLinkModal } from "./ShareLinkModal";
-import Link from "next/link";
 
 interface TopBarProps {
   isAdmin: boolean;
@@ -51,6 +50,11 @@ export function TopBar({ isAdmin, fetchedAt }: TopBarProps) {
     return `${min} min ago`;
   };
 
+  const handleLogout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    router.push("/login");
+  };
+
   return (
     <header className="h-14 border-b border-border-color bg-surface flex items-center px-4 lg:px-6 justify-between shrink-0">
       <div className="flex items-center gap-4">
@@ -92,13 +96,13 @@ export function TopBar({ isAdmin, fetchedAt }: TopBarProps) {
           </div>
         )}
 
-        <Link
-          href="/api/auth/logout"
+        <button
+          onClick={handleLogout}
           className="flex items-center gap-1.5 border-l border-border-color pl-4 hover:text-danger transition-colors ml-2"
         >
           <LogOut className="w-3.5 h-3.5" />
           <span className="hidden sm:inline">Log out</span>
-        </Link>
+        </button>
       </div>
     </header>
   );
