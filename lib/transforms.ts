@@ -164,7 +164,7 @@ export function tcoPerformance(rows: SiteRow[]): TcoPerformanceItem[] {
   return Array.from(vendorMap.entries())
     .map(([vendor, vRows]) => {
       const total = vRows.length;
-      const rtbAndAbove = vRows.filter(r => isActualStage(r.leadIndicator)).length;
+      const rtbAndAbove = vRows.filter(r => stageIndex(r.leadIndicator) >= stageIndex('[04] RTB')).length;
       return { vendor, total, rtbAndAbove, pctRtb: pct(rtbAndAbove, total) };
     })
     .sort((a, b) => b.total - a.total);
@@ -192,7 +192,7 @@ export function vendorCompletion(rows: SiteRow[]): VendorCompletionRow[] {
   return VENDORS.map(vendor => {
     const vRows = rows.filter(r => r.vendor === vendor);
     const total = vRows.length;
-    const rtbAndAbove = vRows.filter(r => isActualStage(r.leadIndicator)).length;
+    const rtbAndAbove = vRows.filter(r => stageIndex(r.leadIndicator) >= stageIndex('[04] RTB')).length;
     return { vendor, total, rtbAndAbove, pctCompletion: pct(rtbAndAbove, total) };
   });
 }
@@ -241,7 +241,7 @@ export function provincePlanVsActual(rows: SiteRow[]): ProvinceBarItem[] {
     if (!provinceMap.has(p)) provinceMap.set(p, { plan: 0, actual: 0 });
     const entry = provinceMap.get(p)!;
     entry.plan++;
-    if (isActualStage(row.leadIndicator)) entry.actual++;
+    if (row.leadIndicator === '[11] TRFS') entry.actual++;
   }
 
   return Array.from(provinceMap.entries())
