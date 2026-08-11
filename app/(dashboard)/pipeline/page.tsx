@@ -23,7 +23,7 @@ export default function PipelinePage() {
       {/* Top Row: Funnel (7) | Donut (5) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-7 panel flex flex-col">
-          <div className="panel-header">Pipeline Funnel</div>
+          <div className="panel-header">Lead Indicator (LOCAL)</div>
           <div className="panel-body flex-1">
             <FunnelBarChart data={funnelCounts} height={350} />
           </div>
