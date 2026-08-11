@@ -62,7 +62,7 @@ function SitesPageContent() {
   };
 
   const filteredSiteTable = useMemo(() => {
-    let result = siteTable;
+    const result = siteTable;
     if (selectedSiteId) {
       return result.filter((s) => s.serialNumber === selectedSiteId);
     }
@@ -70,13 +70,13 @@ function SitesPageContent() {
   }, [siteTable, selectedSiteId]);
 
   const filteredWI = useMemo(() => {
-    let result = wirelessIntegration;
+    const result = wirelessIntegration;
     if (selectedSiteId) return result.filter((s) => s.serialNumber === selectedSiteId);
     return result;
   }, [wirelessIntegration, selectedSiteId]);
 
   const filteredTR = useMemo(() => {
-    let result = transport;
+    const result = transport;
     if (selectedSiteId) return result.filter((s) => s.serialNumber === selectedSiteId);
     return result;
   }, [transport, selectedSiteId]);
