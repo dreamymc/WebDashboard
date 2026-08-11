@@ -124,10 +124,18 @@ export function buildPlanByMonth(rows: SiteRow[]): BuildPlanItem[] {
 // ── Tech Tier Performance ─────────────────────────────────────────────────────
 
 export function techTierPerformance(rows: SiteRow[]): TechTierRow[] {
-  const tiers = ['Standard 4G', '8T8R', '32T32R', '64T64R'];
+  const parseTechTier = (plannedTech: string) => {
+    const su = (plannedTech || '').toUpperCase();
+    if (su.includes('64T64R')) return '5G/Massive MIMO (64T64R)';
+    if (su.includes('32T32R')) return '5G/MIMO (32T32R)';
+    if (su.includes('8T8R')) return 'Mid-Tier (8T8R)';
+    return 'Standard 4G';
+  };
+
+  const tiers = ['5G/Massive MIMO (64T64R)', '5G/MIMO (32T32R)', 'Mid-Tier (8T8R)', 'Standard 4G'];
 
   return tiers.map(tech => {
-    const tierRows = rows.filter(r => r.plannedTech.includes(tech));
+    const tierRows = rows.filter(r => parseTechTier(r.plannedTech) === tech);
     const plan = tierRows.length;
     const actual = tierRows.filter(r => r.leadIndicator === '[11] TRFS').length;
     return { tech, plan, actual, pctTrfs: pct(actual, plan) };
