@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useMemo, Suspense, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useData } from "@/components/DataProvider";
 import SiteMap from "@/components/charts/SiteMap";
 import { DataTable, ColumnDef } from "@/components/tables/DataTable";
@@ -11,6 +11,7 @@ import { STAGE_COLORS } from "@/lib/normalizers";
 
 function SitesPageContent() {
   const { transforms } = useData();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const focusedMarkerId = searchParams.get("focus");
 
@@ -18,6 +19,14 @@ function SitesPageContent() {
 
   const [selectedSiteId, setSelectedSiteId] = useState<string | null>(null);
   const [hiddenStages, setHiddenStages] = useState<Set<string>>(new Set());
+
+  const clearAllFilters = () => {
+    setSelectedSiteId(null);
+    setHiddenStages(new Set());
+    if (focusedMarkerId) {
+      router.push("/sites");
+    }
+  };
 
   // Automatically sync the selected site with the focused marker from URL
   useEffect(() => {
@@ -63,6 +72,20 @@ function SitesPageContent() {
     return result;
   }, [siteTable, selectedSiteId, hiddenStages]);
 
+  const filteredWI = useMemo(() => {
+    let result = wirelessIntegration;
+    if (hiddenStages.size > 0) result = result.filter(s => !hiddenStages.has(s.stage));
+    if (selectedSiteId) return result.filter((s) => s.serialNumber === selectedSiteId);
+    return result;
+  }, [wirelessIntegration, selectedSiteId, hiddenStages]);
+
+  const filteredTR = useMemo(() => {
+    let result = transport;
+    if (hiddenStages.size > 0) result = result.filter(s => !hiddenStages.has(s.stage));
+    if (selectedSiteId) return result.filter((s) => s.serialNumber === selectedSiteId);
+    return result;
+  }, [transport, selectedSiteId, hiddenStages]);
+
   const markers = useMemo(() => {
     return filteredSiteTable
       .filter((s) => s.lat !== null && s.long !== null)
@@ -104,6 +127,20 @@ function SitesPageContent() {
 
   return (
     <div className="space-y-6">
+      {(selectedSiteId || hiddenStages.size > 0) && (
+        <div className="flex justify-between items-center bg-brand/5 border border-brand/20 p-3 rounded-md shadow-sm">
+          <div className="text-sm font-medium text-brand">
+            Interactive filters active. Showing isolated data for {selectedSiteId ? `Site ${selectedSiteId}` : "selected stages"}.
+          </div>
+          <button
+            onClick={clearAllFilters}
+            className="text-xs font-semibold bg-surface hover:bg-surface-hover border border-border-color text-text-primary px-3 py-1.5 rounded transition-colors uppercase tracking-wider"
+          >
+            Clear All Filters & Highlighting
+          </button>
+        </div>
+      )}
+
       {/* Top Row: Map (9) | Legend (3) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-9 panel flex flex-col">
@@ -123,14 +160,6 @@ function SitesPageContent() {
         <div className="lg:col-span-3 panel flex flex-col">
           <div className="panel-header flex justify-between items-center">
             <span>Stage Legend</span>
-            {hiddenStages.size > 0 && (
-              <button 
-                onClick={() => setHiddenStages(new Set())}
-                className="text-[10px] text-text-muted hover:text-text-primary transition-colors uppercase tracking-wider font-semibold"
-              >
-                Reset Filter
-              </button>
-            )}
           </div>
           <div className="panel-body p-4 flex-1 space-y-1 overflow-auto max-h-[450px]">
             <p className="text-[10px] text-text-muted mb-3 uppercase tracking-wider font-semibold">Click to filter map</p>
@@ -155,14 +184,6 @@ function SitesPageContent() {
       <div className="panel">
         <div className="panel-header flex justify-between items-center">
           <span>Site Details</span>
-          {selectedSiteId && (
-            <button
-              onClick={() => setSelectedSiteId(null)}
-              className="text-xs font-semibold text-text-secondary hover:text-text-primary"
-            >
-              Clear Map Filter
-            </button>
-          )}
         </div>
         <div className="panel-body p-0 max-h-[400px] overflow-auto">
           <DataTable data={filteredSiteTable} columns={siteColumns} />
@@ -174,20 +195,20 @@ function SitesPageContent() {
         <div className="lg:col-span-6 panel flex flex-col">
           <div className="panel-header flex justify-between">
             <span>Ongoing Wireless Integration</span>
-            <span className="text-text-muted font-mono">{wirelessIntegration.length} rows</span>
+            <span className="text-text-muted font-mono">{filteredWI.length} rows</span>
           </div>
           <div className="panel-body p-0 flex-1 max-h-[400px] overflow-auto">
-            <DataTable data={wirelessIntegration} columns={wiColumns} />
+            <DataTable data={filteredWI} columns={wiColumns} />
           </div>
         </div>
 
         <div className="lg:col-span-6 panel flex flex-col">
           <div className="panel-header flex justify-between">
             <span>Ongoing Transport</span>
-            <span className="text-text-muted font-mono">{transport.length} rows</span>
+            <span className="text-text-muted font-mono">{filteredTR.length} rows</span>
           </div>
           <div className="panel-body p-0 flex-1 max-h-[400px] overflow-auto">
-            <DataTable data={transport} columns={trColumns} />
+            <DataTable data={filteredTR} columns={trColumns} />
           </div>
         </div>
       </div>
