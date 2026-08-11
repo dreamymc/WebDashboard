@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 import { useData } from "@/components/DataProvider";
 import { Search, MapPin, Calendar } from "lucide-react";
 import { StageCode } from "@/components/tables/StageBadge";
@@ -71,10 +72,16 @@ export function StatusSearch() {
                       <div className="text-[10px] text-text-muted truncate">
                         {r.bcfName}
                       </div>
-                      <div className="text-[10px] font-medium mt-1 flex items-center gap-2">
+                      <div className="text-[10px] font-medium mt-1 flex flex-wrap items-center gap-2">
                         <span className="text-brand">Net: {r.vendor}</span>
                         <span className="text-warning">TCO: {r.tcoBauVendor || "None"}</span>
+                        <span className="text-info border-l border-border-color pl-2">Prog: {r.program || "None"}</span>
                       </div>
+                      {r.plannedTech && (
+                        <div className="text-[10px] text-text-muted mt-0.5 truncate">
+                          Tech: {r.plannedTech}
+                        </div>
+                      )}
                     </div>
                     <div className="shrink-0 text-right">
                       <StageCode stage={r.leadIndicator} />
@@ -90,14 +97,18 @@ export function StatusSearch() {
                         <div className="truncate">Cons: <span className="text-text-primary font-medium">{r.conservativeFC || "None"}</span></div>
                       </div>
                     </div>
-                    <div className="flex items-start gap-1.5 text-xs text-text-secondary">
-                      <MapPin className="w-3.5 h-3.5 text-warning shrink-0 mt-0.5" />
+                    <Link 
+                      href={`/sites?focus=${r.serialNumber}`}
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-start gap-1.5 text-xs text-text-secondary hover:bg-surface-hover rounded p-1 -m-1 transition-colors group cursor-pointer"
+                    >
+                      <MapPin className="w-3.5 h-3.5 text-warning shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
                       <div className="min-w-0">
-                        <div className="font-medium text-[10px] uppercase text-text-muted">Location</div>
+                        <div className="font-medium text-[10px] uppercase text-text-muted group-hover:text-text-primary transition-colors">Location & Map ↗</div>
                         <div className="truncate">{r.province || "Unknown"}</div>
                         <div className="truncate">{r.cityTown || "Unknown"}</div>
                       </div>
-                    </div>
+                    </Link>
                   </div>
                 </div>
               ))

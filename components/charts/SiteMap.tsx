@@ -33,6 +33,7 @@ const CircleMarker = dynamic(
 const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
   ssr: false,
 });
+const MapFocus = dynamic(() => import("./MapFocus"), { ssr: false });
 
 interface SiteMarker {
   id: string; // SERIAL NUMBER
@@ -46,9 +47,10 @@ interface SiteMarker {
 interface SiteMapProps {
   markers: SiteMarker[];
   height?: number | string;
+  focusedMarkerId?: string | null;
 }
 
-export default function SiteMap({ markers, height = 400 }: SiteMapProps) {
+export default function SiteMap({ markers, height = 400, focusedMarkerId }: SiteMapProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -67,13 +69,15 @@ export default function SiteMap({ markers, height = 400 }: SiteMapProps) {
   }
 
   // Philippines bounding box center approximately
-  const center: [number, number] = [12.8797, 121.774];
+  const defaultCenter: [number, number] = [12.8797, 121.774];
+  const focusedMarker = focusedMarkerId ? markers.find(m => m.id === focusedMarkerId) : null;
+  const initialCenter = focusedMarker ? ([focusedMarker.lat, focusedMarker.long] as [number, number]) : defaultCenter;
 
   return (
     <div style={{ height, width: "100%", zIndex: 0 }} className="relative z-0">
       <MapContainer
-        center={center}
-        zoom={5}
+        center={initialCenter}
+        zoom={focusedMarker ? 14 : 5}
         scrollWheelZoom={false}
         style={{ height: "100%", width: "100%" }}
       >
@@ -81,6 +85,7 @@ export default function SiteMap({ markers, height = 400 }: SiteMapProps) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+        {focusedMarker && <MapFocus lat={focusedMarker.lat} lng={focusedMarker.long} />}
         {markers.map((marker) => (
           <CircleMarker
             key={marker.id}
