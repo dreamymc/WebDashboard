@@ -21,13 +21,27 @@ function SitesPageContent() {
 
   const toggleStage = (stage: string) => {
     setHiddenStages(prev => {
-      const next = new Set(prev);
-      if (next.has(stage)) {
+      if (prev.size === 0) {
+        // If all are visible, clicking one isolates it (hides everything else)
+        const allStages = Object.keys(STAGE_COLORS);
+        const next = new Set(allStages);
         next.delete(stage);
+        return next;
       } else {
-        next.add(stage);
+        // Otherwise act as a normal toggle
+        const next = new Set(prev);
+        if (next.has(stage)) {
+          next.delete(stage); // Turn ON (unhide)
+        } else {
+          next.add(stage); // Turn OFF (hide)
+        }
+        
+        // If they just turned ON the very last hidden item, reset the filter completely
+        if (next.size === 0) {
+          return new Set();
+        }
+        return next;
       }
-      return next;
     });
   };
 
