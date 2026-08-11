@@ -64,7 +64,13 @@ export function StatusSearch() {
                 <div key={i} className="p-3 border-b border-border-color last:border-0 hover:bg-surface-hover transition-colors">
                   <div className="flex justify-between items-start mb-2">
                     <div className="min-w-0 pr-4">
-                      <div className="font-mono text-sm font-bold text-text-primary truncate">{r.serialNumber}</div>
+                      <Link 
+                        href={`/sites?focus=${r.serialNumber}`}
+                        onClick={() => setIsOpen(false)}
+                        className="font-mono text-sm font-bold text-text-primary truncate hover:text-brand hover:underline transition-all cursor-pointer inline-block"
+                      >
+                        {r.serialNumber}
+                      </Link>
                       <div className="text-[10px] text-text-muted mt-0.5 truncate">
                         {r.plaId && <span className="mr-2">PLA: {r.plaId}</span>}
                         {r.srName && <span>SR: {r.srName}</span>}

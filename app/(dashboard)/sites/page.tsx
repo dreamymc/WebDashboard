@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState, useMemo, Suspense } from "react";
+import { useState, useMemo, Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useData } from "@/components/DataProvider";
 import SiteMap from "@/components/charts/SiteMap";
@@ -18,6 +18,13 @@ function SitesPageContent() {
 
   const [selectedSiteId, setSelectedSiteId] = useState<string | null>(null);
   const [hiddenStages, setHiddenStages] = useState<Set<string>>(new Set());
+
+  // Automatically sync the selected site with the focused marker from URL
+  useEffect(() => {
+    if (focusedMarkerId) {
+      setSelectedSiteId(focusedMarkerId);
+    }
+  }, [focusedMarkerId]);
 
   const toggleStage = (stage: string) => {
     setHiddenStages(prev => {
