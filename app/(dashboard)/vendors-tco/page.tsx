@@ -32,13 +32,14 @@ export default function VendorsTcoPage() {
   ];
 
   const rfiDetailedColumns: ColumnDef<any>[] = [
-    { key: "id", header: "Serial Number", cell: (r) => <span className="font-mono text-[11px]">{r.serialNumber}</span> },
-    { key: "net", header: "Network", cell: (r) => r.vendor },
-    { key: "tco", header: "TCO", cell: (r) => r.tcoVendor },
-    { key: "prov", header: "Province", cell: (r) => r.province },
-    { key: "town", header: "Town", cell: (r) => r.cityTown },
-    { key: "prog", header: "Program", cell: (r) => r.program },
-    { key: "stage", header: "Stage", cell: (r) => <StageCode stage={r.stage} /> },
+    { key: "vendor", header: "Vendor", cell: (r) => <span className="font-semibold">{r.vendor}</span> },
+    { key: "prog", header: "Program", cell: (r) => r.cleanProgram },
+    { key: "pipeline", header: "Pipeline", cell: (r) => r.pipeline, align: "right" },
+    { key: "rfti", header: "RFTI", cell: (r) => r.rfti, align: "right" },
+    { key: "pctRfti", header: "% RFTI", cell: (r) => `${r.pctRfti}%`, align: "right" },
+    { key: "trfs", header: "TRFS Actual Count", cell: (r) => r.trfsActual, align: "right" },
+    { key: "pctTrfs", header: "% TRFS", cell: (r) => `${r.pctTrfs}%`, align: "right" },
+    { key: "pending", header: "TRS Pending", cell: (r) => r.trsPending, align: "right" },
   ];
 
   return (

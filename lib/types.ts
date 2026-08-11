@@ -86,15 +86,14 @@ export type VendorCompletionRow = {
 };
 
 export type RfiDetailedRow = {
-  serialNumber: string;
   vendor: string;
-  tcoVendor: string;
-  province: string;
-  cityTown: string;
-  program: string;
-  stage: string;
-  conservativeFC: string;
-  bndTrfsForecast: string;
+  cleanProgram: string;
+  pipeline: number;
+  rfti: number;
+  pctRfti: number;
+  trfsActual: number;
+  pctTrfs: number;
+  trsPending: number;
 };
 
 export type ForecastVarianceRow = {

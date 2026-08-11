@@ -208,21 +208,39 @@ export function vendorCompletion(rows: SiteRow[]): VendorCompletionRow[] {
 // ── RFI Rally Detailed ────────────────────────────────────────────────────────
 
 export function rfiRallyDetailed(rows: SiteRow[]): RfiDetailedRow[] {
-  // All rows at stage [06] and above
-  return rows
-    .filter(r => isActualStage(r.leadIndicator))
-    .map(r => ({
-      serialNumber:   r.serialNumber,
-      vendor:         r.vendor,
-      tcoVendor:      r.tcoBauVendor,
-      province:       r.province,
-      cityTown:       r.cityTown,
-      program:        r.program,
-      stage:          r.leadIndicator,
-      conservativeFC: r.conservativeFC,
-      bndTrfsForecast: r.bndTrfsForecast,
-    }))
-    .sort((a, b) => stageIndex(b.stage) - stageIndex(a.stage));
+  const rftiStages = new Set(['[08] RFI', '[09] RFI with TRS', '[10] ON-AIR', '[11] TRFS']);
+  const groups = new Map<string, { vendor: string; cleanProgram: string; rows: SiteRow[] }>();
+
+  for (const row of rows) {
+    const cleanProgram = row.program.toUpperCase();
+    const key = `${row.vendor}|${cleanProgram}`;
+    if (!groups.has(key)) {
+      groups.set(key, { vendor: row.vendor, cleanProgram, rows: [] });
+    }
+    groups.get(key)!.rows.push(row);
+  }
+
+  return Array.from(groups.values())
+    .map(g => {
+      const pipeline = g.rows.length;
+      const rfti = g.rows.filter(r => rftiStages.has(r.leadIndicator)).length;
+      const trfsActual = g.rows.filter(r => r.leadIndicator === '[11] TRFS').length;
+      return {
+        vendor: g.vendor,
+        cleanProgram: g.cleanProgram,
+        pipeline,
+        rfti,
+        pctRfti: pct(rfti, pipeline),
+        trfsActual,
+        pctTrfs: pct(trfsActual, pipeline),
+        trsPending: pipeline - rfti,
+      };
+    })
+    .sort((a, b) => {
+      if (a.vendor < b.vendor) return -1;
+      if (a.vendor > b.vendor) return 1;
+      return b.pipeline - a.pipeline;
+    });
 }
 
 // ── Forecast Variance ─────────────────────────────────────────────────────────
