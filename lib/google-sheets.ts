@@ -1,34 +1,12 @@
 /**
  * Google Sheets data fetcher — server-only.
  * Uses googleapis with JWT auth from the service account JSON in env.
- * Returns raw rows as string arrays, starting from row 3 (headers on row 2).
+ * Returns raw rows as string arrays, mapping columns dynamically by header names.
  */
 
 import { google } from 'googleapis';
 import type { SiteRow } from './types';
 import { normalizeProgram, normalizeMonth, parseCoord, normalizeVendor } from './normalizers';
-
-// Column indices (0-based) matching the sheet layout:
-// SERIAL NUMBER, Lead Indicator (LOCAL), VENDOR, SR Name, TCO/BAU VENDOR,
-// PLA ID, Province, CITY/ TOWN, BCF NAME, PROGRAM, PLANNED TECH,
-// LAT, LONG, CONSERVATIVE FC, B&D TRFS Forecast
-const COL = {
-  SERIAL_NUMBER:     0,
-  LEAD_INDICATOR:    1,
-  VENDOR:            2,
-  SR_NAME:           3,
-  TCO_BAU_VENDOR:    4,
-  PLA_ID:            5,
-  PROVINCE:          6,
-  CITY_TOWN:         7,
-  BCF_NAME:          8,
-  PROGRAM:           9,
-  PLANNED_TECH:      10,
-  LAT:               11,
-  LONG:              12,
-  CONSERVATIVE_FC:   13,
-  BND_TRFS_FORECAST: 14,
-} as const;
 
 function getSheetService() {
   const credentialsJson = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
@@ -43,7 +21,12 @@ function getSheetService() {
 }
 
 function cell(row: string[], idx: number): string {
+  if (idx < 0 || idx >= row.length) return '';
   return (row[idx] ?? '').toString().trim();
+}
+
+function normalizeHeader(h: string): string {
+  return h.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
 }
 
 export async function fetchSheetRows(): Promise<SiteRow[]> {
@@ -52,17 +35,54 @@ export async function fetchSheetRows(): Promise<SiteRow[]> {
 
   const sheets = getSheetService();
 
-  // Headers on row 2, data from row 3.
-  // Fetch from row 3 downward. Column range A–O covers all 15 columns.
+  // Fetch from row 2 downward. Row 2 is headers, Row 3+ is data.
+  // Using A2:ZZ ensures we capture all columns even if they are added or moved.
   const response = await sheets.spreadsheets.values.get({
     spreadsheetId: sheetId,
-    range: 'A3:O',   // row 3 onwards, columns A–O
+    range: 'A2:ZZ',
   });
 
-  const rawRows = response.data.values ?? [];
+  const rawData = response.data.values ?? [];
+  if (rawData.length < 2) return []; // Need at least headers and one data row
+
+  const headers = rawData[0].map(h => normalizeHeader(h));
+  const dataRows = rawData.slice(1);
+
+  // Helper to meticulously find columns by name, with fallbacks for slight renaming
+  const findCol = (possibleNames: string[], exactOnly: boolean = false) => {
+    for (const name of possibleNames) {
+      const idx = headers.indexOf(name);
+      if (idx !== -1) return idx;
+    }
+    if (exactOnly) return -1;
+    // Fallback: search for partial match
+    for (const name of possibleNames) {
+      const idx = headers.findIndex(h => h.includes(name));
+      if (idx !== -1) return idx;
+    }
+    return -1;
+  };
+
+  const COL = {
+    SERIAL_NUMBER:     findCol(['serial number']),
+    LEAD_INDICATOR:    findCol(['lead indicator (local)', 'lead indicator']),
+    VENDOR:            headers.indexOf('vendor'), // Exact match to avoid 'tco/bau vendor'
+    SR_NAME:           findCol(['sr name']),
+    TCO_BAU_VENDOR:    findCol(['tco/bau vendor', 'tco vendor']),
+    PLA_ID:            findCol(['pla id']),
+    PROVINCE:          findCol(['province']),
+    CITY_TOWN:         findCol(['city/ town', 'city/town', 'town']),
+    BCF_NAME:          findCol(['bcf name']),
+    PROGRAM:           findCol(['program']),
+    PLANNED_TECH:      findCol(['planned tech']),
+    LAT:               findCol(['lat - rtb (rre tracker)', 'lat - rtb', 'lat']),
+    LONG:              findCol(['long - rtb (rre tracker)', 'long - rtb', 'long']),
+    CONSERVATIVE_FC:   findCol(['conservative fc', 'conservative forecast']),
+    BND_TRFS_FORECAST: findCol(['b&d trfs forecast', 'b&d']),
+  };
 
   const rows: SiteRow[] = [];
-  for (const raw of rawRows) {
+  for (const raw of dataRows) {
     const serialNumber = cell(raw, COL.SERIAL_NUMBER);
     // §6.1: filter rows where SERIAL NUMBER is null/blank
     if (!serialNumber) continue;
@@ -77,10 +97,10 @@ export async function fetchSheetRows(): Promise<SiteRow[]> {
       province:         cell(raw, COL.PROVINCE),
       cityTown:         cell(raw, COL.CITY_TOWN),
       bcfName:          cell(raw, COL.BCF_NAME),
-      program:          normalizeProgram(cell(raw, COL.PROGRAM)),         // §6.5
+      program:          normalizeProgram(cell(raw, COL.PROGRAM)),
       plannedTech:      cell(raw, COL.PLANNED_TECH),
-      lat:              parseCoord(cell(raw, COL.LAT)),                   // §6.5
-      long:             parseCoord(cell(raw, COL.LONG)),                  // §6.5
+      lat:              parseCoord(cell(raw, COL.LAT)),
+      long:             parseCoord(cell(raw, COL.LONG)),
       conservativeFC:   normalizeMonth(cell(raw, COL.CONSERVATIVE_FC)),
       bndTrfsForecast:  normalizeMonth(cell(raw, COL.BND_TRFS_FORECAST)),
     });
