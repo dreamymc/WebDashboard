@@ -63,31 +63,27 @@ function SitesPageContent() {
 
   const filteredSiteTable = useMemo(() => {
     let result = siteTable;
-    if (hiddenStages.size > 0) {
-      result = result.filter(s => !hiddenStages.has(s.stage));
-    }
     if (selectedSiteId) {
       return result.filter((s) => s.serialNumber === selectedSiteId);
     }
     return result;
-  }, [siteTable, selectedSiteId, hiddenStages]);
+  }, [siteTable, selectedSiteId]);
 
   const filteredWI = useMemo(() => {
     let result = wirelessIntegration;
-    if (hiddenStages.size > 0) result = result.filter(s => !hiddenStages.has(s.stage));
     if (selectedSiteId) return result.filter((s) => s.serialNumber === selectedSiteId);
     return result;
-  }, [wirelessIntegration, selectedSiteId, hiddenStages]);
+  }, [wirelessIntegration, selectedSiteId]);
 
   const filteredTR = useMemo(() => {
     let result = transport;
-    if (hiddenStages.size > 0) result = result.filter(s => !hiddenStages.has(s.stage));
     if (selectedSiteId) return result.filter((s) => s.serialNumber === selectedSiteId);
     return result;
-  }, [transport, selectedSiteId, hiddenStages]);
+  }, [transport, selectedSiteId]);
 
   const markers = useMemo(() => {
     return filteredSiteTable
+      .filter((s) => hiddenStages.size === 0 || !hiddenStages.has(s.stage))
       .filter((s) => s.lat !== null && s.long !== null)
       .map((s) => ({
         id: s.serialNumber,
@@ -97,7 +93,7 @@ function SitesPageContent() {
         color: STAGE_COLORS[s.stage] ?? "var(--text-muted)",
         name: s.cityTown,
       }));
-  }, [filteredSiteTable]);
+  }, [filteredSiteTable, hiddenStages]);
 
   const siteColumns: ColumnDef<any>[] = [
     { key: "id", header: "Serial Number", cell: (r) => <span className="font-mono text-[11px]">{r.serialNumber}</span> },
@@ -130,7 +126,9 @@ function SitesPageContent() {
       {(selectedSiteId || hiddenStages.size > 0) && (
         <div className="flex justify-between items-center bg-brand/5 border border-brand/20 p-3 rounded-md shadow-sm">
           <div className="text-sm font-medium text-brand">
-            Interactive filters active. Showing isolated data for {selectedSiteId ? `Site ${selectedSiteId}` : "selected stages"}.
+            {selectedSiteId 
+              ? `Site isolated: Showing data & map for Site ${selectedSiteId}.` 
+              : "Map filter active: Showing selected stages on the map."}
           </div>
           <button
             onClick={clearAllFilters}
