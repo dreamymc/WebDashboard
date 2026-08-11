@@ -6,7 +6,7 @@ import { Search, MapPin, Calendar } from "lucide-react";
 import { StageCode } from "@/components/tables/StageBadge";
 
 export function StatusSearch() {
-  const { rows } = useData();
+  const { rawRows } = useData();
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -22,7 +22,7 @@ export function StatusSearch() {
   }, []);
 
   const results = query.length >= 2 
-    ? rows.filter(r => {
+    ? rawRows.filter(r => {
         const q = query.toLowerCase();
         return (
           (r.serialNumber || "").toLowerCase().includes(q) ||

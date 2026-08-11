@@ -4,7 +4,6 @@
 import { useData } from "@/components/DataProvider";
 import { StageBarChart } from "@/components/charts/StageBarChart";
 import { DataTable, ColumnDef } from "@/components/tables/DataTable";
-import { StageCode } from "@/components/tables/StageBadge";
 
 export default function VendorsTcoPage() {
   const { transforms } = useData();
