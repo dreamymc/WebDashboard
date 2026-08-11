@@ -71,6 +71,10 @@ export function StatusSearch() {
                       <div className="text-[10px] text-text-muted truncate">
                         {r.bcfName}
                       </div>
+                      <div className="text-[10px] font-medium mt-1 flex items-center gap-2">
+                        <span className="text-brand">Net: {r.vendor}</span>
+                        <span className="text-warning">TCO: {r.tcoBauVendor || "None"}</span>
+                      </div>
                     </div>
                     <div className="shrink-0 text-right">
                       <StageCode stage={r.leadIndicator} />
