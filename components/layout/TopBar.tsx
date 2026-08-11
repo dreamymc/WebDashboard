@@ -6,6 +6,7 @@ import { Menu, LogOut, RefreshCcw } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Sidebar } from "./Sidebar";
 import { ShareLinkModal } from "./ShareLinkModal";
+import { StatusSearch } from "../StatusSearch";
 
 interface TopBarProps {
   isAdmin: boolean;
@@ -74,6 +75,8 @@ export function TopBar({ isAdmin, fetchedAt }: TopBarProps) {
       </div>
 
       <div className="flex items-center gap-4 text-xs font-medium text-text-secondary">
+        <StatusSearch />
+
         <div className="hidden sm:flex items-center gap-2 tabnum">
           <span>🕐 {time}</span>
         </div>

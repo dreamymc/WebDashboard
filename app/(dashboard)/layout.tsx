@@ -28,14 +28,14 @@ export default async function DashboardLayout({
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <TopBar isAdmin={isAdmin} fetchedAt={fetchedAt} />
-        <FilterBar />
-        
-        <main className="flex-1 overflow-auto p-4 lg:p-6">
-          <DataProvider initialRows={rows}>
+        <DataProvider initialRows={rows}>
+          <TopBar isAdmin={isAdmin} fetchedAt={fetchedAt} />
+          <FilterBar />
+          
+          <main className="flex-1 overflow-auto p-4 lg:p-6">
             {children}
-          </DataProvider>
-        </main>
+          </main>
+        </DataProvider>
       </div>
     </div>
   );
