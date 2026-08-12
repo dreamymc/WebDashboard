@@ -10,6 +10,8 @@
 import {
   STAGE_ORDER,
   isActualStage,
+  Q1_MONTHS,
+  Q2_MONTHS,
   Q3_MONTHS,
   Q4_MONTHS,
   ALL_MONTHS,
@@ -48,13 +50,27 @@ function pct(actual: number, total: number): number {
 // ── KPI Summary ───────────────────────────────────────────────────────────────
 
 export function kpiSummary(rows: SiteRow[]): KpiSummary {
+  const total = rows.length;
+  const rtbCount = rows.filter(r => stageIndex(r.leadIndicator) >= stageIndex('[04] RTB')).length;
+  const rftiCount = rows.filter(r => stageIndex(r.leadIndicator) >= stageIndex('[06] S-RFI')).length;
+  const trfsCount = rows.filter(r => r.leadIndicator === '[11] TRFS').length;
+
   return {
-    totalPlan:   rows.length,
+    totalPlan:   total,
+    q1Plan:      rows.filter(r => Q1_MONTHS.has(r.bndTrfsForecast)).length,
+    q2Plan:      rows.filter(r => Q2_MONTHS.has(r.bndTrfsForecast)).length,
     q3Plan:      rows.filter(r => Q3_MONTHS.has(r.bndTrfsForecast)).length,
     q4Plan:      rows.filter(r => Q4_MONTHS.has(r.bndTrfsForecast)).length,
+    q1Actual:    rows.filter(r => Q1_MONTHS.has(r.bndTrfsForecast) && isActualStage(r.leadIndicator)).length,
+    q2Actual:    rows.filter(r => Q2_MONTHS.has(r.bndTrfsForecast) && isActualStage(r.leadIndicator)).length,
     q3Actual:    rows.filter(r => Q3_MONTHS.has(r.bndTrfsForecast) && isActualStage(r.leadIndicator)).length,
     q4Actual:    rows.filter(r => Q4_MONTHS.has(r.bndTrfsForecast) && isActualStage(r.leadIndicator)).length,
-    trfsCount:   rows.filter(r => r.leadIndicator === '[11] TRFS').length,
+    rtbCount,
+    pctRtb:      pct(rtbCount, total),
+    rftiCount,
+    pctRfti:     pct(rftiCount, total),
+    pctTrfs:     pct(trfsCount, total),
+    trfsCount,
     onAirCount:  rows.filter(r => r.leadIndicator === '[10] ON-AIR').length,
     rfiCount:    rows.filter(r => r.leadIndicator === '[08] RFI').length,
   };
@@ -65,8 +81,10 @@ export function kpiSummary(rows: SiteRow[]): KpiSummary {
 export function quarterlyPlanVsActual(rows: SiteRow[]): QuarterlyPlanVsActual[] {
   const result: QuarterlyPlanVsActual[] = [];
 
-  for (const quarter of ['Q3 (Jul-Sep)', 'Q4 (Oct-Dec)'] as const) {
-    const months = quarter === 'Q3 (Jul-Sep)' ? Q3_MONTHS : Q4_MONTHS;
+  for (const quarter of ['Q1 (Jan-Mar)', 'Q2 (Apr-Jun)', 'Q3 (Jul-Sep)', 'Q4 (Oct-Dec)'] as const) {
+    const months = quarter === 'Q1 (Jan-Mar)' ? Q1_MONTHS :
+                   quarter === 'Q2 (Apr-Jun)' ? Q2_MONTHS :
+                   quarter === 'Q3 (Jul-Sep)' ? Q3_MONTHS : Q4_MONTHS;
 
     const allPlan = rows.filter(r => months.has(r.bndTrfsForecast)).length;
     const allActual = rows.filter(r => months.has(r.bndTrfsForecast) && isActualStage(r.leadIndicator)).length;

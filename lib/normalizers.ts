@@ -69,6 +69,10 @@ export function normalizeVendor(val: string): string {
   return val.trim();
 }
 
+/** Q1 months */
+export const Q1_MONTHS = new Set(['JAN', 'FEB', 'MAR']);
+/** Q2 months */
+export const Q2_MONTHS = new Set(['APR', 'MAY', 'JUN']);
 /** Q3 months */
 export const Q3_MONTHS = new Set(['JUL', 'AUG', 'SEP']);
 /** Q4 months */

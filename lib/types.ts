@@ -20,10 +20,19 @@ export type SiteRow = {
 // ── Aggregated data returned by the API route ────────────────────────────────
 export type KpiSummary = {
   totalPlan: number;
+  q1Plan: number;
+  q2Plan: number;
   q3Plan: number;
   q4Plan: number;
+  q1Actual: number;
+  q2Actual: number;
   q3Actual: number;
   q4Actual: number;
+  rtbCount: number;
+  pctRtb: number;
+  rftiCount: number;
+  pctRfti: number;
+  pctTrfs: number;
   trfsCount: number;
   onAirCount: number;
   rfiCount: number;
