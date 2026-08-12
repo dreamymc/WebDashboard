@@ -409,7 +409,7 @@
   font-family: "Inter", sans-serif !important;
 }
 
-.leaflet-tile-pane { filter: brightness(0.7) saturate(0.8); }
+.leaflet-tile-pane { filter: none; }
 
 .leaflet-popup-content-wrapper {
   background: var(--surface) !important;

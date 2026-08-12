@@ -83,7 +83,7 @@ export default function SiteMap({ markers, height = 400, focusedMarkerId }: Site
       >
         <TileLayer
           attribution='&copy; Google Maps'
-          url="https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
+          url="https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}"
         />
         {focusedMarker && <MapFocus lat={focusedMarker.lat} lng={focusedMarker.long} />}
         {markers.map((marker) => (
