@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { fetchSheetRows } from '@/lib/google-sheets';
+import { fetchSheetRows, fetchSheet2BuildPlan } from '@/lib/google-sheets';
 import {
   kpiSummary,
   quarterlyPlanVsActual,
@@ -26,7 +26,10 @@ export const revalidate = 60;
 
 export async function GET() {
   try {
-    const rows = await fetchSheetRows();
+    const [rows, newBuildPlan] = await Promise.all([
+      fetchSheetRows(),
+      fetchSheet2BuildPlan()
+    ]);
     const wi = wirelessIntegration(rows);
     const tr = transport(rows);
 
@@ -36,6 +39,7 @@ export async function GET() {
       funnelCounts:         funnelCounts(rows),
       programVelocity:      programVelocity(rows),
       buildPlanByMonth:     buildPlanByMonth(rows),
+      newBuildPlan:         newBuildPlan,
       techTierPerformance:  techTierPerformance(rows),
       rfiRallyByVendor:     rfiRallyByVendor(rows),
       tcoPerformance:       tcoPerformance(rows),

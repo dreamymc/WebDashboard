@@ -52,6 +52,13 @@ export type BuildPlanItem = {
   count: number;
 };
 
+export type NewBuildPlanItem = {
+  month: string;
+  plan: number | null;
+  actual: number | null;
+  buildOutlook: number | null;
+};
+
 export type TechTierRow = {
   tech: string;
   plan: number;
@@ -153,6 +160,7 @@ export type DashboardData = {
   funnelCounts: FunnelCount[];
   programVelocity: ProgramVelocityItem[];
   buildPlanByMonth: BuildPlanItem[];
+  newBuildPlan: NewBuildPlanItem[];
   techTierPerformance: TechTierRow[];
   rfiRallyByVendor: RfiRallyByVendorItem[];
   tcoPerformance: TcoPerformanceItem[];

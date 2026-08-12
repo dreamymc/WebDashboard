@@ -108,3 +108,75 @@ export async function fetchSheetRows(): Promise<SiteRow[]> {
 
   return rows;
 }
+
+export async function fetchSheet2BuildPlan(): Promise<import('./types').NewBuildPlanItem[]> {
+  const sheetId = process.env.GOOGLE_SHEET_ID;
+  if (!sheetId) return [];
+
+  const sheets = getSheetService();
+
+  try {
+    const metadata = await sheets.spreadsheets.get({ spreadsheetId: sheetId });
+    const sheetNames = metadata.data.sheets?.map(s => s.properties?.title) || [];
+    const targetSheet = sheetNames.find(s => s?.toLowerCase().includes('sheet2'));
+    if (!targetSheet) return [];
+
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: sheetId,
+      range: `${targetSheet}!A1:Z`,
+    });
+
+    const rawData = response.data.values ?? [];
+    if (rawData.length < 2) return [];
+
+    let headerRowIdx = -1;
+    for (let i = 0; i < Math.min(rawData.length, 10); i++) {
+      if (rawData[i].some(c => c?.toString().toLowerCase().includes('month'))) {
+        headerRowIdx = i;
+        break;
+      }
+    }
+    if (headerRowIdx === -1) return [];
+
+    const headers = rawData[headerRowIdx].map(h => normalizeHeader(h?.toString() || ''));
+    const monthCol = headers.indexOf('month');
+    const planCol = headers.indexOf('plan');
+    const actualCol = headers.indexOf('actual');
+    
+    // Find the build outlook column
+    let buildOutlookCol = headers.findIndex(h => h.includes('outlook'));
+    if (buildOutlookCol === -1) {
+       buildOutlookCol = headers.findIndex(h => h.includes('build'));
+    }
+
+    if (monthCol === -1) return [];
+
+    const result: import('./types').NewBuildPlanItem[] = [];
+    for (let i = headerRowIdx + 1; i < rawData.length; i++) {
+      const row = rawData[i];
+      const monthRaw = cell(row, monthCol);
+      if (!monthRaw) continue; // stop when empty
+      
+      const p = cell(row, planCol);
+      const a = cell(row, actualCol);
+      const o = buildOutlookCol !== -1 ? cell(row, buildOutlookCol) : '';
+
+      // we only break if month is blank.
+      const parsedMonth = monthRaw.substring(0, 3).toUpperCase();
+      const validMonths = new Set(['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']);
+      if (!validMonths.has(parsedMonth)) continue;
+
+      result.push({
+        month: parsedMonth,
+        plan: p ? parseFloat(p) : null,
+        actual: a ? parseFloat(a) : null,
+        buildOutlook: o ? parseFloat(o) : null,
+      });
+    }
+
+    return result;
+  } catch (err) {
+    console.error("Error fetching Sheet2:", err);
+    return [];
+  }
+}

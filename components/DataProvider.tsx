@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useMemo, ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
-import type { SiteRow } from "@/lib/types";
+import type { SiteRow, NewBuildPlanItem } from "@/lib/types";
 import {
   kpiSummary,
   quarterlyPlanVsActual,
@@ -26,6 +26,7 @@ import {
 interface DataContextValue {
   rawRows: SiteRow[];
   filteredRows: SiteRow[];
+  newBuildPlan: NewBuildPlanItem[];
   transforms: ReturnType<typeof computeTransforms>;
 }
 
@@ -60,9 +61,11 @@ function computeTransforms(rows: SiteRow[]) {
 
 export function DataProvider({
   initialRows,
+  initialNewBuildPlan,
   children,
 }: {
   initialRows: SiteRow[];
+  initialNewBuildPlan: NewBuildPlanItem[];
   children: ReactNode;
 }) {
   const searchParams = useSearchParams();
@@ -82,8 +85,8 @@ export function DataProvider({
   const transforms = useMemo(() => computeTransforms(filteredRows), [filteredRows]);
 
   const value = useMemo(
-    () => ({ rawRows: initialRows, filteredRows, transforms }),
-    [initialRows, filteredRows, transforms]
+    () => ({ rawRows: initialRows, filteredRows, newBuildPlan: initialNewBuildPlan, transforms }),
+    [initialRows, filteredRows, initialNewBuildPlan, transforms]
   );
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
