@@ -61,7 +61,7 @@ export default function ComboChart({ data, xKey, bars, lines, height = 300 }: Co
               name={bar.name}
               fill={bar.color || "var(--brand)"}
               radius={[2, 2, 0, 0]}
-              maxBarSize={40}
+              maxBarSize={28}
             />
           ))}
           {lines.map((line) => (

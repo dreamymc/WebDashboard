@@ -70,7 +70,7 @@ export function StageBarChart({ data, xKey, bars, height = 300 }: StageBarChartP
                 stackId={bar.stackId}
                 fill={color}
                 radius={bar.stackId ? 0 : [2, 2, 0, 0]}
-                maxBarSize={40}
+                maxBarSize={28}
               />
             );
           })}

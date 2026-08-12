@@ -35,7 +35,7 @@ export function StatusSearch() {
     : [];
 
   return (
-    <div ref={containerRef} className="relative hidden md:flex items-center ml-2">
+    <div ref={containerRef} className="relative flex items-center ml-2">
       <div className="relative">
         <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
         <input
@@ -47,12 +47,12 @@ export function StatusSearch() {
             setIsOpen(true);
           }}
           onFocus={() => setIsOpen(true)}
-          className="bg-surface-hover border border-border-color text-text-primary text-xs rounded-full pl-8 pr-4 py-1.5 focus:outline-none focus:ring-1 focus:ring-brand w-[280px] transition-all"
+          className="bg-surface-hover border border-border-color text-text-primary text-xs rounded-full pl-8 pr-4 py-1.5 focus:outline-none focus:ring-1 focus:ring-brand w-[160px] sm:w-[200px] md:w-[280px] transition-all"
         />
       </div>
 
       {isOpen && query.length >= 2 && (
-        <div className="absolute top-full mt-2 right-0 w-[420px] bg-surface border border-border-color shadow-lg rounded-md overflow-hidden z-50">
+        <div className="absolute top-full mt-2 right-0 w-[300px] md:w-[420px] bg-surface border border-border-color shadow-lg rounded-md overflow-hidden z-50">
           <div className="p-2 border-b border-border-color bg-surface-hover text-xs font-semibold text-text-secondary">
             Search Results ({results.length}{results.length === 10 ? "+" : ""})
           </div>
