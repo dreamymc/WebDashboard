@@ -8,6 +8,21 @@ export default function OverviewPage() {
   const { transforms, newBuildPlan } = useData();
   const { kpi } = transforms;
 
+  // Calculate quarterly deltas from cumulative Sheet2 data
+  const getVal = (m: string, key: 'plan' | 'actual') => {
+    const item = newBuildPlan.find(x => x.month === m);
+    return item ? (item[key] || 0) : 0;
+  };
+
+  const q1Plan = getVal('MAR', 'plan');
+  const q1Actual = getVal('MAR', 'actual');
+  const q2Plan = getVal('JUN', 'plan') - getVal('MAR', 'plan');
+  const q2Actual = getVal('JUN', 'actual') - getVal('MAR', 'actual');
+  const q3Plan = getVal('SEP', 'plan') - getVal('JUN', 'plan');
+  const q3Actual = getVal('SEP', 'actual') - getVal('JUN', 'actual');
+  const q4Plan = getVal('DEC', 'plan') - getVal('SEP', 'plan');
+  const q4Actual = getVal('DEC', 'actual') - getVal('SEP', 'actual');
+
   return (
     <div className="space-y-6">
       {/* Top Section: KPIs, YTD, and Quarterly Plan */}
@@ -93,10 +108,10 @@ export default function OverviewPage() {
                 </div>
                 <div className="flex-1 grid grid-cols-4 gap-2 md:gap-3 text-center">
                    {[
-                     { q: 'Q1', plan: kpi.q1Plan, actual: kpi.q1Actual },
-                     { q: 'Q2', plan: kpi.q2Plan, actual: kpi.q2Actual },
-                     { q: 'Q3', plan: kpi.q3Plan, actual: kpi.q3Actual },
-                     { q: 'Q4', plan: kpi.q4Plan, actual: kpi.q4Actual }
+                     { q: 'Q1', plan: q1Plan, actual: q1Actual },
+                     { q: 'Q2', plan: q2Plan, actual: q2Actual },
+                     { q: 'Q3', plan: q3Plan, actual: q3Actual },
+                     { q: 'Q4', plan: q4Plan, actual: q4Actual }
                    ].map(quarter => (
                      <div key={quarter.q} className="flex flex-col gap-1.5">
                         <div className="text-[11px] font-bold text-text-primary mb-1">{quarter.q}</div>
