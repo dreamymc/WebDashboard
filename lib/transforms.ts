@@ -65,8 +65,8 @@ export function kpiSummary(rows: SiteRow[]): KpiSummary {
 export function quarterlyPlanVsActual(rows: SiteRow[]): QuarterlyPlanVsActual[] {
   const result: QuarterlyPlanVsActual[] = [];
 
-  for (const quarter of ['Q3', 'Q4'] as const) {
-    const months = quarter === 'Q3' ? Q3_MONTHS : Q4_MONTHS;
+  for (const quarter of ['Q3 (Jul-Sep)', 'Q4 (Oct-Dec)'] as const) {
+    const months = quarter === 'Q3 (Jul-Sep)' ? Q3_MONTHS : Q4_MONTHS;
 
     const allPlan = rows.filter(r => months.has(r.bndTrfsForecast)).length;
     const allActual = rows.filter(r => months.has(r.bndTrfsForecast) && isActualStage(r.leadIndicator)).length;

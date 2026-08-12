@@ -9,7 +9,7 @@ import { DataTable, ColumnDef } from "@/components/tables/DataTable";
 
 export default function PipelinePage() {
   const { transforms } = useData();
-  const { funnelCounts, programVelocity, buildPlanByMonth, techTierPerformance } = transforms;
+  const { funnelCounts, programVelocity, quarterlyPlanVsActual, techTierPerformance } = transforms;
 
   const techColumns: ColumnDef<any>[] = [
     { key: "tech", header: "Planned Tech", cell: (r) => <span className="font-semibold">{r.tech}</span> },
@@ -43,12 +43,15 @@ export default function PipelinePage() {
       {/* Bottom Row: Build Plan (6) | Tech Tier (6) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-6 panel flex flex-col">
-          <div className="panel-header">Build Plan by Month</div>
+          <div className="panel-header">Quarterly Plan vs Actual</div>
           <div className="panel-body flex-1">
             <StageBarChart
-              data={buildPlanByMonth}
-              xKey="month"
-              bars={[{ key: "count", name: "Sites", color: "var(--info)" }]}
+              data={quarterlyPlanVsActual.filter((r) => r.vendor !== "Total")}
+              xKey="vendor"
+              bars={[
+                { key: "plan", name: "Plan", color: "var(--text-muted)" },
+                { key: "actual", name: "Actual", color: "var(--brand)" },
+              ]}
               height={300}
             />
           </div>

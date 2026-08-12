@@ -8,13 +8,11 @@ import { DataTable, ColumnDef } from "@/components/tables/DataTable";
 
 export default function OverviewPage() {
   const { transforms } = useData();
-  const { kpi, quarterlyPlanVsActual } = transforms;
+  const { kpi, buildPlanByMonth } = transforms;
 
-  const qTableColumns: ColumnDef<any>[] = [
-    { key: "vendor", header: "Vendor", cell: (r) => <span className="font-semibold">{r.vendor}</span> },
-    { key: "quarter", header: "Quarter", cell: (r) => r.quarter },
-    { key: "plan", header: "Plan", cell: (r) => r.plan, align: "right" },
-    { key: "actual", header: "Actual", cell: (r) => r.actual, align: "right" },
+  const monthlyTableColumns: ColumnDef<any>[] = [
+    { key: "month", header: "Month", cell: (r) => <span className="font-semibold">{r.month}</span> },
+    { key: "count", header: "Sites", cell: (r) => r.count, align: "right" },
   ];
 
   return (
@@ -34,26 +32,23 @@ export default function OverviewPage() {
       {/* Grid: Bar Chart | Table */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-7 panel flex flex-col">
-          <div className="panel-header">Quarterly Plan vs Actual</div>
+          <div className="panel-header">Build Plan by Month</div>
           <div className="panel-body flex-1">
             <StageBarChart
-              data={quarterlyPlanVsActual.filter((r) => r.vendor !== "Total")}
-              xKey="vendor"
-              bars={[
-                { key: "plan", name: "Plan", color: "var(--text-muted)" },
-                { key: "actual", name: "Actual", color: "var(--brand)" },
-              ]}
+              data={buildPlanByMonth}
+              xKey="month"
+              bars={[{ key: "count", name: "Sites", color: "var(--brand)" }]}
               height={300}
             />
           </div>
         </div>
 
         <div className="lg:col-span-5 panel flex flex-col">
-          <div className="panel-header">Quarterly Details</div>
+          <div className="panel-header">Monthly Details</div>
           <div className="panel-body p-0 flex-1">
             <DataTable
-              data={quarterlyPlanVsActual}
-              columns={qTableColumns}
+              data={buildPlanByMonth}
+              columns={monthlyTableColumns}
             />
           </div>
         </div>
