@@ -69,7 +69,7 @@ export function TopBar({ isAdmin, fetchedAt }: TopBarProps) {
           </SheetContent>
         </Sheet>
         
-        <h2 className="text-lg font-bold text-text-primary tracking-tight">
+        <h2 className="text-lg font-bold text-text-primary tracking-tight whitespace-nowrap shrink-0">
           {title}
         </h2>
       </div>

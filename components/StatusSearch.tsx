@@ -52,7 +52,7 @@ export function StatusSearch() {
       </div>
 
       {isOpen && query.length >= 2 && (
-        <div className="absolute top-full mt-2 right-0 w-[300px] md:w-[420px] bg-surface border border-border-color shadow-lg rounded-md overflow-hidden z-50">
+        <div className="fixed md:absolute top-14 md:top-full left-2 right-2 md:left-auto md:right-0 mt-2 md:w-[420px] bg-surface border border-border-color shadow-lg rounded-md overflow-hidden z-[100]">
           <div className="p-2 border-b border-border-color bg-surface-hover text-xs font-semibold text-text-secondary">
             Search Results ({results.length}{results.length === 10 ? "+" : ""})
           </div>
