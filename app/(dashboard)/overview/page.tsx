@@ -9,19 +9,34 @@ export default function OverviewPage() {
   const { kpi } = transforms;
 
   // Calculate quarterly deltas from cumulative Sheet2 data
-  const getVal = (m: string, key: 'plan' | 'actual') => {
-    const item = newBuildPlan.find(x => x.month === m);
-    return item ? (item[key] || 0) : 0;
-  };
+  const monthsOrder = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  let lastActual = 0;
+  let lastPlan = 0;
+  const processedPlan = new Map<string, number>();
+  const processedActual = new Map<string, number>();
 
-  const q1Plan = getVal('MAR', 'plan');
-  const q1Actual = getVal('MAR', 'actual');
-  const q2Plan = getVal('JUN', 'plan') - getVal('MAR', 'plan');
-  const q2Actual = getVal('JUN', 'actual') - getVal('MAR', 'actual');
-  const q3Plan = getVal('SEP', 'plan') - getVal('JUN', 'plan');
-  const q3Actual = getVal('SEP', 'actual') - getVal('JUN', 'actual');
-  const q4Plan = getVal('DEC', 'plan') - getVal('SEP', 'plan');
-  const q4Actual = getVal('DEC', 'actual') - getVal('SEP', 'actual');
+  for (const m of monthsOrder) {
+    const item = newBuildPlan.find(x => x.month === m);
+    
+    if (item && item.plan !== null && item.plan !== undefined) {
+      lastPlan = Math.max(lastPlan, item.plan);
+    }
+    processedPlan.set(m, lastPlan);
+
+    if (item && item.actual !== null && item.actual !== undefined) {
+       lastActual = Math.max(lastActual, item.actual);
+    }
+    processedActual.set(m, lastActual);
+  }
+
+  const q1Plan = processedPlan.get('MAR') || 0;
+  const q1Actual = processedActual.get('MAR') || 0;
+  const q2Plan = (processedPlan.get('JUN') || 0) - (processedPlan.get('MAR') || 0);
+  const q2Actual = (processedActual.get('JUN') || 0) - (processedActual.get('MAR') || 0);
+  const q3Plan = (processedPlan.get('SEP') || 0) - (processedPlan.get('JUN') || 0);
+  const q3Actual = (processedActual.get('SEP') || 0) - (processedActual.get('JUN') || 0);
+  const q4Plan = (processedPlan.get('DEC') || 0) - (processedPlan.get('SEP') || 0);
+  const q4Actual = (processedActual.get('DEC') || 0) - (processedActual.get('SEP') || 0);
 
   return (
     <div className="space-y-6">
