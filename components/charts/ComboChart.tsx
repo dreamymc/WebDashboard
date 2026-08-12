@@ -31,6 +31,7 @@ export default function ComboChart({ data, xKey, bars, lines, height = 300 }: Co
             axisLine={false}
             tickLine={false}
             tick={{ fontSize: 11, fill: "var(--text-muted)" }}
+            interval={0}
             dy={10}
           />
           <YAxis

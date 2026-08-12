@@ -30,6 +30,7 @@ export function StageBarChart({ data, xKey, bars, height = 300 }: StageBarChartP
             axisLine={false}
             tickLine={false}
             tick={{ fontSize: 11, fill: "var(--text-muted)" }}
+            interval={0}
             dy={10}
           />
           <YAxis
