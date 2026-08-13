@@ -51,7 +51,7 @@ export function FunnelBarChart({ data, height = 300 }: FunnelBarChartProps) {
                 line2 = words.slice(mid).join(" ");
               }
               return (
-                <text x={x} y={y} textAnchor="end" fill="var(--text-secondary)" fontSize={11} fontWeight={500}>
+                <text x={x} y={y} textAnchor="end" fill="var(--text-secondary)" fontSize={12} fontWeight={500}>
                   {line2 ? (
                     <>
                       <tspan x={x} dy="-0.2em">{line1}</tspan>
@@ -81,7 +81,7 @@ export function FunnelBarChart({ data, height = 300 }: FunnelBarChartProps) {
               dataKey="count" 
               position="right" 
               fill="var(--text-primary)"
-              fontSize={11}
+              fontSize={12}
               fontWeight={700}
             />
             {data.map((entry, index) => {
