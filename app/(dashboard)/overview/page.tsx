@@ -232,7 +232,7 @@ export default function OverviewPage() {
               xKey="month"
               bars={[{ key: "plan", name: "Plan", color: "var(--brand)" }]}
               lines={[
-                { key: "actual", name: "Actual", color: "#eab308" }, // yellow
+                { key: "actual", name: "Actual", color: "#FFEA00" }, // yellow
                 { key: "buildOutlook", name: "Build Outlook", color: "#f97316" } // orange
               ]}
               height={300}
