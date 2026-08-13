@@ -68,8 +68,8 @@ export default function SiteMap({ markers, height = 400, focusedMarkerId }: Site
     );
   }
 
-  // Philippines bounding box center approximately
-  const defaultCenter: [number, number] = [12.8797, 121.774];
+  // Mindanao bounding box center approximately
+  const defaultCenter: [number, number] = [8.0, 125.0];
   const focusedMarker = focusedMarkerId ? markers.find(m => m.id === focusedMarkerId) : null;
   const initialCenter = focusedMarker ? ([focusedMarker.lat, focusedMarker.long] as [number, number]) : defaultCenter;
 
@@ -77,7 +77,7 @@ export default function SiteMap({ markers, height = 400, focusedMarkerId }: Site
     <div style={{ height, width: "100%", zIndex: 0 }} className="relative z-0">
       <MapContainer
         center={initialCenter}
-        zoom={focusedMarker ? 14 : 5}
+        zoom={focusedMarker ? 14 : 7}
         scrollWheelZoom={false}
         style={{ height: "100%", width: "100%" }}
       >
