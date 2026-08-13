@@ -33,6 +33,17 @@ function NumberReveal({ value, duration = 1200, suffix = "" }: { value: number, 
   return <>{current}{suffix}</>;
 }
 
+function JustifiedLabel({ text, className = "" }: { text: string, className?: string }) {
+  const chars = text.split('');
+  return (
+    <div className={`flex w-full justify-between items-center ${className}`}>
+      {chars.map((char, i) => (
+        <span key={i}>{char === ' ' ? '\u00A0' : char}</span>
+      ))}
+    </div>
+  );
+}
+
 export default function OverviewPage() {
   const { transforms, newBuildPlan } = useData();
   const { kpi, funnelCounts } = transforms;
@@ -77,41 +88,89 @@ export default function OverviewPage() {
           <div className="flex flex-col md:flex-row gap-4 h-full">
             {/* Pipeline (standalone) */}
             <div className="panel p-4 flex flex-col items-center justify-center min-w-[140px] border-l-4 border-l-brand shadow-sm ring-1 ring-border-color hover:-translate-y-0.5 hover:shadow-md transition duration-200 ease-out">
-              <div className="text-4xl md:text-5xl font-bold text-brand tabnum tracking-tight"><NumberReveal value={kpi.totalPlan} /></div>
-              <div className="text-sm font-bold text-text-primary uppercase tracking-widest mt-2">Pipeline</div>
+              <div className="flex flex-col w-fit items-center">
+                <div className="bg-gradient-to-b from-brand/10 to-brand/20 border border-brand/40 rounded px-2 py-0.5">
+                  <div className="text-4xl md:text-5xl font-bold text-brand tabnum tracking-tight leading-none"><NumberReveal value={kpi.totalPlan} /></div>
+                </div>
+                <div className="w-full mt-1.5">
+                  <JustifiedLabel text="PIPELINE" className="text-[10px] md:text-xs font-bold text-text-primary uppercase tracking-tighter" />
+                </div>
+              </div>
             </div>
 
             {/* Core Metrics Group */}
             <div className="panel p-0 flex-1 grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-border-color shadow-sm ring-1 ring-border-color hover:-translate-y-0.5 hover:shadow-md transition duration-200 ease-out">
               <div className="p-4 flex flex-col items-center justify-center">
-                <div className="text-3xl md:text-4xl font-bold text-text-primary tabnum tracking-tight"><NumberReveal value={kpi.totalPlan} /></div>
-                <div className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-1">Plan</div>
+                <div className="flex flex-col w-fit items-center">
+                  <div className="bg-gradient-to-b from-brand/10 to-brand/20 border border-brand/40 rounded px-2 py-0.5">
+                    <div className="text-3xl md:text-4xl font-bold text-text-primary tabnum tracking-tight leading-none"><NumberReveal value={kpi.totalPlan} /></div>
+                  </div>
+                  <div className="w-full mt-1.5">
+                    <JustifiedLabel text="PLAN" className="text-[10px] md:text-[11px] font-bold text-text-secondary uppercase tracking-tighter" />
+                  </div>
+                </div>
               </div>
               <div className="p-4 flex flex-col items-center justify-center">
-                <div className="text-3xl md:text-4xl font-bold text-text-primary tabnum tracking-tight"><NumberReveal value={kpi.trfsCount} /></div>
-                <div className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-1">Actual</div>
+                <div className="flex flex-col w-fit items-center">
+                  <div className="bg-gradient-to-b from-brand/10 to-brand/20 border border-brand/40 rounded px-2 py-0.5">
+                    <div className="text-3xl md:text-4xl font-bold text-text-primary tabnum tracking-tight leading-none"><NumberReveal value={kpi.trfsCount} /></div>
+                  </div>
+                  <div className="w-full mt-1.5">
+                    <JustifiedLabel text="ACTUAL" className="text-[10px] md:text-[11px] font-bold text-text-secondary uppercase tracking-tighter" />
+                  </div>
+                </div>
               </div>
               <div className="p-4 flex flex-col items-center justify-center">
-                <div className="text-3xl md:text-4xl font-bold text-brand tabnum tracking-tight"><NumberReveal value={kpi.pctTrfs} suffix="%" /></div>
-                <div className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-1">% TRFS</div>
+                <div className="flex flex-col w-fit items-center">
+                  <div className="bg-gradient-to-b from-brand/10 to-brand/20 border border-brand/40 rounded px-2 py-0.5">
+                    <div className="text-3xl md:text-4xl font-bold text-brand tabnum tracking-tight leading-none"><NumberReveal value={kpi.pctTrfs} suffix="%" /></div>
+                  </div>
+                  <div className="w-full mt-1.5">
+                    <JustifiedLabel text="%TRFS" className="text-[10px] md:text-[11px] font-bold text-text-secondary uppercase tracking-tighter" />
+                  </div>
+                </div>
               </div>
               {/* 2x2 grid for RTB/RFTI */}
               <div className="grid grid-cols-2 grid-rows-2">
                 <div className="p-3 flex flex-col items-center justify-center border-b border-r border-border-color bg-surface-hover/50 transition-colors duration-150 hover:bg-surface-hover">
-                  <div className="text-lg font-bold text-text-primary tabnum"><NumberReveal value={kpi.rtbCount} duration={800} /></div>
-                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">RTB</div>
+                  <div className="flex flex-col w-fit items-center">
+                    <div className="bg-gradient-to-b from-brand/10 to-brand/20 border border-brand/40 rounded px-1.5 py-px">
+                      <div className="text-lg font-bold text-text-primary tabnum leading-none"><NumberReveal value={kpi.rtbCount} duration={800} /></div>
+                    </div>
+                    <div className="w-full mt-1">
+                      <JustifiedLabel text="RTB" className="text-[9px] font-bold text-text-muted uppercase tracking-tighter" />
+                    </div>
+                  </div>
                 </div>
                 <div className="p-3 flex flex-col items-center justify-center border-b border-border-color bg-surface-hover/50 transition-colors duration-150 hover:bg-surface-hover">
-                  <div className="text-lg font-bold text-brand tabnum"><NumberReveal value={kpi.pctRtb} duration={800} suffix="%" /></div>
-                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">% RTB</div>
+                  <div className="flex flex-col w-fit items-center">
+                    <div className="bg-gradient-to-b from-brand/10 to-brand/20 border border-brand/40 rounded px-1.5 py-px">
+                      <div className="text-lg font-bold text-brand tabnum leading-none"><NumberReveal value={kpi.pctRtb} duration={800} suffix="%" /></div>
+                    </div>
+                    <div className="w-full mt-1">
+                      <JustifiedLabel text="%RTB" className="text-[9px] font-bold text-text-muted uppercase tracking-tighter" />
+                    </div>
+                  </div>
                 </div>
                 <div className="p-3 flex flex-col items-center justify-center border-r border-border-color bg-surface-hover/50 transition-colors duration-150 hover:bg-surface-hover">
-                  <div className="text-lg font-bold text-text-primary tabnum"><NumberReveal value={kpi.rftiCount} duration={800} /></div>
-                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">RFTI</div>
+                  <div className="flex flex-col w-fit items-center">
+                    <div className="bg-gradient-to-b from-brand/10 to-brand/20 border border-brand/40 rounded px-1.5 py-px">
+                      <div className="text-lg font-bold text-text-primary tabnum leading-none"><NumberReveal value={kpi.rftiCount} duration={800} /></div>
+                    </div>
+                    <div className="w-full mt-1">
+                      <JustifiedLabel text="RFTI" className="text-[9px] font-bold text-text-muted uppercase tracking-tighter" />
+                    </div>
+                  </div>
                 </div>
                 <div className="p-3 flex flex-col items-center justify-center bg-surface-hover/50 transition-colors duration-150 hover:bg-surface-hover">
-                  <div className="text-lg font-bold text-brand tabnum"><NumberReveal value={kpi.pctRfti} duration={800} suffix="%" /></div>
-                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">% RFTI</div>
+                  <div className="flex flex-col w-fit items-center">
+                    <div className="bg-gradient-to-b from-brand/10 to-brand/20 border border-brand/40 rounded px-1.5 py-px">
+                      <div className="text-lg font-bold text-brand tabnum leading-none"><NumberReveal value={kpi.pctRfti} duration={800} suffix="%" /></div>
+                    </div>
+                    <div className="w-full mt-1">
+                      <JustifiedLabel text="%RFTI" className="text-[9px] font-bold text-text-muted uppercase tracking-tighter" />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
