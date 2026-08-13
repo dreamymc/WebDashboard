@@ -38,8 +38,10 @@ export default function PipelinePage() {
           <div className="panel-header">Quarterly Plan vs Actual</div>
           <div className="panel-body flex-1">
             <StageBarChart
-              data={quarterlyPlanVsActual.filter((r) => r.vendor !== "Total")}
-              xKey="vendor"
+              data={quarterlyPlanVsActual
+                .filter((r) => r.vendor !== "Total")
+                .map((r) => ({ ...r, label: `${r.quarter.split(' ')[0]} ${r.vendor}` }))}
+              xKey="label"
               bars={[
                 { key: "plan", name: "Plan", color: "var(--text-muted)" },
                 { key: "actual", name: "Actual", color: "var(--brand)" },
