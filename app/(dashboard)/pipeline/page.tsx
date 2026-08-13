@@ -2,14 +2,13 @@
 "use client";
 
 import { useData } from "@/components/DataProvider";
-import { FunnelBarChart } from "@/components/charts/FunnelBarChart";
 import { DonutChart } from "@/components/charts/DonutChart";
 import { StageBarChart } from "@/components/charts/StageBarChart";
 import { DataTable, ColumnDef } from "@/components/tables/DataTable";
 
 export default function PipelinePage() {
   const { transforms } = useData();
-  const { funnelCounts, programVelocity, quarterlyPlanVsActual, techTierPerformance } = transforms;
+  const { programVelocity, quarterlyPlanVsActual, techTierPerformance } = transforms;
 
   const techColumns: ColumnDef<any>[] = [
     { key: "tech", header: "Planned Tech", cell: (r) => <span className="font-semibold">{r.tech}</span> },
@@ -20,16 +19,9 @@ export default function PipelinePage() {
 
   return (
     <div className="space-y-6">
-      {/* Top Row: Funnel (7) | Donut (5) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div className="lg:col-span-7 panel flex flex-col">
-          <div className="panel-header">Lead Indicator (LOCAL)</div>
-          <div className="panel-body flex-1">
-            <FunnelBarChart data={funnelCounts} height={350} />
-          </div>
-        </div>
-
-        <div className="lg:col-span-5 panel flex flex-col">
+      {/* Top Row: Donut */}
+      <div className="grid grid-cols-1 gap-6">
+        <div className="panel flex flex-col">
           <div className="panel-header">Program Velocity</div>
           <div className="panel-body flex-1">
             <DonutChart
