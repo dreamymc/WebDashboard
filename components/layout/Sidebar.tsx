@@ -33,7 +33,7 @@ export function Sidebar({ isAdmin, onNavigate }: SidebarProps) {
         </h1>
       </div>
 
-      <nav className="flex-1 flex flex-col space-y-1">
+      <nav className="flex flex-col space-y-1">
         {LINKS.map((link) => {
           const active = pathname === link.href;
           return (
@@ -70,7 +70,7 @@ export function Sidebar({ isAdmin, onNavigate }: SidebarProps) {
         )}
       </nav>
 
-      <div className="mt-auto px-4 pt-8 pb-2 flex justify-center items-center">
+      <div className="flex-1 flex justify-center items-center px-4">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img 
           src="/t7-logo.png" 
