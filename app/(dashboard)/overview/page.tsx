@@ -100,7 +100,7 @@ export default function OverviewPage() {
                     <div className="text-3xl md:text-4xl font-bold text-text-primary tabnum tracking-tight leading-none"><NumberReveal value={kpi.totalPlan} /></div>
                   </div>
                   <div className="w-20 mt-1.5">
-                    <JustifiedLabel text="PLAN" className="text-xs font-bold text-text-secondary uppercase tracking-tighter" />
+                    <JustifiedLabel text="PLAN" className="text-sm font-bold text-text-secondary uppercase tracking-tighter" />
                   </div>
                 </div>
               </div>
@@ -110,7 +110,7 @@ export default function OverviewPage() {
                     <div className="text-3xl md:text-4xl font-bold text-text-primary tabnum tracking-tight leading-none"><NumberReveal value={kpi.trfsCount} /></div>
                   </div>
                   <div className="w-20 mt-1.5">
-                    <JustifiedLabel text="ACTUAL" className="text-xs font-bold text-text-secondary uppercase tracking-tighter" />
+                    <JustifiedLabel text="ACTUAL" className="text-sm font-bold text-text-secondary uppercase tracking-tighter" />
                   </div>
                 </div>
               </div>
@@ -120,7 +120,7 @@ export default function OverviewPage() {
                     <div className="text-3xl md:text-4xl font-bold text-brand tabnum tracking-tight leading-none"><NumberReveal value={kpi.pctTrfs} suffix="%" /></div>
                   </div>
                   <div className="w-20 mt-1.5">
-                    <JustifiedLabel text="%TRFS" className="text-xs font-bold text-text-secondary uppercase tracking-tighter" />
+                    <JustifiedLabel text="%TRFS" className="text-sm font-bold text-text-secondary uppercase tracking-tighter" />
                   </div>
                 </div>
               </div>
@@ -132,7 +132,7 @@ export default function OverviewPage() {
                       <div className="text-lg font-bold text-text-primary tabnum leading-none"><NumberReveal value={kpi.rtbCount} duration={800} /></div>
                     </div>
                     <div className="w-12 mt-1">
-                      <JustifiedLabel text="RTB" className="text-[10px] font-bold text-text-muted uppercase tracking-tighter" />
+                      <JustifiedLabel text="RTB" className="text-xs font-bold text-text-muted uppercase tracking-tighter" />
                     </div>
                   </div>
                 </div>
@@ -142,7 +142,7 @@ export default function OverviewPage() {
                       <div className="text-lg font-bold text-brand tabnum leading-none"><NumberReveal value={kpi.pctRtb} duration={800} suffix="%" /></div>
                     </div>
                     <div className="w-12 mt-1">
-                      <JustifiedLabel text="%RTB" className="text-[10px] font-bold text-text-muted uppercase tracking-tighter" />
+                      <JustifiedLabel text="%RTB" className="text-xs font-bold text-text-muted uppercase tracking-tighter" />
                     </div>
                   </div>
                 </div>
@@ -152,7 +152,7 @@ export default function OverviewPage() {
                       <div className="text-lg font-bold text-text-primary tabnum leading-none"><NumberReveal value={kpi.rftiCount} duration={800} /></div>
                     </div>
                     <div className="w-12 mt-1">
-                      <JustifiedLabel text="RFTI" className="text-[10px] font-bold text-text-muted uppercase tracking-tighter" />
+                      <JustifiedLabel text="RFTI" className="text-xs font-bold text-text-muted uppercase tracking-tighter" />
                     </div>
                   </div>
                 </div>
@@ -162,7 +162,7 @@ export default function OverviewPage() {
                       <div className="text-lg font-bold text-brand tabnum leading-none"><NumberReveal value={kpi.pctRfti} duration={800} suffix="%" /></div>
                     </div>
                     <div className="w-12 mt-1">
-                      <JustifiedLabel text="%RFTI" className="text-[10px] font-bold text-text-muted uppercase tracking-tighter" />
+                      <JustifiedLabel text="%RFTI" className="text-xs font-bold text-text-muted uppercase tracking-tighter" />
                     </div>
                   </div>
                 </div>
