@@ -170,7 +170,7 @@ function SitesPageContent() {
                   className={`flex items-center gap-3 text-sm cursor-pointer hover:bg-surface-hover p-1.5 -mx-1.5 rounded transition-all ${isHidden ? "opacity-40 grayscale" : "opacity-100"}`}
                 >
                   <span className="w-3 h-3 flex-shrink-0 shadow-sm rounded-full" style={{ backgroundColor: color }} />
-                  <span className="text-text-secondary whitespace-nowrap font-medium transition-colors hover:text-text-primary">{stage}</span>
+                  <span className="text-text-secondary whitespace-nowrap font-medium transition-colors hover:text-text-primary">{stage.replace(/^\[\d+\]\s*/, "")}</span>
                 </div>
               );
             })}
