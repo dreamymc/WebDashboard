@@ -226,7 +226,7 @@
   .panel-header {
     padding: var(--space-3) var(--space-4);
     border-bottom: 1px solid var(--border-color);
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--text-muted);
     text-transform: uppercase;
