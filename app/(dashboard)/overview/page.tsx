@@ -41,30 +41,30 @@ export default function OverviewPage() {
   return (
     <div className="space-y-6">
       {/* Top Section: KPIs, YTD, and Quarterly Plan */}
-      <div className="flex flex-col xl:flex-row gap-6">
+      <div className="flex flex-col xl:flex-row gap-4">
         
         {/* Left Side: Main KPIs */}
-        <div className="flex-1 flex flex-col gap-6">
-          <div className="flex flex-col md:flex-row gap-6 h-full">
+        <div className="flex-1 flex flex-col gap-4">
+          <div className="flex flex-col md:flex-row gap-4 h-full">
             {/* Pipeline (standalone) */}
-            <div className="panel p-6 flex flex-col items-center justify-center min-w-[140px] border-l-4 border-l-brand">
+            <div className="panel p-4 flex flex-col items-center justify-center min-w-[140px] border-l-4 border-l-brand">
               <div className="text-4xl md:text-5xl font-bold text-brand tabnum tracking-tight">{kpi.totalPlan}</div>
               <div className="text-sm font-bold text-text-primary uppercase tracking-widest mt-2">Pipeline</div>
             </div>
 
             {/* Core Metrics Group */}
             <div className="panel p-0 flex-1 grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-border-color">
-              <div className="p-6 flex flex-col items-center justify-center">
+              <div className="p-4 flex flex-col items-center justify-center">
                 <div className="text-3xl md:text-4xl font-bold text-text-primary tabnum tracking-tight">{kpi.totalPlan}</div>
-                <div className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-2">Plan</div>
+                <div className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-1">Plan</div>
               </div>
-              <div className="p-6 flex flex-col items-center justify-center">
+              <div className="p-4 flex flex-col items-center justify-center">
                 <div className="text-3xl md:text-4xl font-bold text-text-primary tabnum tracking-tight">{kpi.trfsCount}</div>
-                <div className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-2">Actual</div>
+                <div className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-1">Actual</div>
               </div>
-              <div className="p-6 flex flex-col items-center justify-center">
+              <div className="p-4 flex flex-col items-center justify-center">
                 <div className="text-3xl md:text-4xl font-bold text-brand tabnum tracking-tight">{kpi.pctTrfs}%</div>
-                <div className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-2">% TRFS</div>
+                <div className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-1">% TRFS</div>
               </div>
               {/* 2x2 grid for RTB/RFTI */}
               <div className="grid grid-cols-2 grid-rows-2">
@@ -90,10 +90,10 @@ export default function OverviewPage() {
         </div>
 
         {/* Right Side: YTD & Quarterly Plan */}
-        <div className="flex flex-col md:flex-row gap-6 shrink-0 xl:w-auto">
+        <div className="flex flex-col md:flex-row gap-4 shrink-0 xl:w-auto">
           {/* YTD Card */}
-          <div className="panel p-6 flex flex-col items-center justify-center border-t-4 border-t-warning min-w-[180px]">
-             <div className="text-sm font-bold text-text-primary mb-4 tracking-widest uppercase">YTD</div>
+          <div className="panel p-4 flex flex-col items-center justify-center border-t-4 border-t-warning min-w-[180px]">
+             <div className="text-sm font-bold text-text-primary mb-3 tracking-widest uppercase">YTD</div>
              <div className="flex w-full justify-center items-end gap-4 mb-2">
                 <div className="flex flex-col items-center">
                   <span className="text-2xl font-bold text-text-primary tabnum">{kpi.trfsCount}</span>
@@ -105,21 +105,21 @@ export default function OverviewPage() {
                   <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider">Plan</span>
                 </div>
              </div>
-             <div className="text-4xl md:text-5xl font-black text-warning my-2 tabnum tracking-tight">{kpi.pctTrfs}%</div>
-             <div className="text-[10px] text-text-secondary font-bold uppercase tracking-widest mb-4">% TRFS</div>
-             <div className="bg-surface-hover rounded-full px-3 py-1.5 text-xs font-medium text-text-muted flex items-center gap-1.5 border border-border-color">
+             <div className="text-4xl md:text-5xl font-black text-warning my-1 tabnum tracking-tight">{kpi.pctTrfs}%</div>
+             <div className="text-[10px] text-text-secondary font-bold uppercase tracking-widest mb-3">% TRFS</div>
+             <div className="bg-surface-hover rounded-full px-3 py-1 text-xs font-medium text-text-muted flex items-center gap-1.5 border border-border-color">
                <span className="font-bold text-text-primary tabnum">{kpi.totalPlan - kpi.trfsCount}</span>
                <span className="uppercase text-[10px] tracking-wider mt-0.5">month gap</span>
              </div>
           </div>
 
           {/* Quarterly Plan */}
-          <div className="panel p-6 flex-1 flex flex-col justify-center min-w-[280px]">
-             <div className="text-sm font-bold text-text-primary mb-6 tracking-widest uppercase text-center">Quarterly Plan</div>
+          <div className="panel p-4 flex-1 flex flex-col justify-center min-w-[280px]">
+             <div className="text-sm font-bold text-text-primary mb-3 tracking-widest uppercase text-center">Quarterly Plan</div>
              <div className="flex gap-4 items-center">
-                <div className="flex flex-col gap-5 text-[10px] font-bold text-text-muted uppercase mt-5">
-                   <div className="h-8 flex items-center justify-end">Plan</div>
-                   <div className="h-8 flex items-center justify-end">Actual</div>
+                <div className="flex flex-col gap-3 text-[10px] font-bold text-text-muted uppercase mt-4">
+                   <div className="h-7 flex items-center justify-end">Plan</div>
+                   <div className="h-7 flex items-center justify-end">Actual</div>
                 </div>
                 <div className="flex-1 grid grid-cols-4 gap-2 md:gap-3 text-center">
                    {[
@@ -129,9 +129,9 @@ export default function OverviewPage() {
                      { q: 'Q4', plan: q4Plan, actual: q4Actual }
                    ].map(quarter => (
                      <div key={quarter.q} className="flex flex-col gap-1.5">
-                        <div className="text-[11px] font-bold text-text-primary mb-1">{quarter.q}</div>
-                        <div className="bg-surface-hover border border-border-color rounded h-8 flex items-center justify-center font-bold text-sm tabnum text-text-secondary">{quarter.plan}</div>
-                        <div className="bg-brand/10 border border-brand/20 text-brand rounded h-8 flex items-center justify-center font-bold text-sm tabnum mt-3.5">{quarter.actual}</div>
+                        <div className="text-[11px] font-bold text-text-primary mb-0.5">{quarter.q}</div>
+                        <div className="bg-surface-hover border border-border-color rounded h-7 flex items-center justify-center font-bold text-sm tabnum text-text-secondary">{quarter.plan}</div>
+                        <div className="bg-brand/10 border border-brand/20 text-brand rounded h-7 flex items-center justify-center font-bold text-sm tabnum mt-1.5">{quarter.actual}</div>
                      </div>
                    ))}
                 </div>
