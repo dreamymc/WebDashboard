@@ -26,12 +26,12 @@ export const STAGE_COLORS: Record<string, string> = {
   '[01] AWARDED / SITE HUNTING': 'var(--warning)',
   '[03] TSSR APPROVED':          'var(--warning)',
   '[04] RTB':                    'var(--warning)',
-  '[05] CW DOING':               '#eab308',
-  '[06] S-RFI':                  '#eab308',
-  '[07] S-RFI w/ TRS':           '#eab308',
-  '[08] RFI':                    '#eab308',
-  '[09] RFI with TRS':           '#eab308',
-  '[10] ON-AIR':                 '#eab308',
+  '[05] CW DOING':               '#FFEA00',
+  '[06] S-RFI':                  '#FFEA00',
+  '[07] S-RFI w/ TRS':           '#FFEA00',
+  '[08] RFI':                    '#FFEA00',
+  '[09] RFI with TRS':           '#FFEA00',
+  '[10] ON-AIR':                 '#FFEA00',
   '[11] TRFS':                   'var(--success)',
 };
 
