@@ -8,6 +8,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   Cell,
+  LabelList,
 } from "recharts";
 import { STAGE_COLORS } from "@/lib/normalizers";
 
@@ -28,7 +29,7 @@ export function FunnelBarChart({ data, height = 300 }: FunnelBarChartProps) {
         <BarChart
           layout="vertical"
           data={data}
-          margin={{ top: 0, right: 20, left: 0, bottom: 0 }}
+          margin={{ top: 0, right: 40, left: 0, bottom: 0 }}
         >
           <XAxis type="number" hide />
           <YAxis
@@ -41,17 +42,24 @@ export function FunnelBarChart({ data, height = 300 }: FunnelBarChartProps) {
             tick={(props: any) => {
               const { x, y, payload } = props;
               const short = payload.value.replace(/^\[\d+\]\s*/, "");
+              const words = short.split(" ");
+              let line1 = short;
+              let line2 = "";
+              if (words.length > 1 && short.length > 12) {
+                const mid = Math.ceil(words.length / 2);
+                line1 = words.slice(0, mid).join(" ");
+                line2 = words.slice(mid).join(" ");
+              }
               return (
-                <text
-                  x={x}
-                  y={y}
-                  dy={4}
-                  textAnchor="end"
-                  fill="var(--text-secondary)"
-                  fontSize={11}
-                  fontWeight={500}
-                >
-                  {short}
+                <text x={x} y={y} textAnchor="end" fill="var(--text-secondary)" fontSize={11} fontWeight={500}>
+                  {line2 ? (
+                    <>
+                      <tspan x={x} dy="-0.2em">{line1}</tspan>
+                      <tspan x={x} dy="1.1em">{line2}</tspan>
+                    </>
+                  ) : (
+                    <tspan x={x} dy="0.35em">{line1}</tspan>
+                  )}
                 </text>
               );
             }}
@@ -69,6 +77,13 @@ export function FunnelBarChart({ data, height = 300 }: FunnelBarChartProps) {
             formatter={(value: any) => [value, "Sites"]}
           />
           <Bar dataKey="count" radius={[0, 2, 2, 0]} barSize={20}>
+            <LabelList 
+              dataKey="count" 
+              position="right" 
+              fill="var(--text-primary)"
+              fontSize={11}
+              fontWeight={700}
+            />
             {data.map((entry, index) => {
               const color = STAGE_COLORS[entry.stage] ?? "var(--text-muted)";
               return <Cell key={`cell-${index}`} fill={color} />;
