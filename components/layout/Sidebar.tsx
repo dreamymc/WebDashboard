@@ -70,13 +70,15 @@ export function Sidebar({ isAdmin, onNavigate }: SidebarProps) {
         )}
       </nav>
 
-      <div className="flex-1 flex justify-center items-center px-4">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img 
-          src="/t7-logo.png" 
-          alt="T7 Logo" 
-          className="w-32 opacity-70 hover:opacity-100 transition-opacity duration-200" 
-        />
+      <div className="flex-1 flex flex-col justify-center items-center w-full">
+        <div className="w-full bg-surface-hover/50 border-y border-border-color/60 py-8 flex justify-center items-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img 
+            src="/t7-logo.png" 
+            alt="T7 Logo" 
+            className="w-3/4 max-w-[140px] opacity-70 hover:opacity-100 transition-opacity duration-200" 
+          />
+        </div>
       </div>
     </div>
   );
