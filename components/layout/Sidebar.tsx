@@ -69,6 +69,15 @@ export function Sidebar({ isAdmin, onNavigate }: SidebarProps) {
           </button>
         )}
       </nav>
+
+      <div className="mt-auto px-4 pt-8 pb-2 flex justify-center items-center">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img 
+          src="/t7-logo.png" 
+          alt="T7 Logo" 
+          className="w-32 opacity-70 hover:opacity-100 transition-opacity duration-200" 
+        />
+      </div>
     </div>
   );
 }
