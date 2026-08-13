@@ -68,8 +68,8 @@ export default function SiteMap({ markers, height = 400, focusedMarkerId }: Site
     );
   }
 
-  // Mindanao bounding box center approximately
-  const defaultCenter: [number, number] = [8.0, 125.0];
+  // Mindanao bounding box center approximately (shifted south to fit GenSan)
+  const defaultCenter: [number, number] = [7.2, 125.0];
   const focusedMarker = focusedMarkerId ? markers.find(m => m.id === focusedMarkerId) : null;
   const initialCenter = focusedMarker ? ([focusedMarker.lat, focusedMarker.long] as [number, number]) : defaultCenter;
 
