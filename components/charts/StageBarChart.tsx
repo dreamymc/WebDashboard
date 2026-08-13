@@ -19,9 +19,11 @@ interface StageBarChartProps {
   height?: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   tickComponent?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  tooltipLabelFormatter?: (label: any) => React.ReactNode;
 }
 
-export function StageBarChart({ data, xKey, bars, height = 300, tickComponent }: StageBarChartProps) {
+export function StageBarChart({ data, xKey, bars, height = 300, tickComponent, tooltipLabelFormatter }: StageBarChartProps) {
   return (
     <div style={{ width: "100%", height }}>
       <ResponsiveContainer>
@@ -42,6 +44,7 @@ export function StageBarChart({ data, xKey, bars, height = 300, tickComponent }:
           />
           <Tooltip
             cursor={{ fill: "var(--surface-hover)" }}
+            labelFormatter={tooltipLabelFormatter}
             contentStyle={{
               background: "var(--surface)",
               borderColor: "var(--border-color)",

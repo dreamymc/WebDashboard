@@ -11,10 +11,11 @@ const QuarterlyTick = (props: any) => {
   const { x, y, payload, index } = props;
   const isMiddle = index % 3 === 1; // 0=E, 1=N, 2=H
   const quarterIndex = Math.floor(index / 3) + 1;
+  const vendorName = String(payload.value).split('-')[0];
   return (
     <g transform={`translate(${x},${y})`}>
       <text x={0} y={0} dy={10} textAnchor="middle" fill="var(--text-muted)" fontSize={11}>
-        {payload.value}
+        {vendorName}
       </text>
       {isMiddle && (
         <text x={0} y={20} dy={10} textAnchor="middle" fill="var(--text-secondary)" fontSize={12} fontWeight={700}>
@@ -57,14 +58,17 @@ export default function PipelinePage() {
           <div className="panel-header">Quarterly Plan vs Actual</div>
           <div className="panel-body flex-1">
             <StageBarChart
-              data={quarterlyPlanVsActual.filter((r) => r.vendor !== "Total")}
-              xKey="vendor"
+              data={quarterlyPlanVsActual
+                .filter((r) => r.vendor !== "Total")
+                .map((r, i) => ({ ...r, uniqueKey: `${r.vendor}-${i}` }))}
+              xKey="uniqueKey"
               bars={[
                 { key: "plan", name: "Plan", color: "var(--text-muted)" },
                 { key: "actual", name: "Actual", color: "var(--brand)" },
               ]}
               height={300}
               tickComponent={<QuarterlyTick />}
+              tooltipLabelFormatter={(label) => String(label).split('-')[0]}
             />
           </div>
         </div>
