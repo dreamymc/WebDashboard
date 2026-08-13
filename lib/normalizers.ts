@@ -23,16 +23,16 @@ export type Stage = (typeof STAGE_ORDER)[number];
  * Keys match the stage strings exactly.
  */
 export const STAGE_COLORS: Record<string, string> = {
-  '[01] AWARDED / SITE HUNTING': 'var(--stage-01)',
-  '[03] TSSR APPROVED':          'var(--stage-03)',
-  '[04] RTB':                    'var(--stage-04)',
-  '[05] CW DOING':               'var(--stage-05)',
-  '[06] S-RFI':                  'var(--stage-06)',
-  '[07] S-RFI w/ TRS':           'var(--stage-07)',
-  '[08] RFI':                    'var(--stage-08)',
-  '[09] RFI with TRS':           'var(--stage-09)',
-  '[10] ON-AIR':                 'var(--stage-10)',
-  '[11] TRFS':                   'var(--stage-11)',
+  '[01] AWARDED / SITE HUNTING': 'var(--warning)',
+  '[03] TSSR APPROVED':          'var(--warning)',
+  '[04] RTB':                    'var(--warning)',
+  '[05] CW DOING':               '#eab308',
+  '[06] S-RFI':                  '#eab308',
+  '[07] S-RFI w/ TRS':           '#eab308',
+  '[08] RFI':                    '#eab308',
+  '[09] RFI with TRS':           '#eab308',
+  '[10] ON-AIR':                 '#eab308',
+  '[11] TRFS':                   'var(--success)',
 };
 
 /** The index of the first "actual" stage (≥ [06]) in STAGE_ORDER */

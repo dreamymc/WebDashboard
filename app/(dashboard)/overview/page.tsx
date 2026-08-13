@@ -241,7 +241,7 @@ export default function OverviewPage() {
         </div>
 
         <div className="panel flex flex-col">
-          <div className="panel-header">Lead Indicator (LOCAL)</div>
+          <div className="panel-header">Lead Indicator</div>
           <div className="panel-body flex-1">
             <FunnelBarChart data={funnelCounts} height={300} />
           </div>

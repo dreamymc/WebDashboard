@@ -30,12 +30,12 @@ export function StageBadge({ stage, className = "" }: StageBadgeProps) {
 /** Compact variant — shows only the stage code like "[06]" */
 export function StageCode({ stage }: { stage: string }) {
   const color = STAGE_COLORS[stage] ?? "var(--text-muted)";
-  const code = stage.match(/^\[(\d+)\]/)?.[0] ?? stage;
+  const short = stage.replace(/^\[\d+\]\s*/, "");
 
   return (
     <span
       style={{
-        fontFamily: "monospace",
+        fontFamily: "var(--font-sans)",
         fontSize: 11,
         color,
         fontWeight: 700,
@@ -43,7 +43,7 @@ export function StageCode({ stage }: { stage: string }) {
       }}
       title={stage}
     >
-      {code}
+      {short}
     </span>
   );
 }

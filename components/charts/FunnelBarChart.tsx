@@ -74,6 +74,8 @@ export function FunnelBarChart({ data, height = 300 }: FunnelBarChartProps) {
               color: "var(--text-primary)",
             }}
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            labelFormatter={(label: any) => typeof label === 'string' ? label.replace(/^\[\d+\]\s*/, "") : label}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             formatter={(value: any) => [value, "Sites"]}
           />
           <Bar dataKey="count" radius={[0, 2, 2, 0]} barSize={20}>
