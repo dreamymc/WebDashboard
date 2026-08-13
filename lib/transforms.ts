@@ -44,7 +44,7 @@ const VENDORS = ['Ericsson', 'Nokia', 'HT'] as const;
 
 function pct(actual: number, total: number): number {
   if (total === 0) return 0;
-  return Math.round((actual / total) * 100 * 10) / 10; // 1 decimal place
+  return Math.round((actual / total) * 100); // 0 decimal places
 }
 
 // ── KPI Summary ───────────────────────────────────────────────────────────────
