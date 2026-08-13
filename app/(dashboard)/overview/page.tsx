@@ -68,102 +68,115 @@ export default function OverviewPage() {
 
   return (
     <div className="space-y-6">
-      {/* Top Section: KPIs, YTD, and Quarterly Plan */}
-      <div className="flex flex-col xl:flex-row gap-4">
-        
-        {/* Left Side: Main KPIs */}
-        <div className="flex-1 flex flex-col gap-4">
-          <div className="flex flex-col md:flex-row gap-4 h-full">
-            {/* Pipeline (standalone) */}
-            <div className="panel p-4 flex flex-col items-center justify-center min-w-[140px] border-l-4 border-l-brand shadow-sm ring-1 ring-border-color hover:-translate-y-0.5 hover:shadow-md transition duration-200 ease-out">
-              <div className="text-4xl md:text-5xl font-bold text-brand tabnum tracking-tight"><NumberReveal value={kpi.totalPlan} /></div>
-              <div className="text-sm font-bold text-text-primary uppercase tracking-widest mt-2">Pipeline</div>
-            </div>
-
-            {/* Core Metrics Group */}
-            <div className="panel p-0 flex-1 grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-border-color shadow-sm ring-1 ring-border-color hover:-translate-y-0.5 hover:shadow-md transition duration-200 ease-out">
-              <div className="p-4 flex flex-col items-center justify-center">
-                <div className="text-3xl md:text-4xl font-bold text-text-primary tabnum tracking-tight"><NumberReveal value={kpi.totalPlan} /></div>
-                <div className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-1">Plan</div>
-              </div>
-              <div className="p-4 flex flex-col items-center justify-center">
-                <div className="text-3xl md:text-4xl font-bold text-text-primary tabnum tracking-tight"><NumberReveal value={kpi.trfsCount} /></div>
-                <div className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-1">Actual</div>
-              </div>
-              <div className="p-4 flex flex-col items-center justify-center">
-                <div className="text-3xl md:text-4xl font-bold text-brand tabnum tracking-tight"><NumberReveal value={kpi.pctTrfs} suffix="%" /></div>
-                <div className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-1">% TRFS</div>
-              </div>
-              {/* 2x2 grid for RTB/RFTI */}
-              <div className="grid grid-cols-2 grid-rows-2">
-                <div className="p-3 flex flex-col items-center justify-center border-b border-r border-border-color bg-surface-hover/50 transition-colors duration-150 hover:bg-surface-hover">
-                  <div className="text-lg font-bold text-text-primary tabnum"><NumberReveal value={kpi.rtbCount} duration={800} /></div>
-                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">RTB</div>
-                </div>
-                <div className="p-3 flex flex-col items-center justify-center border-b border-border-color bg-surface-hover/50 transition-colors duration-150 hover:bg-surface-hover">
-                  <div className="text-lg font-bold text-brand tabnum"><NumberReveal value={kpi.pctRtb} duration={800} suffix="%" /></div>
-                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">% RTB</div>
-                </div>
-                <div className="p-3 flex flex-col items-center justify-center border-r border-border-color bg-surface-hover/50 transition-colors duration-150 hover:bg-surface-hover">
-                  <div className="text-lg font-bold text-text-primary tabnum"><NumberReveal value={kpi.rftiCount} duration={800} /></div>
-                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">RFTI</div>
-                </div>
-                <div className="p-3 flex flex-col items-center justify-center bg-surface-hover/50 transition-colors duration-150 hover:bg-surface-hover">
-                  <div className="text-lg font-bold text-brand tabnum"><NumberReveal value={kpi.pctRfti} duration={800} suffix="%" /></div>
-                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">% RFTI</div>
-                </div>
-              </div>
-            </div>
+      {/* Alert Banner */}
+      <div className="bg-red-950/20 border border-red-900/40 rounded-lg p-4 flex items-center justify-between text-red-400">
+        <div className="flex items-center gap-4">
+          <div className="text-red-500">
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <div>
+            <div className="text-lg font-bold text-red-300">Behind plan by {kpi.totalPlan - kpi.trfsCount} sites</div>
+            <div className="text-sm opacity-80">{kpi.trfsCount} of {kpi.totalPlan} TRFS through August. Pace needed to close: {Math.ceil((kpi.totalPlan - kpi.trfsCount) / 4)}/month.</div>
           </div>
         </div>
+        <div className="text-sm font-medium">
+          Aug pace <span className="font-bold text-red-300">{Math.ceil(kpi.trfsCount / 8)}/mo</span>
+        </div>
+      </div>
 
-        {/* Right Side: YTD & Quarterly Plan */}
-        <div className="flex flex-col md:flex-row gap-4 shrink-0 xl:w-auto">
-          {/* YTD Card */}
-          <div className="panel p-4 flex flex-col items-center justify-center border-t-4 border-t-warning min-w-[180px] shadow-sm ring-1 ring-border-color hover:-translate-y-0.5 hover:shadow-md transition duration-200 ease-out">
-             <div className="text-sm font-bold text-text-primary mb-3 tracking-widest uppercase">YTD</div>
-             <div className="flex w-full justify-center items-end gap-4 mb-2">
-                <div className="flex flex-col items-center">
-                  <span className="text-2xl font-bold text-text-primary tabnum"><NumberReveal value={kpi.trfsCount} duration={900} /></span>
-                  <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider">Actual</span>
-                </div>
-                <div className="w-px h-8 bg-border-color mb-1"></div>
-                <div className="flex flex-col items-center">
-                  <span className="text-2xl font-bold text-text-primary tabnum"><NumberReveal value={kpi.totalPlan} duration={900} /></span>
-                  <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider">Plan</span>
-                </div>
-             </div>
-             <div className="text-4xl md:text-5xl font-black text-warning my-1 tabnum tracking-tight"><NumberReveal value={kpi.pctTrfs} suffix="%" /></div>
-             <div className="text-[10px] text-text-secondary font-bold uppercase tracking-widest mb-3">% TRFS</div>
-             <div className="bg-surface-hover rounded-full px-3 py-1 text-xs font-medium text-text-muted flex items-center gap-1.5 border border-border-color">
-               <span className="font-bold text-text-primary tabnum"><NumberReveal value={kpi.totalPlan - kpi.trfsCount} duration={800} /></span>
-               <span className="uppercase text-[10px] tracking-wider mt-0.5">month gap</span>
-             </div>
+      {/* 4-Up Metrics Row */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 px-2">
+        <div className="flex flex-col gap-1">
+          <div className="text-xs font-medium text-text-muted mb-1">TRFS complete</div>
+          <div className="text-4xl font-bold text-text-primary tabnum tracking-tight"><NumberReveal value={kpi.trfsCount} /> <span className="text-lg text-text-muted font-normal">/ {kpi.totalPlan}</span></div>
+          <div className="text-xs font-medium text-red-400 flex items-center gap-1 mt-1">
+            ↓ {kpi.pctTrfs}% • {Math.round((8/12)*100 - kpi.pctTrfs)}pt below pace
           </div>
+        </div>
+        <div className="flex flex-col gap-1">
+          <div className="text-xs font-medium text-text-muted mb-1">RTB</div>
+          <div className="text-4xl font-bold text-text-primary tabnum tracking-tight"><NumberReveal value={kpi.rtbCount} /> <span className="text-lg text-text-muted font-normal">{kpi.pctRtb}%</span></div>
+          <div className="text-xs font-medium text-green-500 flex items-center gap-1 mt-1">
+            ↑ +12 vs Jul
+          </div>
+        </div>
+        <div className="flex flex-col gap-1">
+          <div className="text-xs font-medium text-text-muted mb-1">RFTI</div>
+          <div className="text-4xl font-bold text-text-primary tabnum tracking-tight"><NumberReveal value={kpi.rftiCount} /> <span className="text-lg text-text-muted font-normal">{kpi.pctRfti}%</span></div>
+          <div className="text-xs font-medium text-green-500 flex items-center gap-1 mt-1">
+            ↑ +9 vs Jul
+          </div>
+        </div>
+        <div className="flex flex-col gap-1">
+          <div className="text-xs font-medium text-text-muted mb-1">Remaining</div>
+          <div className="text-4xl font-bold text-text-primary tabnum tracking-tight"><NumberReveal value={kpi.totalPlan - kpi.trfsCount} /> <span className="text-lg text-text-muted font-normal">sites</span></div>
+          <div className="text-xs font-medium text-warning flex items-center gap-1 mt-1">
+            4 months left
+          </div>
+        </div>
+      </div>
 
-          {/* Quarterly Plan */}
-          <div className="panel p-4 flex-1 flex flex-col justify-center min-w-[280px] shadow-sm ring-1 ring-border-color hover:-translate-y-0.5 hover:shadow-md transition duration-200 ease-out">
-             <div className="text-sm font-bold text-text-primary mb-3 tracking-widest uppercase text-center">Quarterly Plan</div>
-             <div className="flex gap-4 items-center">
-                <div className="flex flex-col gap-3 text-[10px] font-bold text-text-muted uppercase mt-4">
-                   <div className="h-7 flex items-center justify-end">Plan</div>
-                   <div className="h-7 flex items-center justify-end">Actual</div>
+      {/* Quarterly Attainment Table */}
+      <div className="panel p-6 shadow-sm ring-1 ring-border-color">
+        <div className="text-lg font-bold text-text-primary mb-6">Quarterly attainment</div>
+        <div className="w-full text-sm">
+          <div className="grid grid-cols-[1.5fr_1fr_1fr_1fr_2fr] gap-4 pb-3 border-b border-border-color text-text-secondary font-medium">
+            <div>Quarter</div>
+            <div className="text-right">Plan</div>
+            <div className="text-right">Actual</div>
+            <div className="text-right">Variance</div>
+            <div>Attainment</div>
+          </div>
+          {[
+            { label: 'Q1', plan: q1Plan, actual: q1Actual },
+            { label: 'Q2', plan: q2Plan, actual: q2Actual },
+            { label: 'Q3 to date', plan: q3Plan, actual: q3Actual },
+            { label: 'Q4', plan: q4Plan, actual: q4Actual, notStarted: true }
+          ].map(q => {
+            const variance = q.actual - q.plan;
+            const varColor = variance < 0 ? 'text-red-400' : (variance > 0 ? 'text-green-500' : 'text-text-muted');
+            const varText = variance > 0 ? `+${variance}` : variance;
+            const pct = q.plan > 0 ? Math.min((q.actual / q.plan) * 100, 100) : 0;
+            const barColor = variance < 0 ? 'bg-red-500' : 'bg-green-500';
+            const bgTrack = variance < 0 ? 'bg-red-950/20' : 'bg-green-950/20';
+
+            return (
+              <div key={q.label} className="grid grid-cols-[1.5fr_1fr_1fr_1fr_2fr] gap-4 py-4 border-b border-border-color items-center">
+                <div className="font-bold text-text-primary">{q.label}</div>
+                <div className="text-right tabnum"><NumberReveal value={q.plan} /></div>
+                <div className="text-right tabnum">
+                  {q.notStarted ? <span className="text-text-muted">—</span> : <NumberReveal value={q.actual} />}
                 </div>
-                <div className="flex-1 grid grid-cols-4 gap-2 md:gap-3 text-center">
-                   {[
-                     { q: 'Q1', plan: q1Plan, actual: q1Actual },
-                     { q: 'Q2', plan: q2Plan, actual: q2Actual },
-                     { q: 'Q3', plan: q3Plan, actual: q3Actual },
-                     { q: 'Q4', plan: q4Plan, actual: q4Actual }
-                   ].map(quarter => (
-                     <div key={quarter.q} className="flex flex-col gap-1.5">
-                        <div className="text-[11px] font-bold text-text-primary mb-0.5">{quarter.q}</div>
-                        <div className="bg-surface-hover border border-border-color rounded h-7 flex items-center justify-center font-bold text-sm tabnum text-text-secondary"><NumberReveal value={quarter.plan} duration={900} /></div>
-                        <div className="bg-brand/10 border border-brand/20 text-brand rounded h-7 flex items-center justify-center font-bold text-sm tabnum mt-1.5"><NumberReveal value={quarter.actual} duration={900} /></div>
-                     </div>
-                   ))}
+                <div className={`text-right font-medium tabnum ${q.notStarted ? 'text-text-muted' : varColor}`}>
+                  {q.notStarted ? 'not started' : varText}
                 </div>
-             </div>
+                <div className="flex items-center">
+                  {!q.notStarted ? (
+                    <div className={`w-full h-2 rounded-full overflow-hidden ${bgTrack}`}>
+                      <div className={`h-full ${barColor}`} style={{ width: `${pct}%` }}></div>
+                    </div>
+                  ) : (
+                    <div className="w-full h-2 rounded-full bg-border-color/30"></div>
+                  )}
+                </div>
+              </div>
+            )
+          })}
+          {/* Total Row */}
+          <div className="grid grid-cols-[1.5fr_1fr_1fr_1fr_2fr] gap-4 pt-4 pb-2 font-bold text-text-primary items-center">
+            <div>Total</div>
+            <div className="text-right tabnum"><NumberReveal value={q1Plan + q2Plan + q3Plan + q4Plan} /></div>
+            <div className="text-right tabnum flex items-center justify-end gap-2 relative">
+              <NumberReveal value={q1Actual + q2Actual + q3Actual + q4Actual} />
+              <div className="absolute left-[calc(100%+16px)] flex items-center gap-1.5 text-xs text-warning font-normal opacity-90 whitespace-nowrap">
+                 <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" /></svg>
+                 Does not tie to {kpi.totalPlan} / {kpi.trfsCount} headline
+              </div>
+            </div>
+            <div></div>
+            <div></div>
           </div>
         </div>
       </div>
