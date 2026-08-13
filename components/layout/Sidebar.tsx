@@ -76,7 +76,7 @@ export function Sidebar({ isAdmin, onNavigate }: SidebarProps) {
           <img 
             src="/t7-logo.png" 
             alt="T7 Logo" 
-            className="w-3/4 max-w-[140px] opacity-70 hover:opacity-100 transition-opacity duration-200" 
+            className="w-full h-auto opacity-70 hover:opacity-100 transition-opacity duration-200" 
           />
         </div>
       </div>
