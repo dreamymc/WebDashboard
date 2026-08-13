@@ -66,6 +66,32 @@ export default function OverviewPage() {
   const q4Plan = (processedPlan.get('DEC') || 0) - (processedPlan.get('SEP') || 0);
   const q4Actual = (processedActual.get('DEC') || 0) - (processedActual.get('SEP') || 0);
 
+  const today = new Date();
+  const currentMonthIndex = today.getMonth(); // 0 to 11
+  const passedMonths = Math.max(1, currentMonthIndex + 1);
+  const monthsRemaining = Math.max(1, 12 - passedMonths);
+  
+  const monthNamesFull = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const monthNamesShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  
+  const currentMonthName = monthNamesFull[currentMonthIndex];
+  const currentMonthShort = monthNamesShort[currentMonthIndex];
+  const prevMonthShort = currentMonthIndex > 0 ? monthNamesShort[currentMonthIndex - 1] : "Dec";
+
+  const paceNeeded = Math.ceil((kpi.totalPlan - kpi.trfsCount) / monthsRemaining);
+  const currentPace = Math.ceil(kpi.trfsCount / passedMonths);
+  const paceTargetPct = (passedMonths / 12) * 100;
+  const paceDiffPt = Math.round(paceTargetPct - kpi.pctTrfs);
+  const isBelowPace = paceDiffPt > 0;
+
+  const currentQuarter = Math.floor(currentMonthIndex / 3) + 1;
+  const quarters = [
+    { label: currentQuarter === 1 ? 'Q1 to date' : 'Q1', plan: q1Plan, actual: q1Actual, notStarted: currentQuarter < 1 },
+    { label: currentQuarter === 2 ? 'Q2 to date' : 'Q2', plan: q2Plan, actual: q2Actual, notStarted: currentQuarter < 2 },
+    { label: currentQuarter === 3 ? 'Q3 to date' : 'Q3', plan: q3Plan, actual: q3Actual, notStarted: currentQuarter < 3 },
+    { label: currentQuarter === 4 ? 'Q4 to date' : 'Q4', plan: q4Plan, actual: q4Actual, notStarted: currentQuarter < 4 }
+  ];
+
   return (
     <div className="space-y-6">
       {/* Alert Banner */}
@@ -78,11 +104,11 @@ export default function OverviewPage() {
           </div>
           <div>
             <div className="text-lg font-bold text-red-300">Behind plan by {kpi.totalPlan - kpi.trfsCount} sites</div>
-            <div className="text-sm opacity-80">{kpi.trfsCount} of {kpi.totalPlan} TRFS through August. Pace needed to close: {Math.ceil((kpi.totalPlan - kpi.trfsCount) / 4)}/month.</div>
+            <div className="text-sm opacity-80">{kpi.trfsCount} of {kpi.totalPlan} TRFS through {currentMonthName}. Pace needed to close: {paceNeeded}/month.</div>
           </div>
         </div>
         <div className="text-sm font-medium">
-          Aug pace <span className="font-bold text-red-300">{Math.ceil(kpi.trfsCount / 8)}/mo</span>
+          {currentMonthShort} pace <span className="font-bold text-red-300">{currentPace}/mo</span>
         </div>
       </div>
 
@@ -91,29 +117,29 @@ export default function OverviewPage() {
         <div className="flex flex-col gap-1">
           <div className="text-xs font-medium text-text-muted mb-1">TRFS complete</div>
           <div className="text-4xl font-bold text-text-primary tabnum tracking-tight"><NumberReveal value={kpi.trfsCount} /> <span className="text-lg text-text-muted font-normal">/ {kpi.totalPlan}</span></div>
-          <div className="text-xs font-medium text-red-400 flex items-center gap-1 mt-1">
-            ↓ {kpi.pctTrfs}% • {Math.round((8/12)*100 - kpi.pctTrfs)}pt below pace
+          <div className={`text-xs font-medium flex items-center gap-1 mt-1 ${isBelowPace ? 'text-red-400' : 'text-green-500'}`}>
+            {isBelowPace ? '↓' : '↑'} {kpi.pctTrfs}% • {Math.abs(paceDiffPt)}pt {isBelowPace ? 'below' : 'above'} pace
           </div>
         </div>
         <div className="flex flex-col gap-1">
           <div className="text-xs font-medium text-text-muted mb-1">RTB</div>
           <div className="text-4xl font-bold text-text-primary tabnum tracking-tight"><NumberReveal value={kpi.rtbCount} /> <span className="text-lg text-text-muted font-normal">{kpi.pctRtb}%</span></div>
           <div className="text-xs font-medium text-green-500 flex items-center gap-1 mt-1">
-            ↑ +12 vs Jul
+            ↑ +12 vs {prevMonthShort}
           </div>
         </div>
         <div className="flex flex-col gap-1">
           <div className="text-xs font-medium text-text-muted mb-1">RFTI</div>
           <div className="text-4xl font-bold text-text-primary tabnum tracking-tight"><NumberReveal value={kpi.rftiCount} /> <span className="text-lg text-text-muted font-normal">{kpi.pctRfti}%</span></div>
           <div className="text-xs font-medium text-green-500 flex items-center gap-1 mt-1">
-            ↑ +9 vs Jul
+            ↑ +9 vs {prevMonthShort}
           </div>
         </div>
         <div className="flex flex-col gap-1">
           <div className="text-xs font-medium text-text-muted mb-1">Remaining</div>
           <div className="text-4xl font-bold text-text-primary tabnum tracking-tight"><NumberReveal value={kpi.totalPlan - kpi.trfsCount} /> <span className="text-lg text-text-muted font-normal">sites</span></div>
           <div className="text-xs font-medium text-warning flex items-center gap-1 mt-1">
-            4 months left
+            {monthsRemaining} month{monthsRemaining !== 1 ? 's' : ''} left
           </div>
         </div>
       </div>
@@ -129,12 +155,7 @@ export default function OverviewPage() {
             <div className="text-right">Variance</div>
             <div>Attainment</div>
           </div>
-          {[
-            { label: 'Q1', plan: q1Plan, actual: q1Actual },
-            { label: 'Q2', plan: q2Plan, actual: q2Actual },
-            { label: 'Q3 to date', plan: q3Plan, actual: q3Actual },
-            { label: 'Q4', plan: q4Plan, actual: q4Actual, notStarted: true }
-          ].map(q => {
+          {quarters.map(q => {
             const variance = q.actual - q.plan;
             const varColor = variance < 0 ? 'text-red-400' : (variance > 0 ? 'text-green-500' : 'text-text-muted');
             const varText = variance > 0 ? `+${variance}` : variance;
