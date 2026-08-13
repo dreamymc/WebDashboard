@@ -71,7 +71,7 @@ export function Sidebar({ isAdmin, onNavigate }: SidebarProps) {
       </nav>
 
       <div className="flex-1 flex flex-col justify-center items-center w-full">
-        <div className="w-full bg-surface-hover/50 border-y border-border-color/60 py-8 flex justify-center items-center">
+        <div className="w-full py-8 flex justify-center items-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
             src="/t7-logo.png" 
