@@ -75,86 +75,43 @@ export default function OverviewPage() {
         {/* Left Side: Main KPIs */}
         <div className="flex-1 flex flex-col gap-4">
           <div className="flex flex-col md:flex-row gap-4 h-full">
-            {/* Pipeline (standalone outside blue box) */}
-            <div className="flex flex-col gap-1.5 min-w-[120px] hover:-translate-y-0.5 transition duration-200 ease-out">
-              <div className="flex-1 bg-gradient-to-b from-brand/10 to-brand/20 border border-brand/40 rounded flex items-center justify-center p-4 shadow-sm">
-                <div className="text-4xl md:text-5xl font-bold text-brand tabnum tracking-tight">
-                  <NumberReveal value={kpi.totalPlan} />
-                </div>
-              </div>
-              <div className="text-sm font-bold text-text-primary uppercase tracking-widest text-center w-full">
-                Pipeline
-              </div>
+            {/* Pipeline (standalone) */}
+            <div className="panel p-4 flex flex-col items-center justify-center min-w-[140px] border-l-4 border-l-brand shadow-sm ring-1 ring-border-color hover:-translate-y-0.5 hover:shadow-md transition duration-200 ease-out">
+              <div className="text-4xl md:text-5xl font-bold text-brand tabnum tracking-tight"><NumberReveal value={kpi.totalPlan} /></div>
+              <div className="text-sm font-bold text-text-primary uppercase tracking-widest mt-2">Pipeline</div>
             </div>
 
-            {/* Core Metrics Group (Inside blue outer border) */}
-            <div className="flex-1 panel p-3 flex flex-row gap-3 ring-2 ring-brand/50 bg-transparent shadow-sm hover:-translate-y-0.5 transition duration-200 ease-out overflow-x-auto">
-              
-              {/* Plan */}
-              <div className="flex-1 flex flex-col gap-1.5 min-w-[90px]">
-                <div className="flex-1 bg-gradient-to-b from-brand/10 to-brand/20 border border-brand/40 rounded flex items-center justify-center py-4 shadow-sm">
-                  <div className="text-3xl md:text-4xl font-bold text-text-primary tabnum tracking-tight">
-                    <NumberReveal value={kpi.totalPlan} />
-                  </div>
-                </div>
-                <div className="text-xs font-bold text-text-primary uppercase tracking-widest text-center w-full">
-                  Plan
-                </div>
+            {/* Core Metrics Group */}
+            <div className="panel p-0 flex-1 grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-border-color shadow-sm ring-1 ring-border-color hover:-translate-y-0.5 hover:shadow-md transition duration-200 ease-out">
+              <div className="p-4 flex flex-col items-center justify-center">
+                <div className="text-3xl md:text-4xl font-bold text-text-primary tabnum tracking-tight"><NumberReveal value={kpi.totalPlan} /></div>
+                <div className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-1">Plan</div>
               </div>
-
-              {/* Actual */}
-              <div className="flex-1 flex flex-col gap-1.5 min-w-[90px]">
-                <div className="flex-1 bg-gradient-to-b from-brand/10 to-brand/20 border border-brand/40 rounded flex items-center justify-center py-4 shadow-sm">
-                  <div className="text-3xl md:text-4xl font-bold text-text-primary tabnum tracking-tight">
-                    <NumberReveal value={kpi.trfsCount} />
-                  </div>
-                </div>
-                <div className="text-xs font-bold text-text-primary uppercase tracking-widest text-center w-full">
-                  Actual
-                </div>
+              <div className="p-4 flex flex-col items-center justify-center">
+                <div className="text-3xl md:text-4xl font-bold text-text-primary tabnum tracking-tight"><NumberReveal value={kpi.trfsCount} /></div>
+                <div className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-1">Actual</div>
               </div>
-
-              {/* % TRFS */}
-              <div className="flex-1 flex flex-col gap-1.5 min-w-[90px]">
-                <div className="flex-1 bg-gradient-to-b from-brand/10 to-brand/20 border border-brand/40 rounded flex items-center justify-center py-4 shadow-sm">
-                  <div className="text-3xl md:text-4xl font-bold text-brand tabnum tracking-tight">
-                    <NumberReveal value={kpi.pctTrfs} suffix="%" />
-                  </div>
-                </div>
-                <div className="text-xs font-bold text-text-primary uppercase tracking-widest text-center w-full">
-                  % TRFS
-                </div>
+              <div className="p-4 flex flex-col items-center justify-center">
+                <div className="text-3xl md:text-4xl font-bold text-brand tabnum tracking-tight"><NumberReveal value={kpi.pctTrfs} suffix="%" /></div>
+                <div className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-1">% TRFS</div>
               </div>
-
-              {/* RTB / RFTI Sub-grid */}
-              <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-2 min-w-[140px]">
-                {/* RTB */}
-                <div className="flex flex-col gap-0.5 justify-end">
-                  <div className="bg-surface-hover border border-border-color/60 rounded flex items-center justify-center py-1.5 shadow-sm">
-                    <div className="text-base font-bold text-text-primary tabnum"><NumberReveal value={kpi.rtbCount} duration={800} /></div>
-                  </div>
-                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider text-center w-full">RTB</div>
+              {/* 2x2 grid for RTB/RFTI */}
+              <div className="grid grid-cols-2 grid-rows-2">
+                <div className="p-3 flex flex-col items-center justify-center border-b border-r border-border-color bg-surface-hover/50 transition-colors duration-150 hover:bg-surface-hover">
+                  <div className="text-lg font-bold text-text-primary tabnum"><NumberReveal value={kpi.rtbCount} duration={800} /></div>
+                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">RTB</div>
                 </div>
-                {/* % RTB */}
-                <div className="flex flex-col gap-0.5 justify-end">
-                  <div className="bg-surface-hover border border-border-color/60 rounded flex items-center justify-center py-1.5 shadow-sm">
-                    <div className="text-base font-bold text-brand tabnum"><NumberReveal value={kpi.pctRtb} duration={800} suffix="%" /></div>
-                  </div>
-                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider text-center w-full">% RTB</div>
+                <div className="p-3 flex flex-col items-center justify-center border-b border-border-color bg-surface-hover/50 transition-colors duration-150 hover:bg-surface-hover">
+                  <div className="text-lg font-bold text-brand tabnum"><NumberReveal value={kpi.pctRtb} duration={800} suffix="%" /></div>
+                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">% RTB</div>
                 </div>
-                {/* RFTI */}
-                <div className="flex flex-col gap-0.5 justify-start">
-                  <div className="bg-surface-hover border border-border-color/60 rounded flex items-center justify-center py-1.5 shadow-sm">
-                    <div className="text-base font-bold text-text-primary tabnum"><NumberReveal value={kpi.rftiCount} duration={800} /></div>
-                  </div>
-                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider text-center w-full">RFTI</div>
+                <div className="p-3 flex flex-col items-center justify-center border-r border-border-color bg-surface-hover/50 transition-colors duration-150 hover:bg-surface-hover">
+                  <div className="text-lg font-bold text-text-primary tabnum"><NumberReveal value={kpi.rftiCount} duration={800} /></div>
+                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">RFTI</div>
                 </div>
-                {/* % RFTI */}
-                <div className="flex flex-col gap-0.5 justify-start">
-                  <div className="bg-surface-hover border border-border-color/60 rounded flex items-center justify-center py-1.5 shadow-sm">
-                    <div className="text-base font-bold text-brand tabnum"><NumberReveal value={kpi.pctRfti} duration={800} suffix="%" /></div>
-                  </div>
-                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider text-center w-full">% RFTI</div>
+                <div className="p-3 flex flex-col items-center justify-center bg-surface-hover/50 transition-colors duration-150 hover:bg-surface-hover">
+                  <div className="text-lg font-bold text-brand tabnum"><NumberReveal value={kpi.pctRfti} duration={800} suffix="%" /></div>
+                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">% RFTI</div>
                 </div>
               </div>
             </div>
