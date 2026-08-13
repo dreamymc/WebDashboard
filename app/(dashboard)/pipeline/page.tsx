@@ -6,6 +6,25 @@ import { DonutChart } from "@/components/charts/DonutChart";
 import { StageBarChart } from "@/components/charts/StageBarChart";
 import { DataTable, ColumnDef } from "@/components/tables/DataTable";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const QuarterlyTick = (props: any) => {
+  const { x, y, payload, index } = props;
+  const isMiddle = index % 3 === 1; // 0=E, 1=N, 2=H
+  const quarterIndex = Math.floor(index / 3) + 1;
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text x={0} y={0} dy={10} textAnchor="middle" fill="var(--text-muted)" fontSize={11}>
+        {payload.value}
+      </text>
+      {isMiddle && (
+        <text x={0} y={20} dy={10} textAnchor="middle" fill="var(--text-secondary)" fontSize={12} fontWeight={700}>
+          Q{quarterIndex}
+        </text>
+      )}
+    </g>
+  );
+};
+
 export default function PipelinePage() {
   const { transforms } = useData();
   const { programVelocity, quarterlyPlanVsActual, techTierPerformance } = transforms;
@@ -38,15 +57,14 @@ export default function PipelinePage() {
           <div className="panel-header">Quarterly Plan vs Actual</div>
           <div className="panel-body flex-1">
             <StageBarChart
-              data={quarterlyPlanVsActual
-                .filter((r) => r.vendor !== "Total")
-                .map((r) => ({ ...r, label: `${r.quarter.split(' ')[0]} ${r.vendor}` }))}
-              xKey="label"
+              data={quarterlyPlanVsActual.filter((r) => r.vendor !== "Total")}
+              xKey="vendor"
               bars={[
                 { key: "plan", name: "Plan", color: "var(--text-muted)" },
                 { key: "actual", name: "Actual", color: "var(--brand)" },
               ]}
               height={300}
+              tickComponent={<QuarterlyTick />}
             />
           </div>
         </div>

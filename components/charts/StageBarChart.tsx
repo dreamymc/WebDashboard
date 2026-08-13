@@ -17,19 +17,21 @@ interface StageBarChartProps {
   xKey: string;
   bars: { key: string; name: string; stackId?: string; color?: string }[];
   height?: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  tickComponent?: any;
 }
 
-export function StageBarChart({ data, xKey, bars, height = 300 }: StageBarChartProps) {
+export function StageBarChart({ data, xKey, bars, height = 300, tickComponent }: StageBarChartProps) {
   return (
     <div style={{ width: "100%", height }}>
       <ResponsiveContainer>
-        <BarChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+        <BarChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 20 }}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis
             dataKey={xKey}
             axisLine={false}
             tickLine={false}
-            tick={{ fontSize: 11, fill: "var(--text-muted)" }}
+            tick={tickComponent ? tickComponent : { fontSize: 11, fill: "var(--text-muted)" }}
             interval={0}
             dy={10}
           />
