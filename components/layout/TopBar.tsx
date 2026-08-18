@@ -64,7 +64,7 @@ export function TopBar({ isAdmin, fetchedAt }: TopBarProps) {
           <SheetTrigger className="lg:hidden p-1 -ml-1 text-text-secondary hover:text-text-primary">
             <Menu className="w-5 h-5" />
           </SheetTrigger>
-          <SheetContent side="left" className="p-0 w-[240px] border-border-color">
+          <SheetContent side="left" className="p-0 !w-[240px] !max-w-[240px] border-border-color">
             <Sidebar isAdmin={isAdmin} onNavigate={() => setOpen(false)} />
           </SheetContent>
         </Sheet>

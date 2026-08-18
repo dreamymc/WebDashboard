@@ -37,7 +37,7 @@ export function Sidebar({ isAdmin, onNavigate }: SidebarProps) {
 
   return (
     <div className="flex flex-col h-full bg-surface border-r border-border-color pt-6 pb-6 w-[240px]">
-      <div className="px-4 mb-8">
+      <div className="px-4 pr-10 mb-8">
         <h1 className="text-xl font-bold tracking-tight text-text-primary">
           T7 Dashboard
         </h1>
