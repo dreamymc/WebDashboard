@@ -39,22 +39,9 @@ export default function PipelinePage() {
 
   return (
     <div className="space-y-6">
-      {/* Top Row: Donut */}
+      {/* Top Row: Quarterly Plan */}
       <div className="grid grid-cols-1 gap-6">
         <div className="panel flex flex-col">
-          <div className="panel-header">Program Velocity</div>
-          <div className="panel-body flex-1">
-            <DonutChart
-              data={programVelocity.map((pv) => ({ name: pv.program, value: pv.count }))}
-              height={350}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Row: Build Plan (6) | Tech Tier (6) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div className="lg:col-span-6 panel flex flex-col">
           <div className="panel-header">Quarterly Plan vs Actual</div>
           <div className="panel-body flex-1">
             <StageBarChart
@@ -66,9 +53,22 @@ export default function PipelinePage() {
                 { key: "plan", name: "Plan", color: "var(--text-muted)" },
                 { key: "actual", name: "Actual", color: "var(--brand)" },
               ]}
-              height={300}
+              height={350}
               tickComponent={<QuarterlyTick />}
               tooltipLabelFormatter={(label) => String(label).split('-')[0]}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Row: Program Velocity (6) | Tech Tier (6) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="lg:col-span-6 panel flex flex-col">
+          <div className="panel-header">Program Velocity</div>
+          <div className="panel-body flex-1">
+            <DonutChart
+              data={programVelocity.map((pv) => ({ name: pv.program, value: pv.count }))}
+              height={300}
             />
           </div>
         </div>
