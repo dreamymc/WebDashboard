@@ -14,6 +14,7 @@ function SitesPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const focusedMarkerId = searchParams.get("focus");
+  const searchedMarkerId = searchParams.get("search");
 
   const { siteTable, wirelessIntegration, transport } = transforms;
 
@@ -23,7 +24,7 @@ function SitesPageContent() {
   const clearAllFilters = () => {
     setSelectedSiteId(null);
     setHiddenStages(new Set());
-    if (focusedMarkerId) {
+    if (focusedMarkerId || searchedMarkerId) {
       router.push("/sites");
     }
   };
@@ -32,8 +33,10 @@ function SitesPageContent() {
   useEffect(() => {
     if (focusedMarkerId) {
       setSelectedSiteId(focusedMarkerId);
+    } else if (searchedMarkerId) {
+      setSelectedSiteId(searchedMarkerId);
     }
-  }, [focusedMarkerId]);
+  }, [focusedMarkerId, searchedMarkerId]);
 
   const toggleStage = (stage: string) => {
     setHiddenStages(prev => {
@@ -179,7 +182,7 @@ function SitesPageContent() {
       </div>
 
       {/* Middle Row: Site Table (full) */}
-      <div className="panel">
+      <div id="site-details" className="panel scroll-mt-20">
         <div className="panel-header flex justify-between items-center">
           <span>Site Details</span>
         </div>

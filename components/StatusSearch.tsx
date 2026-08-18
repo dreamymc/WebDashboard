@@ -65,7 +65,7 @@ export function StatusSearch() {
                   <div className="flex justify-between items-start mb-2">
                     <div className="min-w-0 pr-4">
                       <Link 
-                        href={`/sites?focus=${r.serialNumber}`}
+                        href={`/sites?search=${r.serialNumber}#site-details`}
                         onClick={() => setIsOpen(false)}
                         className="font-mono text-sm font-bold text-text-primary truncate hover:text-brand hover:underline transition-all cursor-pointer inline-block"
                       >
