@@ -27,6 +27,13 @@ export function StatusSearch() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Clear the search input if the filter is removed from the URL
+  useEffect(() => {
+    if (!searchParams.has("focus") && !searchParams.has("search")) {
+      setQuery("");
+    }
+  }, [searchParams]);
+
   const results = query.length >= 2 
     ? rawRows.filter(r => {
         const q = query.toLowerCase();

@@ -35,6 +35,8 @@ function SitesPageContent() {
       setSelectedSiteId(focusedMarkerId);
     } else if (searchedMarkerId) {
       setSelectedSiteId(searchedMarkerId);
+    } else {
+      setSelectedSiteId(null);
     }
   }, [focusedMarkerId, searchedMarkerId]);
 
