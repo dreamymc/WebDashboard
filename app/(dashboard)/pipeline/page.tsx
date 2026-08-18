@@ -14,11 +14,20 @@ const QuarterlyTick = (props: any) => {
   const vendorName = String(payload.value).split('-')[0];
   return (
     <g transform={`translate(${x},${y})`}>
-      <text x={0} y={0} dy={10} textAnchor="middle" fill="var(--text-muted)" fontSize={11}>
+      <text 
+        x={0} 
+        y={0} 
+        dy={10} 
+        dx={-5}
+        textAnchor="end" 
+        transform="rotate(-35)"
+        fill="var(--text-muted)" 
+        fontSize={10}
+      >
         {vendorName}
       </text>
       {isMiddle && (
-        <text x={0} y={20} dy={10} textAnchor="middle" fill="var(--text-secondary)" fontSize={12} fontWeight={700}>
+        <text x={0} y={28} dy={10} textAnchor="middle" fill="var(--text-secondary)" fontSize={12} fontWeight={700}>
           Q{quarterIndex}
         </text>
       )}

@@ -27,7 +27,7 @@ export function StageBarChart({ data, xKey, bars, height = 300, tickComponent, t
   return (
     <div style={{ width: "100%", height }}>
       <ResponsiveContainer>
-        <BarChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 20 }}>
+        <BarChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 40 }}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis
             dataKey={xKey}
