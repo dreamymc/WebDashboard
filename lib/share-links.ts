@@ -80,7 +80,8 @@ export async function listShareLinks(): Promise<ShareLink[]> {
   const keys = await kvKeys('share:*');
   if (keys.length === 0) return [];
   const links = await Promise.all(keys.map((k) => kvGet<ShareLink>(k)));
-  return links.filter(Boolean) as ShareLink[];
+  // Filter out nulls and corrupted ghost entries that lack a token or label
+  return links.filter((link) => link && typeof link.token === 'string' && typeof link.label === 'string') as ShareLink[];
 }
 
 export async function revokeShareLink(token: string): Promise<void> {
