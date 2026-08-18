@@ -33,13 +33,10 @@ function NumberReveal({ value, duration = 1200, suffix = "" }: { value: number, 
   return <>{current}{suffix}</>;
 }
 
-function JustifiedLabel({ text, className = "" }: { text: string, className?: string }) {
-  const chars = text.split('');
+function CenteredLabel({ text, className = "" }: { text: string, className?: string }) {
   return (
-    <div className={`flex w-full justify-between items-center ${className}`}>
-      {chars.map((char, i) => (
-        <span key={i}>{char === ' ' ? '\u00A0' : char}</span>
-      ))}
+    <div className={`flex w-full justify-center items-center ${className.replace('tracking-tighter', 'tracking-widest')}`}>
+      {text}
     </div>
   );
 }
@@ -100,7 +97,7 @@ export default function OverviewPage() {
                     <div className="text-3xl md:text-4xl font-bold text-text-primary tabnum tracking-tight leading-none"><NumberReveal value={kpi.totalPlan} /></div>
                   </div>
                   <div className="w-24 mt-1.5">
-                    <JustifiedLabel text="PLAN" className="text-lg font-bold text-text-secondary uppercase tracking-tighter" />
+                    <CenteredLabel text="PLAN" className="text-lg font-bold text-text-secondary uppercase tracking-tighter" />
                   </div>
                 </div>
               </div>
@@ -110,7 +107,7 @@ export default function OverviewPage() {
                     <div className="text-3xl md:text-4xl font-bold text-text-primary tabnum tracking-tight leading-none"><NumberReveal value={kpi.trfsCount} /></div>
                   </div>
                   <div className="w-24 mt-1.5">
-                    <JustifiedLabel text="ACTUAL" className="text-lg font-bold text-text-secondary uppercase tracking-tighter" />
+                    <CenteredLabel text="ACTUAL" className="text-lg font-bold text-text-secondary uppercase tracking-tighter" />
                   </div>
                 </div>
               </div>
@@ -120,7 +117,7 @@ export default function OverviewPage() {
                     <div className="text-3xl md:text-4xl font-bold text-brand tabnum tracking-tight leading-none"><NumberReveal value={kpi.pctTrfs} suffix="%" /></div>
                   </div>
                   <div className="w-24 mt-1.5">
-                    <JustifiedLabel text="%TRFS" className="text-lg font-bold text-text-secondary uppercase tracking-tighter" />
+                    <CenteredLabel text="%TRFS" className="text-lg font-bold text-text-secondary uppercase tracking-tighter" />
                   </div>
                 </div>
               </div>
@@ -132,7 +129,7 @@ export default function OverviewPage() {
                       <div className="text-lg font-bold text-text-primary tabnum leading-none"><NumberReveal value={kpi.rtbCount} duration={800} /></div>
                     </div>
                     <div className="w-16 mt-1">
-                      <JustifiedLabel text="RTB" className="text-base font-bold text-text-muted uppercase tracking-tighter" />
+                      <CenteredLabel text="RTB" className="text-base font-bold text-text-muted uppercase tracking-tighter" />
                     </div>
                   </div>
                 </div>
@@ -142,7 +139,7 @@ export default function OverviewPage() {
                       <div className="text-lg font-bold text-brand tabnum leading-none"><NumberReveal value={kpi.pctRtb} duration={800} suffix="%" /></div>
                     </div>
                     <div className="w-16 mt-1">
-                      <JustifiedLabel text="%RTB" className="text-base font-bold text-text-muted uppercase tracking-tighter" />
+                      <CenteredLabel text="%RTB" className="text-base font-bold text-text-muted uppercase tracking-tighter" />
                     </div>
                   </div>
                 </div>
@@ -152,7 +149,7 @@ export default function OverviewPage() {
                       <div className="text-lg font-bold text-text-primary tabnum leading-none"><NumberReveal value={kpi.rftiCount} duration={800} /></div>
                     </div>
                     <div className="w-16 mt-1">
-                      <JustifiedLabel text="RFTI" className="text-base font-bold text-text-muted uppercase tracking-tighter" />
+                      <CenteredLabel text="RFTI" className="text-base font-bold text-text-muted uppercase tracking-tighter" />
                     </div>
                   </div>
                 </div>
@@ -162,7 +159,7 @@ export default function OverviewPage() {
                       <div className="text-lg font-bold text-brand tabnum leading-none"><NumberReveal value={kpi.pctRfti} duration={800} suffix="%" /></div>
                     </div>
                     <div className="w-16 mt-1">
-                      <JustifiedLabel text="%RFTI" className="text-base font-bold text-text-muted uppercase tracking-tighter" />
+                      <CenteredLabel text="%RFTI" className="text-base font-bold text-text-muted uppercase tracking-tighter" />
                     </div>
                   </div>
                 </div>
