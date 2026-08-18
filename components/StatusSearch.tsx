@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useData } from "@/components/DataProvider";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { Search, MapPin, Calendar } from "lucide-react";
 import { StageCode } from "@/components/tables/StageBadge";
 
@@ -11,6 +12,10 @@ export function StatusSearch() {
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -36,19 +41,47 @@ export function StatusSearch() {
 
   return (
     <div ref={containerRef} className="relative flex items-center ml-2">
-      <div className="relative">
-        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+      <div className="relative flex items-center">
+        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
         <input
           type="text"
           placeholder="Status search (Serial, PLA...)"
           value={query}
           onChange={(e) => {
-            setQuery(e.target.value);
+            const val = e.target.value;
+            setQuery(val);
             setIsOpen(true);
+            
+            if (val === "" && pathname === "/sites") {
+              if (searchParams.has("focus") || searchParams.has("search")) {
+                const newParams = new URLSearchParams(searchParams.toString());
+                newParams.delete("focus");
+                newParams.delete("search");
+                router.push(`${pathname}?${newParams.toString()}`);
+              }
+            }
           }}
           onFocus={() => setIsOpen(true)}
-          className="bg-surface-hover border border-border-color text-text-primary text-xs rounded-full pl-8 pr-4 py-1.5 focus:outline-none focus:ring-1 focus:ring-brand w-[160px] sm:w-[200px] md:w-[280px] transition-all"
+          className="bg-surface-hover border border-border-color text-text-primary text-xs rounded-full pl-8 pr-8 py-1.5 focus:outline-none focus:ring-1 focus:ring-brand w-[160px] sm:w-[200px] md:w-[280px] transition-all"
         />
+        {query.length > 0 && (
+          <button 
+            onClick={() => {
+              setQuery("");
+              setIsOpen(false);
+              if (pathname === "/sites" && (searchParams.has("focus") || searchParams.has("search"))) {
+                const newParams = new URLSearchParams(searchParams.toString());
+                newParams.delete("focus");
+                newParams.delete("search");
+                router.push(`${pathname}?${newParams.toString()}`);
+              }
+            }}
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary bg-transparent border-none p-1 rounded-full flex items-center justify-center cursor-pointer transition-colors"
+            title="Clear search"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        )}
       </div>
 
       {isOpen && query.length >= 2 && (
