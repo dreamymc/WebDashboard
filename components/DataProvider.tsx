@@ -72,15 +72,19 @@ export function DataProvider({
   const province = searchParams.get("province");
   const program = searchParams.get("program");
   const vendor = searchParams.get("vendor");
+  const prio1 = searchParams.get("prio1");
+  const prio2 = searchParams.get("prio2");
 
   const filteredRows = useMemo(() => {
     return initialRows.filter((row) => {
       if (province && row.province !== province) return false;
       if (program && row.program !== program) return false;
       if (vendor && row.vendor !== vendor) return false;
+      if (prio1 && row.prio1 !== prio1) return false;
+      if (prio2 && row.prio2 !== prio2) return false;
       return true;
     });
-  }, [initialRows, province, program, vendor]);
+  }, [initialRows, province, program, vendor, prio1, prio2]);
 
   const transforms = useMemo(() => computeTransforms(filteredRows), [filteredRows]);
 

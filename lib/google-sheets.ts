@@ -35,18 +35,33 @@ export async function fetchSheetRows(): Promise<SiteRow[]> {
 
   const sheets = getSheetService();
 
-  // Fetch from row 2 downward. Row 2 is headers, Row 3+ is data.
-  // Using A2:ZZ ensures we capture all columns even if they are added or moved.
+  // Dynamically find Sheet3 or fallback to first sheet
+  const metadata = await sheets.spreadsheets.get({ spreadsheetId: sheetId });
+  const sheetNames = metadata.data.sheets?.map(s => s.properties?.title) || [];
+  const targetSheet = sheetNames.find(s => s?.toLowerCase().includes('sheet3')) || sheetNames[0];
+
   const response = await sheets.spreadsheets.values.get({
     spreadsheetId: sheetId,
-    range: 'A2:ZZ',
+    range: `'${targetSheet}'!A1:ZZ`,
   });
 
   const rawData = response.data.values ?? [];
-  if (rawData.length < 2) return []; // Need at least headers and one data row
+  if (rawData.length < 1) return [];
 
-  const headers = rawData[0].map(h => normalizeHeader(h));
-  const dataRows = rawData.slice(1);
+  // Dynamically find header row
+  let headerRowIdx = -1;
+  for (let i = 0; i < Math.min(rawData.length, 10); i++) {
+    const rowStr = rawData[i].map(c => String(c).toLowerCase());
+    if (rowStr.some(c => c.includes('serial number') || c.includes('vendor'))) {
+      headerRowIdx = i;
+      break;
+    }
+  }
+
+  if (headerRowIdx === -1) return []; // Could not find headers
+
+  const headers = rawData[headerRowIdx].map(h => normalizeHeader(h));
+  const dataRows = rawData.slice(headerRowIdx + 1);
 
   // Helper to meticulously find columns by name, with fallbacks for slight renaming
   const findCol = (possibleNames: string[], exactOnly: boolean = false) => {
@@ -66,7 +81,7 @@ export async function fetchSheetRows(): Promise<SiteRow[]> {
   const COL = {
     SERIAL_NUMBER:     findCol(['serial number']),
     LEAD_INDICATOR:    findCol(['lead indicator (local)', 'lead indicator']),
-    VENDOR:            headers.indexOf('vendor'), // Exact match to avoid 'tco/bau vendor'
+    VENDOR:            findCol(['access vendor', 'vendor']), // Updated to prefer ACCESS VENDOR
     SR_NAME:           findCol(['sr name']),
     TCO_BAU_VENDOR:    findCol(['tco/bau vendor', 'tco vendor']),
     PLA_ID:            findCol(['pla id']),
@@ -79,13 +94,21 @@ export async function fetchSheetRows(): Promise<SiteRow[]> {
     LONG:              findCol(['long - rtb (rre tracker)', 'long - rtb', 'long']),
     CONSERVATIVE_FC:   findCol(['conservative fc', 'conservative forecast']),
     BND_TRFS_FORECAST: findCol(['b&d trfs forecast', 'b&d']),
+    FILTER_1:          findCol(['filter 1']),
+    PRIO_1:            findCol(['prio 1']),
+    PRIO_2:            findCol(['prio 2']),
   };
 
   const rows: SiteRow[] = [];
   for (const raw of dataRows) {
     const serialNumber = cell(raw, COL.SERIAL_NUMBER);
-    // §6.1: filter rows where SERIAL NUMBER is null/blank
+    // filter rows where SERIAL NUMBER is null/blank
     if (!serialNumber) continue;
+
+    const filter1 = cell(raw, COL.FILTER_1);
+    const prio1 = cell(raw, COL.PRIO_1);
+    const prio2 = cell(raw, COL.PRIO_2);
+    const isPlan = String(filter1).trim() === '2026';
 
     rows.push({
       serialNumber,
@@ -103,6 +126,10 @@ export async function fetchSheetRows(): Promise<SiteRow[]> {
       long:             parseCoord(cell(raw, COL.LONG)),
       conservativeFC:   normalizeMonth(cell(raw, COL.CONSERVATIVE_FC)),
       bndTrfsForecast:  normalizeMonth(cell(raw, COL.BND_TRFS_FORECAST)),
+      filter1,
+      prio1,
+      prio2,
+      isPlan,
     });
   }
 

@@ -62,7 +62,10 @@ export function isActualStage(stage: string): boolean {
  * Sheet values are uppercase: "NOKIA" → "Nokia", "ERICSSON" → "Ericsson", "HT" → "HT"
  */
 export function normalizeVendor(val: string): string {
-  const v = val.trim().toUpperCase();
+  // Remove bracketed prefixes like "[01] ", "[02] ", etc.
+  let v = val.trim().toUpperCase();
+  v = v.replace(/^\[\d+\]\s*/, '');
+  
   if (v === 'NOKIA') return 'Nokia';
   if (v === 'ERICSSON') return 'Ericsson';
   if (v === 'HT') return 'HT';

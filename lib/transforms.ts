@@ -50,35 +50,41 @@ function pct(actual: number, total: number): number {
 // ── KPI Summary ───────────────────────────────────────────────────────────────
 
 export function kpiSummary(rows: SiteRow[]): KpiSummary {
-  const total = rows.length;
-  const rtbCount = rows.filter(r => stageIndex(r.leadIndicator) >= stageIndex('[04] RTB')).length;
-  const rftiCount = rows.filter(r => stageIndex(r.leadIndicator) >= stageIndex('[06] S-RFI')).length;
-  const trfsCount = rows.filter(r => r.leadIndicator === '[11] TRFS').length;
+  const planRows = rows.filter(r => r.isPlan);
+  
+  // KPI summary percentages should probably be based on the Plan to make sense.
+  // We use planRows for everything in KPI to be safe, as it represents the 2026 Plan performance.
+  const totalPlan = planRows.length;
+  
+  const rtbCount = planRows.filter(r => stageIndex(r.leadIndicator) >= stageIndex('[04] RTB')).length;
+  const rftiCount = planRows.filter(r => stageIndex(r.leadIndicator) >= stageIndex('[06] S-RFI')).length;
+  const trfsCount = planRows.filter(r => r.leadIndicator === '[11] TRFS').length;
 
   return {
-    totalPlan:   total,
-    q1Plan:      rows.filter(r => Q1_MONTHS.has(r.bndTrfsForecast)).length,
-    q2Plan:      rows.filter(r => Q2_MONTHS.has(r.bndTrfsForecast)).length,
-    q3Plan:      rows.filter(r => Q3_MONTHS.has(r.bndTrfsForecast)).length,
-    q4Plan:      rows.filter(r => Q4_MONTHS.has(r.bndTrfsForecast)).length,
-    q1Actual:    rows.filter(r => Q1_MONTHS.has(r.bndTrfsForecast) && isActualStage(r.leadIndicator)).length,
-    q2Actual:    rows.filter(r => Q2_MONTHS.has(r.bndTrfsForecast) && isActualStage(r.leadIndicator)).length,
-    q3Actual:    rows.filter(r => Q3_MONTHS.has(r.bndTrfsForecast) && isActualStage(r.leadIndicator)).length,
-    q4Actual:    rows.filter(r => Q4_MONTHS.has(r.bndTrfsForecast) && isActualStage(r.leadIndicator)).length,
+    totalPlan,
+    q1Plan:      planRows.filter(r => Q1_MONTHS.has(r.bndTrfsForecast)).length,
+    q2Plan:      planRows.filter(r => Q2_MONTHS.has(r.bndTrfsForecast)).length,
+    q3Plan:      planRows.filter(r => Q3_MONTHS.has(r.bndTrfsForecast)).length,
+    q4Plan:      planRows.filter(r => Q4_MONTHS.has(r.bndTrfsForecast)).length,
+    q1Actual:    planRows.filter(r => Q1_MONTHS.has(r.bndTrfsForecast) && isActualStage(r.leadIndicator)).length,
+    q2Actual:    planRows.filter(r => Q2_MONTHS.has(r.bndTrfsForecast) && isActualStage(r.leadIndicator)).length,
+    q3Actual:    planRows.filter(r => Q3_MONTHS.has(r.bndTrfsForecast) && isActualStage(r.leadIndicator)).length,
+    q4Actual:    planRows.filter(r => Q4_MONTHS.has(r.bndTrfsForecast) && isActualStage(r.leadIndicator)).length,
     rtbCount,
-    pctRtb:      pct(rtbCount, total),
+    pctRtb:      pct(rtbCount, totalPlan),
     rftiCount,
-    pctRfti:     pct(rftiCount, total),
-    pctTrfs:     pct(trfsCount, total),
+    pctRfti:     pct(rftiCount, totalPlan),
+    pctTrfs:     pct(trfsCount, totalPlan),
     trfsCount,
-    onAirCount:  rows.filter(r => r.leadIndicator === '[10] ON-AIR').length,
-    rfiCount:    rows.filter(r => r.leadIndicator === '[08] RFI').length,
+    onAirCount:  planRows.filter(r => r.leadIndicator === '[10] ON-AIR').length,
+    rfiCount:    planRows.filter(r => r.leadIndicator === '[08] RFI').length,
   };
 }
 
 // ── Quarterly Plan vs Actual ──────────────────────────────────────────────────
 
 export function quarterlyPlanVsActual(rows: SiteRow[]): QuarterlyPlanVsActual[] {
+  const planRows = rows.filter(r => r.isPlan);
   const result: QuarterlyPlanVsActual[] = [];
 
   for (const quarter of ['Q1 (Jan-Mar)', 'Q2 (Apr-Jun)', 'Q3 (Jul-Sep)', 'Q4 (Oct-Dec)'] as const) {
@@ -86,12 +92,12 @@ export function quarterlyPlanVsActual(rows: SiteRow[]): QuarterlyPlanVsActual[] 
                    quarter === 'Q2 (Apr-Jun)' ? Q2_MONTHS :
                    quarter === 'Q3 (Jul-Sep)' ? Q3_MONTHS : Q4_MONTHS;
 
-    const allPlan = rows.filter(r => months.has(r.bndTrfsForecast)).length;
-    const allActual = rows.filter(r => months.has(r.bndTrfsForecast) && isActualStage(r.leadIndicator)).length;
+    const allPlan = planRows.filter(r => months.has(r.bndTrfsForecast)).length;
+    const allActual = planRows.filter(r => months.has(r.bndTrfsForecast) && isActualStage(r.leadIndicator)).length;
     result.push({ quarter, vendor: 'Total', plan: allPlan, actual: allActual });
 
     for (const vendor of VENDORS) {
-      const vRows = rows.filter(r => r.vendor === vendor);
+      const vRows = planRows.filter(r => r.vendor === vendor);
       const plan = vRows.filter(r => months.has(r.bndTrfsForecast)).length;
       const actual = vRows.filter(r => months.has(r.bndTrfsForecast) && isActualStage(r.leadIndicator)).length;
       result.push({ quarter, vendor, plan, actual });
@@ -104,8 +110,9 @@ export function quarterlyPlanVsActual(rows: SiteRow[]): QuarterlyPlanVsActual[] 
 // ── Funnel Counts ─────────────────────────────────────────────────────────────
 
 export function funnelCounts(rows: SiteRow[]): FunnelCount[] {
+  const planRows = rows.filter(r => r.isPlan);
   const counts = new Map<string, number>();
-  for (const row of rows) {
+  for (const row of planRows) {
     const s = row.leadIndicator;
     counts.set(s, (counts.get(s) ?? 0) + 1);
   }
@@ -133,15 +140,17 @@ export function programVelocity(rows: SiteRow[]): ProgramVelocityItem[] {
 // ── Build Plan by Month ───────────────────────────────────────────────────────
 
 export function buildPlanByMonth(rows: SiteRow[]): BuildPlanItem[] {
+  const planRows = rows.filter(r => r.isPlan);
   return ALL_MONTHS.map(month => ({
     month,
-    count: rows.filter(r => r.bndTrfsForecast === month).length,
+    count: planRows.filter(r => r.bndTrfsForecast === month).length,
   }));
 }
 
 // ── Tech Tier Performance ─────────────────────────────────────────────────────
 
 export function techTierPerformance(rows: SiteRow[]): TechTierRow[] {
+  const planRows = rows.filter(r => r.isPlan);
   const parseTechTier = (plannedTech: string) => {
     const su = (plannedTech || '').toUpperCase();
     if (su.includes('64T64R')) return '5G/Massive MIMO (64T64R)';
@@ -153,7 +162,7 @@ export function techTierPerformance(rows: SiteRow[]): TechTierRow[] {
   const tiers = ['5G/Massive MIMO (64T64R)', '5G/MIMO (32T32R)', 'Mid-Tier (8T8R)', 'Standard 4G'];
 
   return tiers.map(tech => {
-    const tierRows = rows.filter(r => parseTechTier(r.plannedTech) === tech);
+    const tierRows = planRows.filter(r => parseTechTier(r.plannedTech) === tech);
     const plan = tierRows.length;
     const actual = tierRows.filter(r => r.leadIndicator === '[11] TRFS').length;
     return { tech, plan, actual, pctTrfs: pct(actual, plan) };
@@ -264,9 +273,10 @@ export function rfiRallyDetailed(rows: SiteRow[]): RfiDetailedRow[] {
 // ── Forecast Variance ─────────────────────────────────────────────────────────
 
 export function forecastVariance(rows: SiteRow[]): ForecastVarianceRow[] {
+  const planRows = rows.filter(r => r.isPlan);
   return ALL_MONTHS.map(month => {
-    const conservativeFC = rows.filter(r => r.conservativeFC === month).length;
-    const bndForecast = rows.filter(r => r.bndTrfsForecast === month).length;
+    const conservativeFC = planRows.filter(r => r.conservativeFC === month).length;
+    const bndForecast = planRows.filter(r => r.bndTrfsForecast === month).length;
     return {
       month,
       conservativeFC,
@@ -279,8 +289,9 @@ export function forecastVariance(rows: SiteRow[]): ForecastVarianceRow[] {
 // ── Province Plan vs Actual ───────────────────────────────────────────────────
 
 export function provincePlanVsActual(rows: SiteRow[]): ProvinceBarItem[] {
+  const planRows = rows.filter(r => r.isPlan);
   const provinceMap = new Map<string, { plan: number; actual: number }>();
-  for (const row of rows) {
+  for (const row of planRows) {
     const p = row.province || 'Unknown';
     if (!provinceMap.has(p)) provinceMap.set(p, { plan: 0, actual: 0 });
     const entry = provinceMap.get(p)!;
@@ -296,8 +307,9 @@ export function provincePlanVsActual(rows: SiteRow[]): ProvinceBarItem[] {
 // ── Town Plan vs Actual ───────────────────────────────────────────────────────
 
 export function townPlanVsActual(rows: SiteRow[]): TownPlanRow[] {
+  const planRows = rows.filter(r => r.isPlan);
   const townMap = new Map<string, { province: string; plan: number; actual: number }>();
-  for (const row of rows) {
+  for (const row of planRows) {
     const key = `${row.cityTown}|${row.province}`;
     if (!townMap.has(key)) townMap.set(key, { province: row.province, plan: 0, actual: 0 });
     const entry = townMap.get(key)!;

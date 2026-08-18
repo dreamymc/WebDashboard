@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { 
@@ -30,10 +30,13 @@ interface SidebarProps {
 
 export function Sidebar({ isAdmin, onNavigate }: SidebarProps) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
+
+  const queryString = searchParams.toString() ? `?${searchParams.toString()}` : "";
 
   return (
     <div className="flex flex-col h-full bg-surface border-r border-border-color pt-6 pb-6 w-[240px]">
@@ -50,7 +53,7 @@ export function Sidebar({ isAdmin, onNavigate }: SidebarProps) {
           return (
             <Link
               key={link.href}
-              href={link.href}
+              href={`${link.href}${queryString}`}
               onClick={onNavigate}
               className={`nav-link flex items-center gap-3 ${active ? "active" : ""}`}
             >
@@ -64,7 +67,7 @@ export function Sidebar({ isAdmin, onNavigate }: SidebarProps) {
 
         {isAdmin && (
           <Link
-            href="/admin"
+            href={`/admin${queryString}`}
             onClick={onNavigate}
             className={`nav-link flex items-center gap-3 ${pathname === "/admin" ? "active" : ""}`}
           >

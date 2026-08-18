@@ -15,6 +15,10 @@ export type SiteRow = {
   long: number | null;           // LONG
   conservativeFC: string;        // CONSERVATIVE FC — month abbreviation or blank
   bndTrfsForecast: string;       // B&D TRFS Forecast — month abbreviation or blank
+  filter1: string;               // Filter 1 (Year)
+  prio1: string;                 // Prio 1 (Buckets)
+  prio2: string;                 // Prio 2 (Classifications)
+  isPlan: boolean;               // True if Filter 1 == '2026'
 };
 
 // ── Aggregated data returned by the API route ────────────────────────────────
