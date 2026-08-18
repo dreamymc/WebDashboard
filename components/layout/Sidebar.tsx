@@ -4,13 +4,23 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { 
+  LayoutDashboard, 
+  Layers, 
+  Users, 
+  LineChart, 
+  MapPin, 
+  Settings, 
+  Sun, 
+  Moon 
+} from "lucide-react";
 
 const LINKS = [
-  { href: "/overview", label: "Overview" },
-  { href: "/pipeline", label: "Pipeline" },
-  { href: "/vendors-tco", label: "Vendors & TCO" },
-  { href: "/forecast", label: "Forecast" },
-  { href: "/sites", label: "Sites" },
+  { href: "/overview", label: "Overview", Icon: LayoutDashboard },
+  { href: "/pipeline", label: "Pipeline", Icon: Layers },
+  { href: "/vendors-tco", label: "Vendors & TCO", Icon: Users },
+  { href: "/forecast", label: "Forecast", Icon: LineChart },
+  { href: "/sites", label: "Sites", Icon: MapPin },
 ];
 
 interface SidebarProps {
@@ -36,13 +46,15 @@ export function Sidebar({ isAdmin, onNavigate }: SidebarProps) {
       <nav className="flex flex-col space-y-1">
         {LINKS.map((link) => {
           const active = pathname === link.href;
+          const { Icon } = link;
           return (
             <Link
               key={link.href}
               href={link.href}
               onClick={onNavigate}
-              className={`nav-link ${active ? "active" : ""}`}
+              className={`nav-link flex items-center gap-3 ${active ? "active" : ""}`}
             >
+              <Icon className="w-4 h-4 shrink-0" />
               {link.label}
             </Link>
           );
@@ -54,8 +66,9 @@ export function Sidebar({ isAdmin, onNavigate }: SidebarProps) {
           <Link
             href="/admin"
             onClick={onNavigate}
-            className={`nav-link ${pathname === "/admin" ? "active" : ""}`}
+            className={`nav-link flex items-center gap-3 ${pathname === "/admin" ? "active" : ""}`}
           >
+            <Settings className="w-4 h-4 shrink-0" />
             Admin
           </Link>
         )}
@@ -63,9 +76,17 @@ export function Sidebar({ isAdmin, onNavigate }: SidebarProps) {
         {mounted && (
           <button
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="nav-link text-left"
+            className="nav-link text-left flex items-center gap-3"
           >
-            {theme === "dark" ? "Light Mode" : "Dark Mode"}
+            {theme === "dark" ? (
+              <>
+                <Sun className="w-4 h-4 shrink-0" /> Light Mode
+              </>
+            ) : (
+              <>
+                <Moon className="w-4 h-4 shrink-0" /> Dark Mode
+              </>
+            )}
           </button>
         )}
       </nav>
