@@ -128,8 +128,9 @@ export function funnelCounts(rows: SiteRow[]): FunnelCount[] {
 // ── Program Velocity ──────────────────────────────────────────────────────────
 
 export function programVelocity(rows: SiteRow[]): ProgramVelocityItem[] {
+  const planRows = rows.filter(r => r.isPlan);
   const counts = new Map<string, number>();
-  for (const row of rows) {
+  for (const row of planRows) {
     const p = row.program;
     counts.set(p, (counts.get(p) ?? 0) + 1);
   }
@@ -173,11 +174,12 @@ export function techTierPerformance(rows: SiteRow[]): TechTierRow[] {
 // ── RFI Rally by Vendor ───────────────────────────────────────────────────────
 
 export function rfiRallyByVendor(rows: SiteRow[]): RfiRallyByVendorItem[] {
+  const planRows = rows.filter(r => r.isPlan);
   // Stages [06] through [11] — all "actual" stages
   const rallyStages = STAGE_ORDER.slice(STAGE_ORDER.indexOf('[06] S-RFI'));
 
   return rallyStages.map(stage => {
-    const stageRows = rows.filter(r => r.leadIndicator === stage);
+    const stageRows = planRows.filter(r => r.leadIndicator === stage);
     return {
       stage,
       ericsson: stageRows.filter(r => r.vendor === 'Ericsson').length,
@@ -190,8 +192,9 @@ export function rfiRallyByVendor(rows: SiteRow[]): RfiRallyByVendorItem[] {
 // ── TCO Performance ───────────────────────────────────────────────────────────
 
 export function tcoPerformance(rows: SiteRow[]): TcoPerformanceItem[] {
+  const planRows = rows.filter(r => r.isPlan);
   const vendorMap = new Map<string, SiteRow[]>();
-  for (const row of rows) {
+  for (const row of planRows) {
     const v = row.tcoBauVendor || 'Unknown';
     if (!vendorMap.has(v)) vendorMap.set(v, []);
     vendorMap.get(v)!.push(row);
@@ -209,15 +212,16 @@ export function tcoPerformance(rows: SiteRow[]): TcoPerformanceItem[] {
 // ── TCO Award Status ──────────────────────────────────────────────────────────
 
 export function tcoAwardStatus(rows: SiteRow[]): TcoAwardRow[] {
-  const vendors = [...new Set(rows.map(r => r.tcoBauVendor || 'Unknown'))].sort();
+  const planRows = rows.filter(r => r.isPlan);
+  const vendors = [...new Set(planRows.map(r => r.tcoBauVendor || 'Unknown'))].sort();
   const stages = STAGE_ORDER;
 
   return vendors.map(vendor => {
     const row: TcoAwardRow = { tcoVendor: vendor };
     for (const stage of stages) {
-      row[stage] = rows.filter(r => (r.tcoBauVendor || 'Unknown') === vendor && r.leadIndicator === stage).length;
+      row[stage] = planRows.filter(r => (r.tcoBauVendor || 'Unknown') === vendor && r.leadIndicator === stage).length;
     }
-    row['Total'] = rows.filter(r => (r.tcoBauVendor || 'Unknown') === vendor).length;
+    row['Total'] = planRows.filter(r => (r.tcoBauVendor || 'Unknown') === vendor).length;
     return row;
   });
 }
@@ -225,8 +229,9 @@ export function tcoAwardStatus(rows: SiteRow[]): TcoAwardRow[] {
 // ── Vendor Completion ─────────────────────────────────────────────────────────
 
 export function vendorCompletion(rows: SiteRow[]): VendorCompletionRow[] {
+  const planRows = rows.filter(r => r.isPlan);
   return VENDORS.map(vendor => {
-    const vRows = rows.filter(r => r.vendor === vendor);
+    const vRows = planRows.filter(r => r.vendor === vendor);
     const total = vRows.length;
     const rtbAndAbove = vRows.filter(r => stageIndex(r.leadIndicator) >= stageIndex('[04] RTB')).length;
     return { vendor, total, rtbAndAbove, pctCompletion: pct(rtbAndAbove, total) };
@@ -236,23 +241,24 @@ export function vendorCompletion(rows: SiteRow[]): VendorCompletionRow[] {
 // ── RFI Rally Detailed ────────────────────────────────────────────────────────
 
 export function rfiRallyDetailed(rows: SiteRow[]): RfiDetailedRow[] {
+  const planRows = rows.filter(r => r.isPlan);
   const rftiStages = new Set(['[08] RFI', '[09] RFI with TRS', '[10] ON-AIR', '[11] TRFS']);
-  const groups = new Map<string, { vendor: string; cleanProgram: string; rows: SiteRow[] }>();
+  const groups = new Map<string, { vendor: string; cleanProgram: string; planRows: SiteRow[] }>();
 
-  for (const row of rows) {
+  for (const row of planRows) {
     const cleanProgram = row.program.toUpperCase();
     const key = `${row.vendor}|${cleanProgram}`;
     if (!groups.has(key)) {
-      groups.set(key, { vendor: row.vendor, cleanProgram, rows: [] });
+      groups.set(key, { vendor: row.vendor, cleanProgram, planRows: [] });
     }
-    groups.get(key)!.rows.push(row);
+    groups.get(key)!.planRows.push(row);
   }
 
   return Array.from(groups.values())
     .map(g => {
-      const pipeline = g.rows.length;
-      const rfti = g.rows.filter(r => rftiStages.has(r.leadIndicator)).length;
-      const trfsActual = g.rows.filter(r => r.leadIndicator === '[11] TRFS').length;
+      const pipeline = g.planRows.length;
+      const rfti = g.planRows.filter(r => rftiStages.has(r.leadIndicator)).length;
+      const trfsActual = g.planRows.filter(r => r.leadIndicator === '[11] TRFS').length;
       return {
         vendor: g.vendor,
         cleanProgram: g.cleanProgram,
@@ -353,8 +359,9 @@ export function siteTable(rows: SiteRow[]): SiteTableRow[] {
 // which yields exactly 17 records.
 
 export function wirelessIntegration(rows: SiteRow[]): WirelessIntegrationRow[] {
+  const planRows = rows.filter(r => r.isPlan);
   const WIRELESS_STAGES = new Set(['[07] S-RFI w/ TRS', '[09] RFI with TRS']);
-  return rows
+  return planRows
     .filter(r => WIRELESS_STAGES.has(r.leadIndicator))
     .map(r => ({
       serialNumber: r.serialNumber,
@@ -372,8 +379,9 @@ export function wirelessIntegration(rows: SiteRow[]): WirelessIntegrationRow[] {
 // rows that have a valid B&D TRFS Forecast month (i.e., not yet completed/TRFS).
 
 export function transport(rows: SiteRow[]): TransportRow[] {
+  const planRows = rows.filter(r => r.isPlan);
   const MONTH_SET = new Set([...Q3_MONTHS, ...Q4_MONTHS]);
-  return rows
+  return planRows
     .filter(r => MONTH_SET.has(r.bndTrfsForecast) && r.leadIndicator !== '[11] TRFS')
     .map(r => ({
       serialNumber:    r.serialNumber,
