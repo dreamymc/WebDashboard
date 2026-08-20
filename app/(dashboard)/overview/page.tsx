@@ -232,6 +232,7 @@ export default function OverviewPage() {
                 data={transforms.buildPlanByMonth}
                 xKey="month"
                 bars={[{ key: "count", name: "Count", color: "var(--brand)" }]}
+                lines={[]}
                 height={300}
               />
             ) : (
