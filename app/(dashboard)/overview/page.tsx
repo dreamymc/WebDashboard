@@ -5,6 +5,7 @@ import { useData } from "@/components/DataProvider";
 import ComboChart from "@/components/charts/ComboChart";
 import { FunnelBarChart } from "@/components/charts/FunnelBarChart";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 function NumberReveal({ value, duration = 1200, suffix = "" }: { value: number, duration?: number, suffix?: string }) {
   const [current, setCurrent] = useState(0);
@@ -42,6 +43,8 @@ function CenteredLabel({ text, className = "" }: { text: string, className?: str
 }
 
 export default function OverviewPage() {
+  const searchParams = useSearchParams();
+  const buildPlan = searchParams.get("buildPlan");
   const { transforms, newBuildPlan } = useData();
   const { kpi, funnelCounts } = transforms;
 
@@ -222,18 +225,27 @@ export default function OverviewPage() {
       {/* Bottom Row: Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="panel flex flex-col">
-          <div className="panel-header">Build Plan by Month</div>
+          <div className="panel-header">Build Plan by Month {buildPlan ? `(${buildPlan})` : ''}</div>
           <div className="panel-body flex-1">
-            <ComboChart
-              data={newBuildPlan}
-              xKey="month"
-              bars={[{ key: "plan", name: "Plan", color: "var(--brand)" }]}
-              lines={[
-                { key: "actual", name: "Actual", color: "#FFEA00" }, // yellow
-                { key: "buildOutlook", name: "Build Outlook", color: "#f97316" } // orange
-              ]}
-              height={300}
-            />
+            {buildPlan ? (
+              <ComboChart
+                data={transforms.buildPlanByMonth}
+                xKey="month"
+                bars={[{ key: "count", name: "Count", color: "var(--brand)" }]}
+                height={300}
+              />
+            ) : (
+              <ComboChart
+                data={newBuildPlan}
+                xKey="month"
+                bars={[{ key: "plan", name: "Plan", color: "var(--brand)" }]}
+                lines={[
+                  { key: "actual", name: "Actual", color: "#FFEA00" },
+                  { key: "buildOutlook", name: "Build Outlook", color: "#f97316" }
+                ]}
+                height={300}
+              />
+            )}
           </div>
         </div>
 

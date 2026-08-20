@@ -32,7 +32,7 @@ interface DataContextValue {
 
 const DataContext = createContext<DataContextValue | null>(null);
 
-function computeTransforms(rows: SiteRow[]) {
+function computeTransforms(rows: SiteRow[], buildPlan: string | null) {
   const wi = wirelessIntegration(rows);
   const tr = transport(rows);
 
@@ -41,7 +41,7 @@ function computeTransforms(rows: SiteRow[]) {
     quarterlyPlanVsActual: quarterlyPlanVsActual(rows),
     funnelCounts: funnelCounts(rows),
     programVelocity: programVelocity(rows),
-    buildPlanByMonth: buildPlanByMonth(rows),
+    buildPlanByMonth: buildPlanByMonth(rows, buildPlan),
     techTierPerformance: techTierPerformance(rows),
     rfiRallyByVendor: rfiRallyByVendor(rows),
     tcoPerformance: tcoPerformance(rows),
@@ -92,7 +92,7 @@ export function DataProvider({
     });
   }, [initialRows, province, town, leadIndicator, buildPlan, prio2]);
 
-  const transforms = useMemo(() => computeTransforms(filteredRows), [filteredRows]);
+  const transforms = useMemo(() => computeTransforms(filteredRows, buildPlan), [filteredRows, buildPlan]);
 
   const value = useMemo(
     () => ({ rawRows: initialRows, filteredRows, newBuildPlan: initialNewBuildPlan, transforms }),

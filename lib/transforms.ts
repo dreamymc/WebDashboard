@@ -16,6 +16,7 @@ import {
   Q4_MONTHS,
   ALL_MONTHS,
   stageIndex,
+  normalizeMonth,
 } from './normalizers';
 import type {
   SiteRow,
@@ -141,11 +142,25 @@ export function programVelocity(rows: SiteRow[]): ProgramVelocityItem[] {
 
 // ── Build Plan by Month ───────────────────────────────────────────────────────
 
-export function buildPlanByMonth(rows: SiteRow[]): BuildPlanItem[] {
+export function buildPlanByMonth(rows: SiteRow[], buildPlanFilter: string | null = null): BuildPlanItem[] {
   const planRows = rows.filter(r => r.isPlan);
   return ALL_MONTHS.map(month => ({
     month,
-    count: planRows.filter(r => r.bndTrfsForecast === month).length,
+    count: planRows.filter(r => {
+      let targetVal = r.bndTrfsForecast;
+      
+      if (buildPlanFilter === "Q1 BP") {
+        targetVal = normalizeMonth(r.q1Bp);
+      } else if (buildPlanFilter === "Q2 BP") {
+        targetVal = normalizeMonth(r.q2Bp);
+      } else if (buildPlanFilter === "Q3 BP") {
+        targetVal = normalizeMonth(r.q3Bp);
+      } else if (buildPlanFilter === "Q4 BP") {
+        targetVal = normalizeMonth(r.q4Bp);
+      }
+      
+      return targetVal === month;
+    }).length,
   }));
 }
 
