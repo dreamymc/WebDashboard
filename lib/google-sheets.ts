@@ -6,7 +6,7 @@
 
 import { google } from 'googleapis';
 import type { SiteRow } from './types';
-import { normalizeProgram, normalizeMonth, parseCoord, normalizeVendor } from './normalizers';
+import { normalizeProgram, normalizeMonth, parseCoord, normalizeVendor, normalizeLeadIndicator } from './normalizers';
 
 function getSheetService() {
   const credentialsJson = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
@@ -118,7 +118,7 @@ export async function fetchSheetRows(): Promise<SiteRow[]> {
 
     rows.push({
       serialNumber,
-      leadIndicator:    cell(raw, COL.LEAD_INDICATOR),
+      leadIndicator:    normalizeLeadIndicator(cell(raw, COL.LEAD_INDICATOR)),
       vendor:           normalizeVendor(cell(raw, COL.VENDOR)),
       srName:           cell(raw, COL.SR_NAME),
       tcoBauVendor:     cell(raw, COL.TCO_BAU_VENDOR),
