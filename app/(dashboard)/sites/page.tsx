@@ -187,6 +187,7 @@ function SitesPageContent() {
       <div id="site-details" className="panel scroll-mt-20">
         <div className="panel-header flex justify-between items-center">
           <span>Site Details</span>
+          <span className="text-text-muted font-mono">{filteredSiteTable.length} rows</span>
         </div>
         <div className="panel-body p-0 max-h-[400px] overflow-auto">
           <DataTable data={filteredSiteTable} columns={siteColumns} />
