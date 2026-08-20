@@ -61,6 +61,7 @@ export function kpiSummary(rows: SiteRow[]): KpiSummary {
   const trfsCount = planRows.filter(r => r.leadIndicator === '[11] TRFS').length;
 
   return {
+    totalPipeline: rows.length,
     totalPlan,
     q1Plan:      planRows.filter(r => Q1_MONTHS.has(r.bndTrfsForecast)).length,
     q2Plan:      planRows.filter(r => Q2_MONTHS.has(r.bndTrfsForecast)).length,

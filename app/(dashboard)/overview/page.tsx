@@ -85,7 +85,7 @@ export default function OverviewPage() {
           <div className="flex flex-col md:flex-row gap-4 h-full">
             {/* Pipeline (standalone) */}
             <div className="panel p-4 flex flex-col items-center justify-center min-w-[140px] border-l-4 border-l-brand shadow-sm ring-1 ring-border-color hover:-translate-y-0.5 hover:shadow-md transition duration-200 ease-out">
-              <div className="text-4xl md:text-5xl font-bold text-brand tabnum tracking-tight"><NumberReveal value={kpi.totalPlan} /></div>
+              <div className="text-4xl md:text-5xl font-bold text-brand tabnum tracking-tight"><NumberReveal value={kpi.totalPipeline} /></div>
               <div className="text-sm font-bold text-text-primary uppercase tracking-widest mt-2">Pipeline</div>
             </div>
 

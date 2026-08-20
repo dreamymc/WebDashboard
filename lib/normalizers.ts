@@ -81,7 +81,7 @@ export const Q3_MONTHS = new Set(['JUL', 'AUG', 'SEP']);
 /** Q4 months */
 export const Q4_MONTHS = new Set(['OCT', 'NOV', 'DEC']);
 
-export const ALL_MONTHS = ['JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+export const ALL_MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
 /**
  * Normalise the PROGRAM field.
@@ -114,9 +114,17 @@ export function normalizeMonth(val: string | undefined): string {
   if (!val) return '';
   const str = val.trim().toUpperCase();
   // Extract the last token (after the last space)
-  const parts = str.split(/\s+/);
-  const last = parts[parts.length - 1];
-  const VALID = new Set(['JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']);
-  return VALID.has(last) ? last : '';
+  let last = '';
+  
+  // Special case: some formats like "JAN (2027)" have the year at the end in parens.
+  // We want to grab the month name. We can just check if any month name is in the string.
+  const VALID = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  for (const m of VALID) {
+    if (str.includes(m)) {
+      return m;
+    }
+  }
+  
+  return '';
 }
 
