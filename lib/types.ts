@@ -18,6 +18,10 @@ export type SiteRow = {
   filter1: string;               // Filter 1 (Year)
   prio1: string;                 // Prio 1 (Buckets)
   prio2: string;                 // Prio 2 (Classifications)
+  q1Bp: string;
+  q2Bp: string;
+  q3Bp: string;
+  q4Bp: string;
   isPlan: boolean;               // True if Filter 1 == '2026'
 };
 

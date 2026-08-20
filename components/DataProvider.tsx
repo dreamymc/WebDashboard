@@ -70,21 +70,27 @@ export function DataProvider({
 }) {
   const searchParams = useSearchParams();
   const province = searchParams.get("province");
-  const program = searchParams.get("program");
-  const vendor = searchParams.get("vendor");
-  const prio1 = searchParams.get("prio1");
+  const town = searchParams.get("town");
+  const leadIndicator = searchParams.get("leadIndicator");
+  const buildPlan = searchParams.get("buildPlan");
   const prio2 = searchParams.get("prio2");
 
   const filteredRows = useMemo(() => {
     return initialRows.filter((row) => {
       if (province && row.province !== province) return false;
-      if (program && row.program !== program) return false;
-      if (vendor && row.vendor !== vendor) return false;
-      if (prio1 && row.prio1 !== prio1) return false;
+      if (town && row.cityTown !== town) return false;
+      if (leadIndicator && row.leadIndicator !== leadIndicator) return false;
       if (prio2 && row.prio2 !== prio2) return false;
+      
+      if (buildPlan) {
+        if (buildPlan === "Q1 BP" && !row.q1Bp) return false;
+        if (buildPlan === "Q2 BP" && !row.q2Bp) return false;
+        if (buildPlan === "Q3 BP" && !row.q3Bp) return false;
+        if (buildPlan === "Q4 BP" && !row.q4Bp) return false;
+      }
       return true;
     });
-  }, [initialRows, province, program, vendor, prio1, prio2]);
+  }, [initialRows, province, town, leadIndicator, buildPlan, prio2]);
 
   const transforms = useMemo(() => computeTransforms(filteredRows), [filteredRows]);
 

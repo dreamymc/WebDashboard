@@ -11,16 +11,15 @@ export function FilterBar() {
   const { rawRows } = useData();
 
   const currentProvince = searchParams.get("province") || "";
-  const currentProgram = searchParams.get("program") || "";
-  const currentVendor = searchParams.get("vendor") || "";
-  const currentPrio1 = searchParams.get("prio1") || "";
+  const currentTown = searchParams.get("town") || "";
+  const currentLeadIndicator = searchParams.get("leadIndicator") || "";
+  const currentBuildPlan = searchParams.get("buildPlan") || "";
   const currentPrio2 = searchParams.get("prio2") || "";
 
   // Dynamically extract unique values from the raw data
   const provinces = useMemo(() => Array.from(new Set(rawRows.map(r => r.province).filter(Boolean))).sort(), [rawRows]);
-  const programs = useMemo(() => Array.from(new Set(rawRows.map(r => r.program).filter(Boolean))).sort(), [rawRows]);
-  const vendors = useMemo(() => Array.from(new Set(rawRows.map(r => r.vendor).filter(Boolean))).sort(), [rawRows]);
-  const prio1Options = useMemo(() => Array.from(new Set(rawRows.map(r => r.prio1).filter(Boolean))).sort(), [rawRows]);
+  const towns = useMemo(() => Array.from(new Set(rawRows.map(r => r.cityTown).filter(Boolean))).sort(), [rawRows]);
+  const leadIndicators = useMemo(() => Array.from(new Set(rawRows.map(r => r.leadIndicator).filter(Boolean))).sort(), [rawRows]);
   const prio2Options = useMemo(() => Array.from(new Set(rawRows.map(r => r.prio2).filter(Boolean))).sort(), [rawRows]);
 
   const createQueryString = useCallback(
@@ -44,7 +43,7 @@ export function FilterBar() {
     router.push(pathname);
   };
 
-  const hasFilters = currentProvince || currentProgram || currentVendor || currentPrio1 || currentPrio2;
+  const hasFilters = currentProvince || currentTown || currentLeadIndicator || currentBuildPlan || currentPrio2;
 
   return (
     <div className="flex flex-wrap items-center gap-3 py-3 px-4 lg:px-6 bg-bg border-b border-border-color">
@@ -62,42 +61,41 @@ export function FilterBar() {
       </select>
 
       <select
-        value={currentProgram}
-        onChange={(e) => setFilter("program", e.target.value)}
+        value={currentTown}
+        onChange={(e) => setFilter("town", e.target.value)}
         className="filter-select"
       >
-        <option value="">Program...</option>
-        {programs.map((p) => (
-          <option key={p} value={p}>
-            {p}
+        <option value="">Town...</option>
+        {towns.map((t) => (
+          <option key={t} value={t}>
+            {t}
           </option>
         ))}
       </select>
 
       <select
-        value={currentVendor}
-        onChange={(e) => setFilter("vendor", e.target.value)}
+        value={currentLeadIndicator}
+        onChange={(e) => setFilter("leadIndicator", e.target.value)}
         className="filter-select"
       >
-        <option value="">Vendor (Network)...</option>
-        {vendors.map((v) => (
-          <option key={v} value={v}>
-            {v}
+        <option value="">Lead Indicator...</option>
+        {leadIndicators.map((l) => (
+          <option key={l} value={l}>
+            {l}
           </option>
         ))}
       </select>
 
       <select
-        value={currentPrio1}
-        onChange={(e) => setFilter("prio1", e.target.value)}
+        value={currentBuildPlan}
+        onChange={(e) => setFilter("buildPlan", e.target.value)}
         className="filter-select"
       >
-        <option value="">Prio 1...</option>
-        {prio1Options.map((p) => (
-          <option key={p} value={p}>
-            {p}
-          </option>
-        ))}
+        <option value="">Build Plan...</option>
+        <option value="Q1 BP">Q1 BP</option>
+        <option value="Q2 BP">Q2 BP</option>
+        <option value="Q3 BP">Q3 BP</option>
+        <option value="Q4 BP">Q4 BP</option>
       </select>
 
       <select
