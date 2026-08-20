@@ -17,10 +17,10 @@ export default function VendorsTcoPage() {
 
   const tcoAwardColumns: ColumnDef<any>[] = [
     { key: "tcoVendor", header: "TCO Vendor", cell: (r) => <span className="font-semibold">{r.tcoVendor}</span> },
-    { key: "01", header: "AWARDED", cell: (r) => r["[01] AWARDED / SITE HUNTING"] || "-", align: "right" },
-    { key: "03", header: "TSSR APPROVED", cell: (r) => r["[03] TSSR APPROVED"] || "-", align: "right" },
-    { key: "04", header: "RTB", cell: (r) => r["[04] RTB"] || "-", align: "right" },
-    { key: "05", header: "CW DOING", cell: (r) => r["[05] CW DOING"] || "-", align: "right" },
+    { key: "01", header: "AWARDED", cell: (r) => r["AWARDED / SITE HUNTING"] || "-", align: "right" },
+    { key: "03", header: "TSSR APPROVED", cell: (r) => r["TSSR APPROVED"] || "-", align: "right" },
+    { key: "04", header: "RTB", cell: (r) => r["RTB"] || "-", align: "right" },
+    { key: "05", header: "CW DOING", cell: (r) => r["CW DOING"] || "-", align: "right" },
   ];
 
   const vendorCompletionColumns: ColumnDef<any>[] = [
