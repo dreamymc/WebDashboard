@@ -114,8 +114,6 @@ export function normalizeMonth(val: string | undefined): string {
   if (!val) return '';
   const str = val.trim().toUpperCase();
   // Extract the last token (after the last space)
-  let last = '';
-  
   // Special case: some formats like "JAN (2027)" have the year at the end in parens.
   // We want to grab the month name. We can just check if any month name is in the string.
   const VALID = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
