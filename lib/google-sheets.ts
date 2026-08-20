@@ -101,6 +101,8 @@ export async function fetchSheetRows(): Promise<SiteRow[]> {
     Q2_BP:             findCol(['q2 bp']),
     Q3_BP:             findCol(['q3 bp']),
     Q4_BP:             findCol(['q4 bp']),
+    ADDRESS:           findCol(['address']),
+    RTB:               findCol(['rtb']),
   };
 
   const rows: SiteRow[] = [];
@@ -138,6 +140,8 @@ export async function fetchSheetRows(): Promise<SiteRow[]> {
       q3Bp:             cell(raw, COL.Q3_BP),
       q4Bp:             cell(raw, COL.Q4_BP),
       isPlan,
+      address:          cell(raw, COL.ADDRESS),
+      rtb:              cell(raw, COL.RTB),
     });
   }
 

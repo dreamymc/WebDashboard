@@ -21,6 +21,7 @@ import {
   siteTable,
   wirelessIntegration,
   transport,
+  locationDirectory,
 } from "@/lib/transforms";
 
 interface DataContextValue {
@@ -54,6 +55,7 @@ function computeTransforms(rows: SiteRow[], buildPlan: string | null) {
     siteTable: siteTable(rows),
     wirelessIntegration: wi,
     transport: tr,
+    locationDirectory: locationDirectory(rows),
     wirelessIntegrationCount: wi.length,
     transportCount: tr.length,
   };

@@ -23,6 +23,8 @@ export type SiteRow = {
   q3Bp: string;
   q4Bp: string;
   isPlan: boolean;               // True if Filter 1 == '2026'
+  address: string;
+  rtb: string;
 };
 
 // ── Aggregated data returned by the API route ────────────────────────────────
@@ -144,12 +146,26 @@ export type TownPlanRow = {
 
 export type SiteTableRow = {
   serialNumber: string;
+  srName: string;
+  plaId: string;
+  bcfName: string;
   vendor: string;
   tcoVendor: string;
-  province: string;
-  cityTown: string;
   program: string;
-  stage: string;
+  leadIndicator: string;
+  buildForecast: string;
+  lat: number | null;
+  long: number | null;
+  province: string; // Used in search/map context if needed
+  cityTown: string; // Used in search/map context if needed
+};
+
+export type LocationDirectoryRow = {
+  serialNumber: string; // Hidden but good for keys
+  province: string;
+  town: string;
+  address: string;
+  rtb: string;
   lat: number | null;
   long: number | null;
 };

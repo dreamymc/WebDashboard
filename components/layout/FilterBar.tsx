@@ -103,7 +103,7 @@ export function FilterBar() {
         onChange={(e) => setFilter("prio2", e.target.value)}
         className="filter-select"
       >
-        <option value="">Prio 2...</option>
+        <option value="">Priority Tagging...</option>
         {prio2Options.map((p) => (
           <option key={p} value={p}>
             {p}

@@ -16,7 +16,7 @@ function SitesPageContent() {
   const focusedMarkerId = searchParams.get("focus");
   const searchedMarkerId = searchParams.get("search");
 
-  const { siteTable, wirelessIntegration, transport } = transforms;
+  const { siteTable, locationDirectory } = transforms;
 
   const [selectedSiteId, setSelectedSiteId] = useState<string | null>(null);
   const [hiddenStages, setHiddenStages] = useState<Set<string>>(new Set());
@@ -74,57 +74,50 @@ function SitesPageContent() {
     return result;
   }, [siteTable, selectedSiteId]);
 
-  const filteredWI = useMemo(() => {
-    const result = wirelessIntegration;
-    if (selectedSiteId) return result.filter((s) => s.serialNumber === selectedSiteId);
+    const filteredLocation = useMemo(() => {
+    const result = locationDirectory;
+    if (selectedSiteId) return result.filter((s: any) => s.serialNumber === selectedSiteId);
     return result;
-  }, [wirelessIntegration, selectedSiteId]);
-
-  const filteredTR = useMemo(() => {
-    const result = transport;
-    if (selectedSiteId) return result.filter((s) => s.serialNumber === selectedSiteId);
-    return result;
-  }, [transport, selectedSiteId]);
-
-  const markers = useMemo(() => {
+  }, [locationDirectory, selectedSiteId]);
+  
+    const markers = useMemo(() => {
     return filteredSiteTable
-      .filter((s) => hiddenStages.size === 0 || !hiddenStages.has(s.stage))
+      .filter((s) => hiddenStages.size === 0 || !hiddenStages.has(s.leadIndicator))
       .filter((s) => s.lat !== null && s.long !== null)
       .map((s) => ({
         id: s.serialNumber,
         lat: s.lat!,
         long: s.long!,
-        stage: s.stage,
-        color: STAGE_COLORS[s.stage] ?? "var(--text-muted)",
+        stage: s.leadIndicator,
+        color: STAGE_COLORS[s.leadIndicator] ?? "var(--text-muted)",
         name: s.cityTown,
       }));
   }, [filteredSiteTable, hiddenStages]);
 
   const siteColumns: ColumnDef<any>[] = [
-    { key: "id", header: "Serial Number", cell: (r) => <span className="font-mono text-[11px]">{r.serialNumber}</span> },
-    { key: "net", header: "Vendor", cell: (r) => r.vendor },
+    { key: "id", header: "SERIAL NUMBER", cell: (r) => <span className="font-mono text-[11px]">{r.serialNumber}</span> },
+    { key: "srName", header: "SR NAME", cell: (r) => r.srName },
+    { key: "plaId", header: "PLA ID", cell: (r) => r.plaId },
+    { key: "bcf", header: "BCF", cell: (r) => r.bcfName },
+    { key: "net", header: "ACCESS VENDOR", cell: (r) => r.vendor },
     { key: "tco", header: "TCO", cell: (r) => r.tcoVendor },
+    { key: "prog", header: "PROGRAM", cell: (r) => r.program },
+    { key: "leadIndicator", header: "LEAD INDICATOR", cell: (r) => <StageBadge stage={r.leadIndicator} /> },
+    { key: "fc", header: "BUILD FORECAST", cell: (r) => r.buildForecast },
+  ];
+
+  const locationColumns: ColumnDef<any>[] = [
     { key: "prov", header: "Province", cell: (r) => r.province },
-    { key: "town", header: "Town", cell: (r) => r.cityTown },
-    { key: "prog", header: "Program", cell: (r) => r.program },
-    { key: "stage", header: "Stage", cell: (r) => <StageBadge stage={r.stage} /> },
+    { key: "town", header: "Town", cell: (r) => r.town },
+    { key: "addr", header: "Address", cell: (r) => r.address },
+    { key: "rtb", header: "RTB", cell: (r) => r.rtb },
+    { key: "long", header: "LONG", cell: (r) => r.long },
+    { key: "lat", header: "LAT", cell: (r) => r.lat },
   ];
 
-  const wiColumns: ColumnDef<any>[] = [
-    { key: "id", header: "Serial Number", cell: (r) => <span className="font-mono text-[11px]">{r.serialNumber}</span> },
-    { key: "net", header: "Vendor", cell: (r) => r.vendor },
-    { key: "town", header: "Town", cell: (r) => r.cityTown },
-    { key: "stage", header: "Stage", cell: (r) => <StageBadge stage={r.stage} /> },
-    { key: "trs", header: "TRS Actual", cell: (r) => r.trsActual },
-  ];
+  
 
-  const trColumns: ColumnDef<any>[] = [
-    { key: "id", header: "Serial Number", cell: (r) => <span className="font-mono text-[11px]">{r.serialNumber}</span> },
-    { key: "net", header: "Vendor", cell: (r) => r.vendor },
-    { key: "tco", header: "TCO", cell: (r) => r.tcoVendor },
-    { key: "town", header: "Town", cell: (r) => r.cityTown },
-    { key: "bnd", header: "B&D Forecast", cell: (r) => r.bndTrfsForecast },
-  ];
+  
 
   return (
     <div className="space-y-6">
@@ -194,26 +187,14 @@ function SitesPageContent() {
         </div>
       </div>
 
-      {/* Bottom Row: Wireless Integration (6) | Transport (6) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div className="lg:col-span-6 panel flex flex-col">
-          <div className="panel-header flex justify-between">
-            <span>Ongoing Wireless Integration</span>
-            <span className="text-text-muted font-mono">{filteredWI.length} rows</span>
-          </div>
-          <div className="panel-body p-0 flex-1 max-h-[400px] overflow-auto">
-            <DataTable data={filteredWI} columns={wiColumns} />
-          </div>
+      {/* Bottom Row: Location Directory (Full Width) */}
+      <div className="panel flex flex-col">
+        <div className="panel-header flex justify-between">
+          <span>Site Location & RTB Directory</span>
+          <span className="text-text-muted font-mono">{filteredLocation.length} rows</span>
         </div>
-
-        <div className="lg:col-span-6 panel flex flex-col">
-          <div className="panel-header flex justify-between">
-            <span>Ongoing Transport</span>
-            <span className="text-text-muted font-mono">{filteredTR.length} rows</span>
-          </div>
-          <div className="panel-body p-0 flex-1 max-h-[400px] overflow-auto">
-            <DataTable data={filteredTR} columns={trColumns} />
-          </div>
+        <div className="panel-body p-0 flex-1 max-h-[400px] overflow-auto">
+          <DataTable data={filteredLocation} columns={locationColumns} />
         </div>
       </div>
     </div>

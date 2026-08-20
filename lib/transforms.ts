@@ -407,3 +407,16 @@ export function transport(rows: SiteRow[]): TransportRow[] {
       bndTrfsForecast: r.bndTrfsForecast,
     }));
 }
+
+export function locationDirectory(rows: SiteRow[]) {
+  const planRows = rows.filter(r => r.isPlan);
+  return planRows.map(r => ({
+    serialNumber: r.serialNumber,
+    province: r.province,
+    town: r.cityTown,
+    address: r.address,
+    rtb: r.rtb,
+    lat: r.lat,
+    long: r.long,
+  }));
+}
