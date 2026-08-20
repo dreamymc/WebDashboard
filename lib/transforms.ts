@@ -353,16 +353,21 @@ export function townPlanVsActual(rows: SiteRow[]): TownPlanRow[] {
 // ── Site Table ────────────────────────────────────────────────────────────────
 
 export function siteTable(rows: SiteRow[]): SiteTableRow[] {
-  return rows.map(r => ({
+  const planRows = rows.filter(r => r.isPlan);
+  return planRows.map(r => ({
     serialNumber: r.serialNumber,
-    vendor:       r.vendor,
-    tcoVendor:    r.tcoBauVendor,
-    province:     r.province,
-    cityTown:     r.cityTown,
-    program:      r.program,
-    stage:        r.leadIndicator,
-    lat:          r.lat,
-    long:         r.long,
+    srName: r.srName,
+    plaId: r.plaId,
+    bcfName: r.bcfName,
+    vendor: r.vendor,
+    tcoVendor: r.tcoBauVendor,
+    program: r.program,
+    leadIndicator: r.leadIndicator,
+    buildForecast: r.conservativeFC,
+    lat: r.lat,
+    long: r.long,
+    province: r.province,
+    cityTown: r.cityTown,
   }));
 }
 
