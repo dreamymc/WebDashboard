@@ -110,9 +110,8 @@ function SitesPageContent() {
     { key: "prov", header: "Province", cell: (r) => r.province },
     { key: "town", header: "Town", cell: (r) => r.town },
     { key: "addr", header: "Address", cell: (r) => r.address },
-    { key: "rtb", header: "RTB", cell: (r) => r.rtb },
-    { key: "long", header: "LONG", cell: (r) => r.long },
-    { key: "lat", header: "LAT", cell: (r) => r.lat },
+    { key: "lat", header: "RTB-LAT", cell: (r) => r.lat },
+    { key: "long", header: "RTB-LONG", cell: (r) => r.long },
   ];
 
   

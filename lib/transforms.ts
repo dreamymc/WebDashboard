@@ -420,7 +420,6 @@ export function locationDirectory(rows: SiteRow[]) {
     province: r.province,
     town: r.cityTown,
     address: r.address,
-    rtb: r.rtb,
     lat: r.lat,
     long: r.long,
   }));

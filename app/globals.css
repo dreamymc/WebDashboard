@@ -37,10 +37,11 @@
   --radius:            0px;
 
   /* Dashboard design tokens */
-  --bg:            #0a0a0a;
-  --surface:       #111111;
-  --surface-hover: #1a1a1a;
-  --border-color:  #262626;
+  --bg:            #050505;
+  --surface:       #171717;
+  --surface-hover: #212121;
+  --border-color:  #333333;
+  --panel-shadow:  0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
   --text-primary:  #ffffff;
   --text-secondary:#d4d4d4;
   --text-muted:    #a3a3a3;
@@ -106,6 +107,7 @@
   --text-secondary:#525252;
   --text-muted:    #a3a3a3;
   --brand:         #0ea5e9;
+  --panel-shadow:  0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   /* Stage colors identical in both themes — they are data, not decoration */
 }
 
@@ -221,6 +223,7 @@
     border: 1px solid var(--border-color);
     padding: 0;
     overflow: hidden;
+    box-shadow: var(--panel-shadow);
   }
 
   .panel-header {
@@ -243,6 +246,7 @@
     border: 1px solid var(--border-color);
     padding: var(--space-4);
     min-height: 80px;
+    box-shadow: var(--panel-shadow);
   }
 
   .kpi-value {

@@ -24,7 +24,6 @@ export type SiteRow = {
   q4Bp: string;
   isPlan: boolean;               // True if Filter 1 == '2026'
   address: string;
-  rtb: string;
 };
 
 // ── Aggregated data returned by the API route ────────────────────────────────
@@ -165,7 +164,6 @@ export type LocationDirectoryRow = {
   province: string;
   town: string;
   address: string;
-  rtb: string;
   lat: number | null;
   long: number | null;
 };
