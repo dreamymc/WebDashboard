@@ -2,7 +2,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recha
 import type { EarlyStagePieData } from "@/lib/transforms";
 
 export function SimplePieChart({ data, height = 300 }: { data: EarlyStagePieData[], height?: number | string }) {
-  const renderLegendText = (value: string, entry: any) => (
+  const renderLegendText = (value: string, entry: { payload: { value: number } }) => (
     <span className="text-text-primary">{value} - {entry.payload.value}</span>
   );
 
