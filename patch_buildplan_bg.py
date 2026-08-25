@@ -1,4 +1,7 @@
-import { DataTable } from "@/components/tables/DataTable";
+with open('components/tables/BuildPlanByMonthTable.tsx', 'r') as f:
+    content = f.read()
+
+new_content = """import { DataTable } from "@/components/tables/DataTable";
 import { ColumnDef } from "@/components/tables/DataTable";
 import type { BuildPlanByMonthTableRow } from "@/lib/types";
 
@@ -35,3 +38,7 @@ export function BuildPlanByMonthTable({ data }: { data: BuildPlanByMonthTableRow
     </div>
   );
 }
+"""
+
+with open('components/tables/BuildPlanByMonthTable.tsx', 'w') as f:
+    f.write(new_content)

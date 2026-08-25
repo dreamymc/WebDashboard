@@ -15,6 +15,7 @@ interface DataTableProps<T> {
   emptyMessage?: string;
   pagination?: boolean;
   pageSize?: number;
+  rowClassName?: (row: T, index: number) => string;
 }
 
 export function DataTable<T>({
@@ -24,6 +25,7 @@ export function DataTable<T>({
   emptyMessage = "No data available",
   pagination = false,
   pageSize = 10,
+  rowClassName,
 }: DataTableProps<T>) {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -60,7 +62,7 @@ export function DataTable<T>({
             </tr>
           ) : (
             currentData.map((row, rowIndex) => (
-              <tr key={rowIndex}>
+              <tr key={rowIndex} className={rowClassName ? rowClassName(row, rowIndex) : ""}>
                 {columns.map((col) => (
                   <td
                     key={col.key}
