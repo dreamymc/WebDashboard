@@ -113,9 +113,10 @@ export function quarterlyPlanVsActual(rows: SiteRow[]): QuarterlyPlanVsActual[] 
 // ── Early Stage Pie Chart ──────────────────────────────────────────────────────
 
 export function earlyStagePieChart(rows: SiteRow[]): EarlyStagePieData[] {
-  const planRows = rows.filter(r => r.isPlan);
+  // Use all rows (the full pipeline), because early stage sites 
+  // (like 'For Awarding') do not belong to the 2026 Plan.
   const counts = new Map<string, number>();
-  for (const row of planRows) {
+  for (const row of rows) {
     counts.set(row.leadIndicator, (counts.get(row.leadIndicator) ?? 0) + 1);
   }
 
