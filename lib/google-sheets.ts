@@ -243,7 +243,7 @@ export async function fetchBuildPlanByMonthTable(): Promise<import('./types').Bu
     if (headerRowIdx === -1) return [];
 
     const headers = rawData[headerRowIdx].map(h => (h?.toString() || '').trim().toUpperCase());
-    const cell = (r: any[], colIdx: number) => {
+    const cell = (r: unknown[], colIdx: number) => {
       if (colIdx === -1 || colIdx >= r.length) return null;
       const val = r[colIdx]?.toString().trim();
       if (!val || val === '-' || val === '–') return null; // handle dash

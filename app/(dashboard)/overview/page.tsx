@@ -4,6 +4,7 @@
 import { useData } from "@/components/DataProvider";
 import ComboChart from "@/components/charts/ComboChart";
 import { FunnelBarChart } from "@/components/charts/FunnelBarChart";
+import { BuildPlanByMonthTable } from "@/components/tables/BuildPlanByMonthTable";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
