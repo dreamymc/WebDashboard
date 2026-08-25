@@ -14,6 +14,8 @@ export function SimplePieChart({ data, height = 300 }: { data: EarlyStagePieData
             outerRadius={100}
             paddingAngle={2}
             dataKey="value"
+            label={({ value }) => value}
+            labelLine={true}
           >
             {data.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={entry.fill} stroke="transparent" />
