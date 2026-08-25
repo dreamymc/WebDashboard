@@ -271,10 +271,12 @@ export default function OverviewPage() {
             </div>
           </div>
 
-          <div className="panel flex flex-col">
+          <div className="panel flex flex-col flex-1">
             <div className="panel-header">Lead Indicator</div>
-            <div className="panel-body flex-1">
-              <FunnelBarChart data={funnelCounts.filter(f => f.stage !== 'FOR AWARDING')} height={300} />
+            <div className="panel-body flex-1 relative min-h-[300px]">
+              <div className="absolute inset-x-4 inset-y-4">
+                <FunnelBarChart data={funnelCounts.filter(f => f.stage !== 'FOR AWARDING')} height="100%" />
+              </div>
             </div>
           </div>
         </div>
