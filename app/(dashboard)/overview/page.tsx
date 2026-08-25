@@ -89,8 +89,8 @@ export default function OverviewPage() {
         <div className="flex-1 flex flex-col gap-4">
           <div className="flex flex-col md:flex-row gap-4 h-full">
             {/* Pipeline (standalone) */}
-            <div className="panel p-4 flex flex-col items-center justify-center min-w-[140px] border-l-4 border-l-brand shadow-sm ring-1 ring-border-color hover:-translate-y-0.5 hover:shadow-md transition duration-200 ease-out">
-              <div className="text-4xl md:text-5xl font-bold text-brand tabnum tracking-tight"><NumberReveal value={kpi.totalPipeline} /></div>
+            <div className="panel p-4 flex flex-col items-center justify-center min-w-[140px] shadow-sm ring-1 ring-border-color hover:-translate-y-0.5 hover:shadow-md transition duration-200 ease-out">
+              <div className="text-4xl md:text-5xl font-bold text-text-primary tabnum tracking-tight"><NumberReveal value={kpi.totalPipeline} /></div>
               <div className="text-sm font-bold text-text-primary uppercase tracking-widest mt-2">Pipeline</div>
             </div>
 
@@ -176,7 +176,7 @@ export default function OverviewPage() {
         {/* Right Side: YTD & Quarterly Plan */}
         <div className="flex flex-col md:flex-row gap-4 shrink-0 xl:w-auto">
           {/* YTD Card */}
-          <div className="panel p-4 flex flex-col items-center justify-center border-t-4 border-t-warning min-w-[180px] shadow-sm ring-1 ring-border-color hover:-translate-y-0.5 hover:shadow-md transition duration-200 ease-out">
+          <div className="panel p-4 flex flex-col items-center justify-center min-w-[180px] shadow-sm ring-1 ring-border-color hover:-translate-y-0.5 hover:shadow-md transition duration-200 ease-out">
              <div className="text-sm font-bold text-text-primary mb-3 tracking-widest uppercase">YTD</div>
              <div className="flex w-full justify-center items-end gap-4 mb-2">
                 <div className="flex flex-col items-center">
