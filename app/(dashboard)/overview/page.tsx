@@ -46,7 +46,7 @@ function CenteredLabel({ text, className = "" }: { text: string, className?: str
 export default function OverviewPage() {
   const searchParams = useSearchParams();
   const buildPlan = searchParams.get("buildPlan");
-  const { transforms, newBuildPlan } = useData();
+  const { transforms, newBuildPlan, buildPlanByMonthTable } = useData();
   const { kpi, funnelCounts } = transforms;
 
   // Calculate quarterly deltas from cumulative Sheet2 data
