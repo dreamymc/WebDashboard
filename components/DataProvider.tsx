@@ -28,6 +28,7 @@ interface DataContextValue {
   rawRows: SiteRow[];
   filteredRows: SiteRow[];
   newBuildPlan: NewBuildPlanItem[];
+  buildPlanByMonthTable: BuildPlanByMonthTableRow[];
   transforms: ReturnType<typeof computeTransforms>;
 }
 

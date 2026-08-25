@@ -1,23 +1,41 @@
-import { ReactNode, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import re
 
-export interface ColumnDef<T> {
-  key: string;
-  header: ReactNode;
-  cell: (row: T, index: number) => ReactNode;
-  align?: "left" | "center" | "right";
-}
+with open('components/tables/DataTable.tsx', 'r') as f:
+    content = f.read()
 
-interface DataTableProps<T> {
+# Add useState import
+content = content.replace(
+    'import { ReactNode } from "react";',
+    'import { ReactNode, useState } from "react";\nimport { ChevronLeft, ChevronRight } from "lucide-react";'
+)
+
+# Update interface
+old_interface = """interface DataTableProps<T> {
+  data: T[];
+  columns: ColumnDef<T>[];
+  className?: string;
+  emptyMessage?: string;
+}"""
+
+new_interface = """interface DataTableProps<T> {
   data: T[];
   columns: ColumnDef<T>[];
   className?: string;
   emptyMessage?: string;
   pagination?: boolean;
   pageSize?: number;
-}
+}"""
+content = content.replace(old_interface, new_interface)
 
-export function DataTable<T>({
+# Update function signature and logic
+old_func_start = """export function DataTable<T>({
+  data,
+  columns,
+  className = "",
+  emptyMessage = "No data available",
+}: DataTableProps<T>) {"""
+
+new_func_start = """export function DataTable<T>({
   data,
   columns,
   className = "",
@@ -31,50 +49,19 @@ export function DataTable<T>({
   const currentData = pagination 
     ? data.slice((currentPage - 1) * pageSize, currentPage * pageSize)
     : data;
+"""
+content = content.replace(old_func_start, new_func_start)
 
-  return (
-    <div className={`flex flex-col w-full ${className}`}>
-      <div className="overflow-x-auto">
-      <table className="data-table">
-        <thead>
-          <tr>
-            {columns.map((col) => (
-              <th
-                key={col.key}
-                style={{ textAlign: col.align || "left" }}
-              >
-                {col.header}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {currentData.length === 0 ? (
-            <tr>
-              <td
-                colSpan={columns.length}
-                className="text-center py-8 text-text-muted italic"
-              >
-                {emptyMessage}
-              </td>
-            </tr>
-          ) : (
-            currentData.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {columns.map((col) => (
-                  <td
-                    key={col.key}
-                    style={{ textAlign: col.align || "left" }}
-                  >
-                    {col.cell(row, rowIndex)}
-                  </td>
-                ))}
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
-      </div>
+# Update render to use currentData
+content = content.replace("data.length === 0", "currentData.length === 0")
+content = content.replace("data.map((row, rowIndex)", "currentData.map((row, rowIndex)")
+
+# Add pagination controls
+old_render = """    </div>
+  );
+}"""
+
+new_render = """    </div>
       {pagination && totalPages > 1 && (
         <div className="flex items-center justify-between px-4 py-3 border-t border-border-color bg-surface-hover/50">
           <div className="text-xs text-text-muted">
@@ -103,4 +90,18 @@ export function DataTable<T>({
       )}
     </div>
   );
-}
+}"""
+
+content = content.replace(old_render, new_render)
+# Replace the outer div wrap to contain the table and pagination bar properly
+content = content.replace(
+    '<div className={`overflow-x-auto ${className}`}>',
+    '<div className={`flex flex-col w-full ${className}`}>\n      <div className="overflow-x-auto">'
+)
+content = content.replace(
+    '</table>\n    </div>',
+    '</table>\n      </div>'
+)
+
+with open('components/tables/DataTable.tsx', 'w') as f:
+    f.write(content)
