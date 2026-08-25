@@ -3,7 +3,7 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { TopBar } from "@/components/layout/TopBar";
 import { FilterBar } from "@/components/layout/FilterBar";
 import { DataProvider } from "@/components/DataProvider";
-import { fetchSheetRows, fetchSheet2BuildPlan } from "@/lib/google-sheets";
+import { fetchSheetRows, fetchSheet2BuildPlan, fetchBuildPlanByMonthTable } from "@/lib/google-sheets";
 import { verifySession } from "@/lib/auth";
 
 export default async function DashboardLayout({
@@ -16,9 +16,10 @@ export default async function DashboardLayout({
   const session = sessionCookie ? await verifySession(sessionCookie) : null;
   const isAdmin = session?.role === "admin";
 
-  const [rows, newBuildPlan] = await Promise.all([
+  const [rows, newBuildPlan, buildPlanByMonthTable] = await Promise.all([
     fetchSheetRows(),
     fetchSheet2BuildPlan(),
+    fetchBuildPlanByMonthTable(),
   ]);
   const fetchedAt = new Date().toISOString();
 
@@ -31,7 +32,7 @@ export default async function DashboardLayout({
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <DataProvider initialRows={rows} initialNewBuildPlan={newBuildPlan}>
+        <DataProvider initialRows={rows} initialNewBuildPlan={newBuildPlan} initialBuildPlanByMonthTable={buildPlanByMonthTable}>
           <TopBar isAdmin={isAdmin} fetchedAt={fetchedAt} />
           <FilterBar />
           

@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useMemo, ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
-import type { SiteRow, NewBuildPlanItem } from "@/lib/types";
+import type { SiteRow, NewBuildPlanItem, BuildPlanByMonthTableRow } from "@/lib/types";
 import {
   kpiSummary,
   quarterlyPlanVsActual,
@@ -64,10 +64,12 @@ function computeTransforms(rows: SiteRow[], buildPlan: string | null) {
 export function DataProvider({
   initialRows,
   initialNewBuildPlan,
+  initialBuildPlanByMonthTable,
   children,
 }: {
   initialRows: SiteRow[];
   initialNewBuildPlan: NewBuildPlanItem[];
+  initialBuildPlanByMonthTable: BuildPlanByMonthTableRow[];
   children: ReactNode;
 }) {
   const searchParams = useSearchParams();
@@ -97,8 +99,8 @@ export function DataProvider({
   const transforms = useMemo(() => computeTransforms(filteredRows, buildPlan), [filteredRows, buildPlan]);
 
   const value = useMemo(
-    () => ({ rawRows: initialRows, filteredRows, newBuildPlan: initialNewBuildPlan, transforms }),
-    [initialRows, filteredRows, initialNewBuildPlan, transforms]
+    () => ({ rawRows: initialRows, filteredRows, newBuildPlan: initialNewBuildPlan, buildPlanByMonthTable: initialBuildPlanByMonthTable, transforms }),
+    [initialRows, filteredRows, initialNewBuildPlan, initialBuildPlanByMonthTable, transforms]
   );
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;

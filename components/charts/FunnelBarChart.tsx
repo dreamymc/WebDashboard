@@ -19,7 +19,7 @@ interface FunnelData {
 
 interface FunnelBarChartProps {
   data: FunnelData[];
-  height?: number;
+  height?: number | string;
 }
 
 export function FunnelBarChart({ data, height = 300 }: FunnelBarChartProps) {

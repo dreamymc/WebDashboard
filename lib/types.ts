@@ -209,3 +209,20 @@ export type DashboardData = {
   transportCount: number;
   fetchedAt: string;
 };
+
+export interface BuildPlanByMonthTableRow {
+  category: string;
+  jan: number | string | null;
+  feb: number | string | null;
+  mar: number | string | null;
+  apr: number | string | null;
+  may: number | string | null;
+  jun: number | string | null;
+  jul: number | string | null;
+  aug: number | string | null;
+  sep: number | string | null;
+  oct: number | string | null;
+  nov: number | string | null;
+  dec: number | string | null;
+  total: number | string | null;
+}
