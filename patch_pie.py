@@ -1,4 +1,7 @@
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
+with open('components/charts/SimplePieChart.tsx', 'r') as f:
+    content = f.read()
+
+new_content = """import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 import type { EarlyStagePieData } from "@/lib/transforms";
 
 export function SimplePieChart({ data, height = 300 }: { data: EarlyStagePieData[], height?: number | string }) {
@@ -42,3 +45,7 @@ export function SimplePieChart({ data, height = 300 }: { data: EarlyStagePieData
     </div>
   );
 }
+"""
+
+with open('components/charts/SimplePieChart.tsx', 'w') as f:
+    f.write(new_content)

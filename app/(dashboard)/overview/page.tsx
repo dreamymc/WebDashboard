@@ -265,7 +265,7 @@ export default function OverviewPage() {
 
         <div className="lg:col-span-2 flex flex-col gap-6">
           <div className="panel flex flex-col">
-            <div className="panel-header">Early Stage Pipeline</div>
+            <div className="panel-header">Pipeline Breakdown</div>
             <div className="panel-body">
               <SimplePieChart data={earlyStagePieChart} height={220} />
             </div>
