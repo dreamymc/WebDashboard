@@ -1,4 +1,4 @@
-import { DataTable } from "@/components/ui/DataTable";
+import { DataTable } from "@/components/tables/DataTable";
 import { ColumnDef } from "@tanstack/react-table";
 import type { BuildPlanByMonthTableRow } from "@/lib/types";
 
