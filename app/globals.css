@@ -236,7 +236,8 @@
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.06em;
-  }
+    background: var(--header-bg);
+}
 
   .panel-body {
     padding: var(--space-4);
