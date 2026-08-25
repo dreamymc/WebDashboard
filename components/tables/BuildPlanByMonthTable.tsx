@@ -4,7 +4,7 @@ import type { BuildPlanByMonthTableRow } from "@/lib/types";
 
 export function BuildPlanByMonthTable({ data }: { data: BuildPlanByMonthTableRow[] }) {
   const columns: ColumnDef<BuildPlanByMonthTableRow>[] = [
-    { key: "category", header: "Metric", cell: (r) => <span className="font-semibold whitespace-normal leading-tight block w-[80px]">{r.category.replace('BUILD PLAN', 'BP').replace('INCREMENTAL', 'Inc').replace('CUMULATIVE', 'Cum')}</span> },
+    { key: "category", header: "Metric", cell: (r) => <span className="font-semibold whitespace-normal leading-tight block w-[95px]">{r.category}</span> },
     { key: "jan", header: "Jan", cell: (r) => r.jan ?? "-", align: "right" },
     { key: "feb", header: "Feb", cell: (r) => r.feb ?? "-", align: "right" },
     { key: "mar", header: "Mar", cell: (r) => r.mar ?? "-", align: "right" },
