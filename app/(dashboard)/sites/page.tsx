@@ -181,7 +181,7 @@ function SitesPageContent() {
           <span>Site Details</span>
           <span className="text-text-muted font-mono">{filteredSiteTable.length} rows</span>
         </div>
-        <div className="panel-body p-0 max-h-[400px] overflow-auto">
+        <div className="panel-body p-0">
           <DataTable data={filteredSiteTable} columns={siteColumns} pagination={true} pageSize={15} />
         </div>
       </div>
@@ -192,7 +192,7 @@ function SitesPageContent() {
           <span>Site Location & RTB Directory</span>
           <span className="text-text-muted font-mono">{filteredLocation.length} rows</span>
         </div>
-        <div className="panel-body p-0 flex-1 max-h-[400px] overflow-auto">
+        <div className="panel-body p-0 flex-1">
           <DataTable data={filteredLocation} columns={locationColumns} pagination={true} pageSize={15} />
         </div>
       </div>
