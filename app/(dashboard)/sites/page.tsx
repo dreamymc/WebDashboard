@@ -106,11 +106,11 @@ function SitesPageContent() {
   ];
 
   const locationColumns: ColumnDef<any>[] = [
-    { key: "prov", header: "Province", cell: (r) => r.province, headerAlign: "center" },
-    { key: "town", header: "Town", cell: (r) => r.town, headerAlign: "center" },
-    { key: "lat", header: "RTB-LAT", cell: (r) => r.lat, headerAlign: "center" },
-    { key: "long", header: "RTB-LONG", cell: (r) => r.long, headerAlign: "center" },
-    { key: "addr", header: "Address", cell: (r) => r.address, headerAlign: "center" },
+    { key: "prov", header: "Province", cell: (r) => r.province },
+    { key: "town", header: "Town", cell: (r) => r.town },
+    { key: "lat", header: "RTB-LAT", cell: (r) => r.lat },
+    { key: "long", header: "RTB-LONG", cell: (r) => r.long },
+    { key: "addr", header: "Address", cell: (r) => r.address },
   ];
 
   
