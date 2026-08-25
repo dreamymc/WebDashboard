@@ -62,7 +62,7 @@ export function kpiSummary(rows: SiteRow[]): KpiSummary {
   const trfsCount = planRows.filter(r => r.leadIndicator === 'TRFS').length;
 
   return {
-    totalPipeline: rows.filter(r => !['FOR AWARDING', 'Returned/ Rejected', 'w/ ISSUES'].includes(r.leadIndicator)).length,
+    totalPipeline: rows.length,
     totalPlan,
     q1Plan:      planRows.filter(r => Q1_MONTHS.has(r.bndTrfsForecast)).length,
     q2Plan:      planRows.filter(r => Q2_MONTHS.has(r.bndTrfsForecast)).length,
@@ -120,11 +120,18 @@ export function earlyStagePieChart(rows: SiteRow[]): EarlyStagePieData[] {
     counts.set(row.leadIndicator, (counts.get(row.leadIndicator) ?? 0) + 1);
   }
 
+  let activeCount = 0;
+  for (const [key, val] of counts.entries()) {
+    if (!['w/ ISSUES', 'Returned/ Rejected', 'FOR AWARDING'].includes(key)) {
+      activeCount += val;
+    }
+  }
+
   return [
     { name: 'With Issues', value: counts.get('w/ ISSUES') ?? 0, fill: '#ef4444' }, // red-500
     { name: 'Returned/Rejected', value: counts.get('Returned/ Rejected') ?? 0, fill: '#f97316' }, // orange-500
     { name: 'For Awarding', value: counts.get('FOR AWARDING') ?? 0, fill: '#64748b' }, // slate-500
-    { name: 'Active', value: counts.get('AWARDED / SITE HUNTING') ?? 0, fill: '#3b82f6' }, // blue-500
+    { name: 'Active', value: activeCount, fill: '#3b82f6' }, // blue-500
   ].filter(d => d.value > 0);
 }
 
