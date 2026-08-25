@@ -225,7 +225,7 @@ export default function OverviewPage() {
       </div>
 
       {/* Bottom Row: Charts & Table */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
         <div className="flex flex-col gap-6">
           <div className="panel flex flex-col">
             <div className="panel-header">Build Plan by Month {buildPlan ? `(${buildPlan})` : ''}</div>
@@ -253,11 +253,11 @@ export default function OverviewPage() {
             </div>
           </div>
           
-          <div className="panel flex flex-col flex-1">
+          <div className="panel flex flex-col">
             <div className="panel-header flex justify-between items-center">
               <span>Build Plan Summary</span>
             </div>
-            <div className="panel-body p-1 flex-1 overflow-x-auto">
+            <div className="panel-body p-1 overflow-x-auto">
               <BuildPlanByMonthTable data={buildPlanByMonthTable} />
             </div>
           </div>
@@ -267,11 +267,11 @@ export default function OverviewPage() {
           <div className="panel flex flex-col">
             <div className="panel-header">Early Stage Pipeline</div>
             <div className="panel-body">
-              <SimplePieChart data={earlyStagePieChart} height={250} />
+              <SimplePieChart data={earlyStagePieChart} height={220} />
             </div>
           </div>
 
-          <div className="panel flex flex-col flex-1">
+          <div className="panel flex flex-col">
             <div className="panel-header">Lead Indicator</div>
             <div className="panel-body flex-1">
               <FunnelBarChart data={funnelCounts.filter(f => f.stage !== 'FOR AWARDING')} height={300} />
