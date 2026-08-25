@@ -442,3 +442,8 @@ export function locationDirectory(rows: SiteRow[]) {
     long: r.long,
   }));
 }
+export interface EarlyStagePieData {
+  name: string;
+  value: number;
+  fill: string;
+}
