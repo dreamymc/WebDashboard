@@ -25,7 +25,7 @@ export function SimplePieChart({ data, height = 300 }: { data: EarlyStagePieData
             contentStyle={{ backgroundColor: 'var(--surface-hover)', borderColor: 'var(--border-color)' }}
             itemStyle={{ color: 'var(--text-primary)' }}
           />
-          <Legend verticalAlign="bottom" height={36} iconType="circle" />
+          <Legend layout="vertical" verticalAlign="middle" align="left" iconType="circle" wrapperStyle={{ fontSize: "12px", paddingLeft: "10px" }} />
         </PieChart>
       </ResponsiveContainer>
     </div>
