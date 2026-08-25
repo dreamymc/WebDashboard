@@ -5,6 +5,7 @@ import { useData } from "@/components/DataProvider";
 import ComboChart from "@/components/charts/ComboChart";
 import { FunnelBarChart } from "@/components/charts/FunnelBarChart";
 import { BuildPlanByMonthTable } from "@/components/tables/BuildPlanByMonthTable";
+import { SimplePieChart } from "@/components/charts/SimplePieChart";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -47,7 +48,7 @@ export default function OverviewPage() {
   const searchParams = useSearchParams();
   const buildPlan = searchParams.get("buildPlan");
   const { transforms, newBuildPlan, buildPlanByMonthTable } = useData();
-  const { kpi, funnelCounts } = transforms;
+  const { kpi, funnelCounts, earlyStagePieChart } = transforms;
 
   // Calculate quarterly deltas from cumulative Sheet2 data
   const monthsOrder = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
@@ -224,11 +225,11 @@ export default function OverviewPage() {
       </div>
 
       {/* Bottom Row: Charts & Table */}
-      <div className="grid grid-cols-1 lg:grid-cols-[65fr_35fr] gap-6 items-stretch">
-        <div className="panel flex flex-col">
-          <div className="panel-header">Build Plan by Month {buildPlan ? `(${buildPlan})` : ''}</div>
-          <div className="panel-body flex flex-col flex-1 p-0">
-            <div className="p-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+        <div className="flex flex-col gap-6">
+          <div className="panel flex flex-col">
+            <div className="panel-header">Build Plan by Month {buildPlan ? `(${buildPlan})` : ''}</div>
+            <div className="panel-body">
               {buildPlan ? (
                 <ComboChart
                   data={transforms.buildPlanByMonth}
@@ -250,17 +251,30 @@ export default function OverviewPage() {
                 />
               )}
             </div>
-            <div className="w-full overflow-x-auto border-t border-border-color flex-1">
+          </div>
+          
+          <div className="panel flex flex-col flex-1">
+            <div className="panel-header flex justify-between items-center">
+              <span>Build Plan Summary</span>
+            </div>
+            <div className="panel-body p-1 flex-1 overflow-x-auto">
               <BuildPlanByMonthTable data={buildPlanByMonthTable} />
             </div>
           </div>
         </div>
 
-        <div className="panel flex flex-col h-full">
-          <div className="panel-header">Lead Indicator</div>
-          <div className="panel-body flex-1 relative min-h-[500px]">
-            <div className="absolute inset-4">
-              <FunnelBarChart data={funnelCounts} height="100%" />
+        <div className="flex flex-col gap-6">
+          <div className="panel flex flex-col">
+            <div className="panel-header">Early Stage Pipeline</div>
+            <div className="panel-body">
+              <SimplePieChart data={earlyStagePieChart} height={250} />
+            </div>
+          </div>
+
+          <div className="panel flex flex-col flex-1">
+            <div className="panel-header">Lead Indicator</div>
+            <div className="panel-body flex-1">
+              <FunnelBarChart data={funnelCounts.filter(f => f.stage !== 'FOR AWARDING')} height={300} />
             </div>
           </div>
         </div>

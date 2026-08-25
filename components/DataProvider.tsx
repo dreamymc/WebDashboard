@@ -6,6 +6,7 @@ import type { SiteRow, NewBuildPlanItem, BuildPlanByMonthTableRow } from "@/lib/
 import {
   kpiSummary,
   quarterlyPlanVsActual,
+  earlyStagePieChart,
   funnelCounts,
   programVelocity,
   buildPlanByMonth,
@@ -41,6 +42,7 @@ function computeTransforms(rows: SiteRow[], buildPlan: string | null) {
   return {
     kpi: kpiSummary(rows),
     quarterlyPlanVsActual: quarterlyPlanVsActual(rows),
+    earlyStagePieChart: earlyStagePieChart(rows),
     funnelCounts: funnelCounts(rows),
     programVelocity: programVelocity(rows),
     buildPlanByMonth: buildPlanByMonth(rows, buildPlan),
