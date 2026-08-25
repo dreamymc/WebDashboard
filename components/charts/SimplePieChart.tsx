@@ -10,8 +10,8 @@ export function SimplePieChart({ data, height = 300 }: { data: EarlyStagePieData
             data={data}
             cx="50%"
             cy="50%"
-            innerRadius={60}
-            outerRadius={100}
+            innerRadius={45}
+            outerRadius={75}
             paddingAngle={2}
             dataKey="value"
             label={({ value }) => value}
