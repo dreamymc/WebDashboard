@@ -11,7 +11,7 @@ export function BuildPlanByMonthTable({ data }: { data: BuildPlanByMonthTableRow
     return '';
   };
 
-  const renderCell = (r: BuildPlanByMonthTableRow, val: any) => (
+  const renderCell = (r: BuildPlanByMonthTableRow, val: string | number | null | undefined) => (
     <span className={getRowColor(r.category)}>{val ?? "-"}</span>
   );
 
