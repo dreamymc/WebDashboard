@@ -284,6 +284,7 @@
     border-bottom: 1px solid var(--border-color);
     text-align: left;
     font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
 
   .data-table td {
@@ -292,6 +293,7 @@
     color: var(--text-primary);
     font-variant-numeric: tabular-nums;
     vertical-align: middle;
+    white-space: nowrap;
   }
 
   .data-table tr:last-child td {
