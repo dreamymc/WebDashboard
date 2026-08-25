@@ -1,5 +1,5 @@
 import { DataTable } from "@/components/tables/DataTable";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef } from "@/components/tables/DataTable";
 import type { BuildPlanByMonthTableRow } from "@/lib/types";
 
 export function BuildPlanByMonthTable({ data }: { data: BuildPlanByMonthTableRow[] }) {
