@@ -18,7 +18,7 @@ export function SimplePieChart({ data, height = 300 }: { data: EarlyStagePieData
             outerRadius={75}
             paddingAngle={2}
             dataKey="value"
-            label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
+            label={({ percent }) => `${((percent || 0) * 100).toFixed(0)}%`}
             labelLine={true}
           >
             {data.map((entry, index) => (
