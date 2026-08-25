@@ -6,6 +6,7 @@ export interface ColumnDef<T> {
   header: ReactNode;
   cell: (row: T, index: number) => ReactNode;
   align?: "left" | "center" | "right";
+  headerAlign?: "left" | "center" | "right";
 }
 
 interface DataTableProps<T> {
@@ -43,7 +44,7 @@ export function DataTable<T>({
             {columns.map((col) => (
               <th
                 key={col.key}
-                style={{ textAlign: col.align || "left" }}
+                style={{ textAlign: col.headerAlign || col.align || "left" }}
               >
                 {col.header}
               </th>

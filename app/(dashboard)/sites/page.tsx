@@ -95,23 +95,22 @@ function SitesPageContent() {
   }, [filteredSiteTable, hiddenStages]);
 
   const siteColumns: ColumnDef<any>[] = [
-    { key: "id", header: "SERIAL NUMBER", cell: (r) => <span className="font-mono text-[11px]">{r.serialNumber}</span>, align: "center" },
-    { key: "srName", header: "SR NAME", cell: (r) => r.srName, align: "center" },
-    { key: "plaId", header: "PLA ID", cell: (r) => r.plaId, align: "center" },
-    { key: "bcf", header: "BCF", cell: (r) => r.bcfName, align: "center" },
-    { key: "net", header: "ACCESS VENDOR", cell: (r) => r.vendor, align: "center" },
-    { key: "tco", header: "TCO", cell: (r) => r.tcoVendor, align: "center" },
-    { key: "prog", header: "PROGRAM", cell: (r) => r.program, align: "center" },
-    { key: "leadIndicator", header: "LEAD INDICATOR", cell: (r) => <StageBadge stage={r.leadIndicator} />, align: "center" },
-    { key: "fc", header: "BUILD FORECAST", cell: (r) => r.buildForecast, align: "center" },
+    { key: "id", header: "SERIAL NUMBER", cell: (r) => <span className="font-mono text-[11px]">{r.serialNumber}</span>, headerAlign: "center" },
+    { key: "srName", header: "SR NAME", cell: (r) => r.srName, headerAlign: "center" },
+    { key: "plaId", header: "PLA ID", cell: (r) => r.plaId, headerAlign: "center" },
+    { key: "net", header: "ACCESS VENDOR", cell: (r) => r.vendor, headerAlign: "center" },
+    { key: "tco", header: "TCO", cell: (r) => r.tcoVendor, headerAlign: "center" },
+    { key: "prog", header: "PROGRAM", cell: (r) => r.program, headerAlign: "center" },
+    { key: "leadIndicator", header: "LEAD INDICATOR", cell: (r) => <StageBadge stage={r.leadIndicator} />, headerAlign: "center" },
+    { key: "fc", header: "BUILD FORECAST", cell: (r) => r.buildForecast, headerAlign: "center" },
   ];
 
   const locationColumns: ColumnDef<any>[] = [
-    { key: "prov", header: "Province", cell: (r) => r.province, align: "center" },
-    { key: "town", header: "Town", cell: (r) => r.town, align: "center" },
-    { key: "addr", header: "Address", cell: (r) => r.address, align: "center" },
-    { key: "lat", header: "RTB-LAT", cell: (r) => r.lat, align: "center" },
-    { key: "long", header: "RTB-LONG", cell: (r) => r.long, align: "center" },
+    { key: "prov", header: "Province", cell: (r) => r.province, headerAlign: "center" },
+    { key: "town", header: "Town", cell: (r) => r.town, headerAlign: "center" },
+    { key: "lat", header: "RTB-LAT", cell: (r) => r.lat, headerAlign: "center" },
+    { key: "long", header: "RTB-LONG", cell: (r) => r.long, headerAlign: "center" },
+    { key: "addr", header: "Address", cell: (r) => r.address, headerAlign: "center" },
   ];
 
   

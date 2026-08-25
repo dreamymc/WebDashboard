@@ -176,7 +176,7 @@
   }
 
   body {
-    background: var(--bg);
+    background: var(--surface-hover);
     color: var(--text-primary);
     font-family: "Inter", system-ui, -apple-system, sans-serif;
     font-size: 14px;
@@ -280,7 +280,7 @@
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    background: var(--bg);
+    background: var(--surface-hover);
     border-bottom: 1px solid var(--border-color);
     text-align: left;
     font-variant-numeric: tabular-nums;
@@ -405,7 +405,7 @@
 
 /* ── Scrollbars (thin, on-brand) ─────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-track { background: var(--surface-hover); }
 ::-webkit-scrollbar-thumb { background: var(--border-color); }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 

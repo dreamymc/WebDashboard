@@ -225,8 +225,8 @@ export default function OverviewPage() {
       </div>
 
       {/* Bottom Row: Charts & Table */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
-        <div className="flex flex-col gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-stretch">
+        <div className="lg:col-span-3 flex flex-col gap-6">
           <div className="panel flex flex-col">
             <div className="panel-header">Build Plan by Month {buildPlan ? `(${buildPlan})` : ''}</div>
             <div className="panel-body">
@@ -263,7 +263,7 @@ export default function OverviewPage() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-6">
+        <div className="lg:col-span-2 flex flex-col gap-6">
           <div className="panel flex flex-col">
             <div className="panel-header">Early Stage Pipeline</div>
             <div className="panel-body">
