@@ -17,6 +17,9 @@ interface DataTableProps<T> {
   pagination?: boolean;
   pageSize?: number;
   rowClassName?: (row: T, index: number) => string;
+  currentPage?: number;
+  onPageChange?: (page: number) => void;
+  hidePaginationUI?: boolean;
 }
 
 export function DataTable<T>({
@@ -27,8 +30,13 @@ export function DataTable<T>({
   pagination = false,
   pageSize = 10,
   rowClassName,
+  currentPage: controlledPage,
+  onPageChange,
+  hidePaginationUI = false,
 }: DataTableProps<T>) {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [internalPage, setInternalPage] = useState(1);
+  const currentPage = controlledPage !== undefined ? controlledPage : internalPage;
+  const setCurrentPage = onPageChange || setInternalPage;
 
   const totalPages = Math.ceil(data.length / pageSize);
   const currentData = pagination 
@@ -78,14 +86,14 @@ export function DataTable<T>({
         </tbody>
       </table>
       </div>
-      {pagination && totalPages > 1 && (
+      {pagination && totalPages > 1 && !hidePaginationUI && (
         <div className="flex items-center justify-between px-4 py-3 border-t border-border-color bg-surface-hover/50">
           <div className="text-xs text-text-muted">
             Showing <span className="font-medium text-text-primary">{(currentPage - 1) * pageSize + 1}</span> to <span className="font-medium text-text-primary">{Math.min(currentPage * pageSize, data.length)}</span> of <span className="font-medium text-text-primary">{data.length}</span> results
           </div>
           <div className="flex items-center gap-1">
             <button
-              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+              onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
               className="p-1.5 rounded-md hover:bg-surface border border-transparent hover:border-border-color disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-text-secondary hover:text-text-primary"
             >
@@ -95,7 +103,7 @@ export function DataTable<T>({
               {currentPage} <span className="text-text-muted font-normal">/ {totalPages}</span>
             </div>
             <button
-              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+              onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
               disabled={currentPage === totalPages}
               className="p-1.5 rounded-md hover:bg-surface border border-transparent hover:border-border-color disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-text-secondary hover:text-text-primary"
             >

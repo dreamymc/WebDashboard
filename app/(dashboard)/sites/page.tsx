@@ -8,6 +8,7 @@ import SiteMap from "@/components/charts/SiteMap";
 import { DataTable, ColumnDef } from "@/components/tables/DataTable";
 import { StageBadge } from "@/components/tables/StageBadge";
 import { STAGE_COLORS } from "@/lib/normalizers";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 function SitesPageContent() {
   const { transforms } = useData();
@@ -20,6 +21,11 @@ function SitesPageContent() {
 
   const [selectedSiteId, setSelectedSiteId] = useState<string | null>(null);
   const [hiddenStages, setHiddenStages] = useState<Set<string>>(new Set());
+  const [tablePage, setTablePage] = useState(1);
+  
+  useEffect(() => {
+    setTablePage(1);
+  }, [selectedSiteId, hiddenStages]);
 
   const clearAllFilters = () => {
     setSelectedSiteId(null);
@@ -93,6 +99,8 @@ function SitesPageContent() {
         name: s.cityTown,
       }));
   }, [filteredSiteTable, hiddenStages]);
+
+  const totalPages = Math.ceil(filteredSiteTable.length / 15);
 
   const siteColumns: ColumnDef<any>[] = [
     { key: "id", header: "SERIAL NUMBER", cell: (r) => <span className="font-mono text-[11px]">{r.serialNumber}</span>, headerAlign: "center" },
@@ -181,9 +189,34 @@ function SitesPageContent() {
           <span className="text-text-muted font-mono">{filteredSiteTable.length} rows</span>
         </div>
         <div className="panel-body p-0">
-          <DataTable data={filteredSiteTable} columns={siteColumns} pagination={true} pageSize={15} />
+          <DataTable data={filteredSiteTable} columns={siteColumns} pagination={true} pageSize={15} currentPage={tablePage} hidePaginationUI={true} />
         </div>
       </div>
+
+      {/* Shared Pagination Control */}
+      {totalPages > 1 && (
+        <div className="flex justify-center my-2">
+          <div className="flex items-center gap-4 bg-surface border border-border-color px-4 py-2 rounded-full shadow-sm">
+            <button
+              onClick={() => setTablePage(Math.max(1, tablePage - 1))}
+              disabled={tablePage === 1}
+              className="p-1.5 rounded-full hover:bg-surface-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-text-secondary hover:text-text-primary"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <div className="text-sm font-medium text-text-primary">
+              Page {tablePage} <span className="text-text-muted font-normal">of {totalPages}</span>
+            </div>
+            <button
+              onClick={() => setTablePage(Math.min(totalPages, tablePage + 1))}
+              disabled={tablePage === totalPages}
+              className="p-1.5 rounded-full hover:bg-surface-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-text-secondary hover:text-text-primary"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Bottom Row: Location Directory (Full Width) */}
       <div className="panel flex flex-col">
@@ -192,7 +225,7 @@ function SitesPageContent() {
           <span className="text-text-muted font-mono">{filteredLocation.length} rows</span>
         </div>
         <div className="panel-body p-0 flex-1">
-          <DataTable data={filteredLocation} columns={locationColumns} pagination={true} pageSize={15} />
+          <DataTable data={filteredLocation} columns={locationColumns} pagination={true} pageSize={15} currentPage={tablePage} hidePaginationUI={true} />
         </div>
       </div>
     </div>
