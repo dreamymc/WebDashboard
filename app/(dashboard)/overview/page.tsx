@@ -89,7 +89,7 @@ export default function OverviewPage() {
         <div className="flex-1 flex flex-col gap-4">
           <div className="flex flex-col md:flex-row gap-4 h-full">
             {/* Pipeline (standalone) */}
-            <div className="panel gold-gradient-bg p-4 flex flex-col items-center justify-center min-w-[140px] shadow-sm ring-1 ring-border-color hover:-translate-y-0.5 hover:shadow-md transition duration-200 ease-out border-none" style={{ animationDuration: "8s" }}>
+            <div className="panel gold-gradient-bg p-4 flex flex-col items-center justify-center min-w-[140px] shadow-sm ring-1 ring-border-color hover:-translate-y-0.5 hover:shadow-md transition duration-200 ease-out border-none" style={{ animation: "gold-shimmer 3s linear infinite" }}>
               <div className="text-4xl md:text-5xl font-bold tabnum tracking-tight"><NumberReveal value={kpi.totalPipeline} duration={3500} /></div>
               <div className="text-sm font-bold uppercase tracking-widest mt-2">Pipeline</div>
             </div>
