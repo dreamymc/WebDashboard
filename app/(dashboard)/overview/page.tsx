@@ -89,53 +89,37 @@ export default function OverviewPage() {
         <div className="flex-1 flex flex-col gap-4">
           <div className="flex flex-col md:flex-row gap-4 h-full">
             {/* Pipeline (standalone) */}
-            <div className="panel p-4 flex flex-col items-center justify-center min-w-[140px] shadow-sm ring-1 ring-border-color hover:-translate-y-0.5 hover:shadow-md transition duration-200 ease-out">
-              <div className="text-4xl md:text-5xl font-bold text-text-primary tabnum tracking-tight"><NumberReveal value={kpi.totalPipeline} /></div>
-              <div className="text-sm font-bold text-text-primary uppercase tracking-widest mt-2">Pipeline</div>
+            <div className="panel gold-gradient-bg p-4 flex flex-col items-center justify-center min-w-[140px] shadow-sm ring-1 ring-border-color hover:-translate-y-0.5 hover:shadow-md transition duration-200 ease-out border-none">
+              <div className="text-4xl md:text-5xl font-bold tabnum tracking-tight"><NumberReveal value={kpi.totalPipeline} /></div>
+              <div className="text-sm font-bold uppercase tracking-widest mt-2">Pipeline</div>
             </div>
 
             {/* Core Metrics Group */}
             <div className="panel p-0 flex-1 grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-border-color shadow-sm ring-1 ring-border-color hover:-translate-y-0.5 hover:shadow-md transition duration-200 ease-out">
               <div className="p-4 flex flex-col items-center justify-center">
                 <div className="flex flex-col items-center">
-                  <div className="w-24 h-24 bg-gradient-to-b from-brand/10 to-brand/20 border border-brand/40 rounded flex items-center justify-center">
-                    <div className="text-3xl md:text-4xl font-bold text-text-primary tabnum tracking-tight leading-none"><NumberReveal value={kpi.totalPlan} /></div>
-                  </div>
-                  <div className="w-24 mt-1.5">
-                    <CenteredLabel text="PLAN" className="text-lg font-bold text-text-secondary uppercase tracking-tighter" />
-                  </div>
+                  <div className="text-4xl md:text-5xl font-bold text-text-primary tabnum tracking-tight leading-none mb-2"><NumberReveal value={kpi.totalPlan} /></div>
+                  <CenteredLabel text="PLAN" className="text-lg font-bold text-text-secondary uppercase tracking-widest" />
                 </div>
               </div>
               <div className="p-4 flex flex-col items-center justify-center">
                 <div className="flex flex-col items-center">
-                  <div className="w-24 h-24 bg-gradient-to-b from-brand/10 to-brand/20 border border-brand/40 rounded flex items-center justify-center">
-                    <div className="text-3xl md:text-4xl font-bold text-text-primary tabnum tracking-tight leading-none"><NumberReveal value={kpi.trfsCount} /></div>
-                  </div>
-                  <div className="w-24 mt-1.5">
-                    <CenteredLabel text="ACTUAL" className="text-lg font-bold text-text-secondary uppercase tracking-tighter" />
-                  </div>
+                  <div className="text-4xl md:text-5xl font-bold text-text-primary tabnum tracking-tight leading-none mb-2"><NumberReveal value={kpi.trfsCount} /></div>
+                  <CenteredLabel text="ACTUAL" className="text-lg font-bold text-text-secondary uppercase tracking-widest" />
                 </div>
               </div>
               <div className="p-4 flex flex-col items-center justify-center">
                 <div className="flex flex-col items-center">
-                  <div className="w-24 h-24 bg-gradient-to-b from-brand/10 to-brand/20 border border-brand/40 rounded flex items-center justify-center">
-                    <div className="text-3xl md:text-4xl font-bold text-brand tabnum tracking-tight leading-none"><NumberReveal value={kpi.pctTrfs} suffix="%" /></div>
-                  </div>
-                  <div className="w-24 mt-1.5">
-                    <CenteredLabel text="%TRFS" className="text-lg font-bold text-text-secondary uppercase tracking-tighter" />
-                  </div>
+                  <div className="text-4xl md:text-5xl font-bold text-brand tabnum tracking-tight leading-none mb-2"><NumberReveal value={kpi.pctTrfs} suffix="%" /></div>
+                  <CenteredLabel text="%TRFS" className="text-lg font-bold text-text-secondary uppercase tracking-widest" />
                 </div>
               </div>
               {/* 2x2 grid for RTB/RFTI */}
               <div className="grid grid-cols-2 grid-rows-2">
                 <div className="p-3 flex flex-col items-center justify-center border-b border-r border-border-color bg-surface-hover/50 transition-colors duration-150 hover:bg-surface-hover">
                   <div className="flex flex-col items-center">
-                    <div className="w-16 h-16 bg-gradient-to-b from-brand/10 to-brand/20 border border-brand/40 rounded flex items-center justify-center">
-                      <div className="text-lg font-bold text-text-primary tabnum leading-none"><NumberReveal value={kpi.rtbCount} duration={800} /></div>
-                    </div>
-                    <div className="w-16 mt-1">
-                      <CenteredLabel text="RTB" className="text-base font-bold text-text-muted uppercase tracking-tighter" />
-                    </div>
+                    <div className="text-3xl font-bold text-text-primary tabnum leading-none mb-1"><NumberReveal value={kpi.rtbCount} duration={800} /></div>
+                    <CenteredLabel text="RTB" className="text-base font-bold text-text-muted uppercase tracking-widest" />
                   </div>
                 </div>
                 <div className="p-3 flex flex-col items-center justify-center border-b border-border-color bg-surface-hover/50 transition-colors duration-150 hover:bg-surface-hover">
