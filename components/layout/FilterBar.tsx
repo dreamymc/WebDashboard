@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import { useData } from "@/components/DataProvider";
+import { ChevronDown } from "lucide-react";
 
 export function FilterBar() {
   const router = useRouter();
@@ -47,6 +48,7 @@ export function FilterBar() {
 
   return (
     <div className="flex flex-wrap items-center gap-3 py-3 px-4 lg:px-6 bg-bg border-b border-border-color">
+      <div className="relative flex items-center">
       <select
         value={currentProvince}
         onChange={(e) => setFilter("province", e.target.value)}
@@ -59,7 +61,10 @@ export function FilterBar() {
           </option>
         ))}
       </select>
+      <ChevronDown className="absolute right-2.5 w-4 h-4 text-text-muted pointer-events-none" />
+    </div>
 
+      <div className="relative flex items-center">
       <select
         value={currentTown}
         onChange={(e) => setFilter("town", e.target.value)}
@@ -72,7 +77,10 @@ export function FilterBar() {
           </option>
         ))}
       </select>
+      <ChevronDown className="absolute right-2.5 w-4 h-4 text-text-muted pointer-events-none" />
+    </div>
 
+      <div className="relative flex items-center">
       <select
         value={currentLeadIndicator}
         onChange={(e) => setFilter("leadIndicator", e.target.value)}
@@ -85,7 +93,10 @@ export function FilterBar() {
           </option>
         ))}
       </select>
+      <ChevronDown className="absolute right-2.5 w-4 h-4 text-text-muted pointer-events-none" />
+    </div>
 
+      <div className="relative flex items-center">
       <select
         value={currentBuildPlan}
         onChange={(e) => setFilter("buildPlan", e.target.value)}
@@ -97,7 +108,10 @@ export function FilterBar() {
         <option value="Q3 BP">Q3 BP</option>
         <option value="Q4 BP">Q4 BP</option>
       </select>
+      <ChevronDown className="absolute right-2.5 w-4 h-4 text-text-muted pointer-events-none" />
+    </div>
 
+      <div className="relative flex items-center">
       <select
         value={currentPrio2}
         onChange={(e) => setFilter("prio2", e.target.value)}
@@ -110,6 +124,8 @@ export function FilterBar() {
           </option>
         ))}
       </select>
+      <ChevronDown className="absolute right-2.5 w-4 h-4 text-text-muted pointer-events-none" />
+    </div>
 
       {hasFilters && (
         <button
