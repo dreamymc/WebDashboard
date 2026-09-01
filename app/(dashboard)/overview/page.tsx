@@ -118,8 +118,12 @@ export default function OverviewPage() {
               <div className="grid grid-cols-2 grid-rows-2">
                 <div className="p-3 flex flex-col items-center justify-center border-b border-r border-border-color bg-surface-hover/50 transition-colors duration-150 hover:bg-surface-hover">
                   <div className="flex flex-col items-center">
-                    <div className="text-3xl font-bold text-text-primary tabnum leading-none mb-1"><NumberReveal value={kpi.rtbCount} duration={800} /></div>
-                    <CenteredLabel text="RTB" className="text-base font-bold text-text-muted uppercase tracking-widest" />
+                    <div className="w-16 h-16 bg-gradient-to-b from-brand/10 to-brand/20 border border-brand/40 rounded flex items-center justify-center">
+                      <div className="text-lg font-bold text-text-primary tabnum leading-none"><NumberReveal value={kpi.rtbCount} duration={800} /></div>
+                    </div>
+                    <div className="w-16 mt-1">
+                      <CenteredLabel text="RTB" className="text-base font-bold text-text-muted uppercase tracking-tighter" />
+                    </div>
                   </div>
                 </div>
                 <div className="p-3 flex flex-col items-center justify-center border-b border-border-color bg-surface-hover/50 transition-colors duration-150 hover:bg-surface-hover">
