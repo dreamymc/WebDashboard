@@ -52,7 +52,7 @@ export function FilterBar() {
         onChange={(e) => setFilter("province", e.target.value)}
         className="filter-select"
       >
-        <option value="">Province...</option>
+        <option value="">Province</option>
         {provinces.map((p) => (
           <option key={p} value={p}>
             {p}
@@ -65,7 +65,7 @@ export function FilterBar() {
         onChange={(e) => setFilter("town", e.target.value)}
         className="filter-select"
       >
-        <option value="">Town...</option>
+        <option value="">Town</option>
         {towns.map((t) => (
           <option key={t} value={t}>
             {t}
@@ -78,7 +78,7 @@ export function FilterBar() {
         onChange={(e) => setFilter("leadIndicator", e.target.value)}
         className="filter-select"
       >
-        <option value="">Lead Indicator...</option>
+        <option value="">Lead Indicator</option>
         {leadIndicators.map((l) => (
           <option key={l} value={l}>
             {l}
@@ -91,7 +91,7 @@ export function FilterBar() {
         onChange={(e) => setFilter("buildPlan", e.target.value)}
         className="filter-select"
       >
-        <option value="">Build Plan...</option>
+        <option value="">Build Plan</option>
         <option value="Q1 BP">Q1 BP</option>
         <option value="Q2 BP">Q2 BP</option>
         <option value="Q3 BP">Q3 BP</option>
@@ -103,7 +103,7 @@ export function FilterBar() {
         onChange={(e) => setFilter("prio2", e.target.value)}
         className="filter-select"
       >
-        <option value="">Priority Tagging...</option>
+        <option value="">Priority Tagging</option>
         {prio2Options.map((p) => (
           <option key={p} value={p}>
             {p}
